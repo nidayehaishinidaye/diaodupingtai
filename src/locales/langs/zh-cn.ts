@@ -412,6 +412,14 @@ const local: App.I18n.Schema = {
       devDep: '开发依赖'
     },
     home: {
+      Greeting: '{userName}，欢迎回来！',
+      morningGreeting: '早安，{userName}，今天又是充满活力的一天！',
+      bthGreeting: '上午好，{userName}，工作顺利吗，不要久坐，多起来走动走动哦！',
+      noonGreeting: '中午好，{userName}，工作了一个上午，现在是午餐时间！',
+      athGreeting: '下午好，{userName}，午后很容易犯困呢，是时候该打个盹了!',
+      duskGreeting: '{userName}，傍晚了，窗外夕阳的景色很美丽呢，最美不过夕阳红~',
+      eveningGreeting: '晚上好，{userName}，今天过得怎么样？请注意早点休息！',
+      earlyMorningGreeting: '{userName}，已经这么晚了呀，早点休息吧，晚安~',
       retryTaskCount: '重试任务',
       jobTaskCount: '定时任务',
       userCount: '用户',

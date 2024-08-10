@@ -400,6 +400,15 @@ const local: App.I18n.Schema = {
       devDep: 'Development Dependency'
     },
     home: {
+      Greeting: '{userName}, welcome back.',
+      morningGreeting: 'Good morning, {userName}, today is another day full of vitality!',
+      bthGreeting: "Good morning, {userName}, how's work going? Don't be sedentary. Get up and walk around more often!",
+      noonGreeting: "Good noon, {userName}, it's lunchtime after a long morning at work!",
+      athGreeting: "Good afternoon, {userName}, it's easy to get sleepy in the late afternoon yet, time for a nap!",
+      duskGreeting:
+        "{userName}, it's evening, the view of the sunset outside the window is very beautiful, the most beautiful thing is the red sunset.",
+      eveningGreeting: 'Good evening, {userName}, how are you doing today? Please take care to rest early!',
+      earlyMorningGreeting: "{userName}, It's so late already. Get some rest. Good night.",
       // 卡片统计
       retryTaskCount: 'Retry Task',
       jobTaskCount: 'Job Task',
