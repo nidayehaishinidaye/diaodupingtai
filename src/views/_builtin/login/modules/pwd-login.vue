@@ -57,6 +57,10 @@ const onClose = () => {
 const onSuccess = () => {
   handleSubmit();
 };
+
+const codePopoverStytle = {
+  padding: 0
+};
 </script>
 
 <template>
@@ -73,7 +77,7 @@ const onSuccess = () => {
       />
     </NFormItem>
     <NSpace vertical :size="24">
-      <NPopover :show="codeShow" row style="padding: 0">
+      <NPopover :show="codeShow" row :style="codePopoverStytle">
         <template #trigger>
           <NButton type="primary" size="large" round block :loading="authStore.loginLoading" @click="validateCode">
             {{ $t('page.login.common.login') }}

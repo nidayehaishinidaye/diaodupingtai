@@ -26,10 +26,6 @@ interface Emits {
 
 const emit = defineEmits<Emits>();
 
-const filterMenus = computed(() => {
-  return props.menus.filter(item => item.show !== false);
-});
-
 interface MixMenuItemProps {
   /** Menu item label */
   label: App.Global.Menu['label'];
@@ -86,7 +82,7 @@ function toggleSiderCollapse() {
     <slot></slot>
     <SimpleScrollbar>
       <MixMenuItem
-        v-for="menu in filterMenus"
+        v-for="menu in menus"
         :key="menu.key"
         :label="menu.label"
         :icon="menu.icon"

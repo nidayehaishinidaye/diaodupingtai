@@ -230,6 +230,7 @@ const local: App.I18n.Schema = {
       auto: '跟随系统'
     },
     grayscale: '灰色模式',
+    colourWeakness: '色弱模式',
     layoutMode: {
       title: '布局模式',
       vertical: '左侧菜单模式',
@@ -299,6 +300,10 @@ const local: App.I18n.Schema = {
       height: '底部高度',
       right: '底部局右'
     },
+    watermark: {
+      visible: '显示全屏水印',
+      text: '水印文本'
+    },
     themeDrawerTitle: '主题配置',
     pageFunTitle: '页面功能',
     configOperation: {
@@ -306,10 +311,6 @@ const local: App.I18n.Schema = {
       copySuccessMsg: '复制成功，请替换 src/theme/settings.ts 中的变量 themeSettings',
       resetConfig: '重置配置',
       resetSuccessMsg: '重置成功'
-    },
-    watermark: {
-      visible: '开启水印',
-      text: '水印文字'
     }
   },
   route: {

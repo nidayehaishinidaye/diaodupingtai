@@ -10,6 +10,8 @@ declare namespace App {
       themeScheme: UnionKey.ThemeScheme;
       /** grayscale mode */
       grayscale: boolean;
+      /** colour weakness mode */
+      colourWeakness: boolean;
       /** Whether to recommend color */
       recommendColor: boolean;
       /** Theme color */
@@ -93,17 +95,19 @@ declare namespace App {
         /** Whether float the footer to the right when the layout is 'horizontal-mix' */
         right: boolean;
       };
+      /** Watermark */
+      watermark: {
+        /** Whether to show the watermark */
+        visible: boolean;
+        /** Watermark text */
+        text: string;
+      };
       /** define some theme settings tokens, will transform to css variables */
       tokens: {
         light: ThemeSettingToken;
         dark?: {
           [K in keyof ThemeSettingToken]?: Partial<ThemeSettingToken[K]>;
         };
-      };
-      /** Watermark */
-      watermark: {
-        /** Whether to show the watermark */
-        visible: boolean;
       };
     }
 
@@ -194,8 +198,6 @@ declare namespace App {
       icon?: () => VNode;
       /** The menu children */
       children?: Menu[];
-      /** The menu show */
-      show?: boolean;
     };
 
     type Breadcrumb = Omit<Menu, 'children'> & {
@@ -504,6 +506,7 @@ declare namespace App {
       theme: {
         themeSchema: { title: string } & Record<UnionKey.ThemeScheme, string>;
         grayscale: string;
+        colourWeakness: string;
         layoutMode: { title: string; reverseHorizontalMix: string } & Record<UnionKey.ThemeLayoutMode, string>;
         recommendColor: string;
         recommendColorDesc: string;
@@ -544,6 +547,10 @@ declare namespace App {
           height: string;
           right: string;
         };
+        watermark: {
+          visible: string;
+          text: string;
+        };
         themeDrawerTitle: string;
         pageFunTitle: string;
         configOperation: {
@@ -551,10 +558,6 @@ declare namespace App {
           copySuccessMsg: string;
           resetConfig: string;
           resetSuccessMsg: string;
-        };
-        watermark: {
-          visible: string;
-          text: string;
         };
       };
       route: Record<I18nRouteKey, string>;

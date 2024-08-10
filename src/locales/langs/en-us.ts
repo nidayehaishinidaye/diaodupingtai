@@ -230,6 +230,7 @@ const local: App.I18n.Schema = {
       auto: 'Follow System'
     },
     grayscale: 'Grayscale',
+    colourWeakness: 'Colour Weakness',
     layoutMode: {
       title: 'Layout Mode',
       vertical: 'Vertical Menu Mode',
@@ -299,6 +300,10 @@ const local: App.I18n.Schema = {
       height: 'Footer Height',
       right: 'Right Footer'
     },
+    watermark: {
+      visible: 'Watermark Full Screen Visible',
+      text: 'Watermark Text'
+    },
     themeDrawerTitle: 'Theme Configuration',
     pageFunTitle: 'Page Function',
     configOperation: {
@@ -306,10 +311,6 @@ const local: App.I18n.Schema = {
       copySuccessMsg: 'Copy Success, Please replace the variable "themeSettings" in "src/theme/settings.ts"',
       resetConfig: 'Reset Config',
       resetSuccessMsg: 'Reset Success'
-    },
-    watermark: {
-      visible: 'Watermark Visible',
-      text: 'Watermark Text'
     }
   },
   route: {
