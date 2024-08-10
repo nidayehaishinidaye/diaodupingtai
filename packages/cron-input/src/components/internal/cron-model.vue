@@ -171,6 +171,9 @@ defineExpose({
 .cron-wrapper {
   // background-color: #fff;
   //border: 1px solid rgba(0, 0, 0, 0.06);
+  max-height: 390px;
+  overflow: auto;
+  @include scrollbar();
 
   .cron-tabs {
     // border: 1px solid rgba(0, 0, 0, 0.06);
