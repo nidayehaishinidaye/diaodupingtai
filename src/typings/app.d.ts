@@ -1037,6 +1037,7 @@ declare namespace App {
           executorInfo: string;
           executorType: string;
           executionAt: string;
+          duration: string;
           taskBatchStatus: string;
           operationReason: string;
           form: {

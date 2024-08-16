@@ -1113,6 +1113,8 @@ declare namespace Api {
       taskBatchStatus: Common.TaskBatchStatus;
       /** 开始执行时间 */
       executionAt: string;
+      /** 执行时长(virtual) */
+      duration?: number;
       /** 操作原因 */
       operationReason: Common.OperationReason;
       /** 执行器类型 */

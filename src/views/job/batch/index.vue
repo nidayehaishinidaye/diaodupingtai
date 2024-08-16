@@ -2,6 +2,7 @@
 import { NButton, NPopconfirm, NTag, NTooltip } from 'naive-ui';
 import { useBoolean } from '@sa/hooks';
 import { ref } from 'vue';
+import dayjs from 'dayjs';
 import {
   fetchBatchDeleteJobBatch,
   fetchDeleteJobBatch,
@@ -122,6 +123,18 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
       title: $t('page.jobBatch.executionAt'),
       align: 'center',
       width: 120
+    },
+    {
+      key: 'duration',
+      title: $t('page.jobBatch.duration'),
+      align: 'center',
+      width: 120,
+      render: row => {
+        if (row.taskBatchStatus === 3) {
+          return Math.round(dayjs(row.updateDt).diff(dayjs(row.executionAt)) / 1000);
+        }
+        return null;
+      }
     },
     {
       key: 'taskBatchStatus',

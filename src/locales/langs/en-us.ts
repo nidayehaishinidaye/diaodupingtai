@@ -830,6 +830,7 @@ const local: App.I18n.Schema = {
       executorInfo: 'Executor Name',
       executorType: 'Executor type',
       executionAt: 'Start execution time',
+      duration: 'Execution duration (s)',
       taskBatchStatus: 'Task Batch Status',
       operationReason: 'Reason for operation',
       form: {

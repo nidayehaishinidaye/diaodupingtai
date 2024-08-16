@@ -837,6 +837,7 @@ const local: App.I18n.Schema = {
       executorInfo: '执行器名称',
       executorType: '执行器类型',
       executionAt: '开始执行时间',
+      duration: '执行时长(秒)',
       taskBatchStatus: '状态',
       operationReason: '操作原因',
       form: {
