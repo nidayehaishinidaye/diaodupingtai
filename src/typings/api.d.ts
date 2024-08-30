@@ -30,6 +30,9 @@ declare namespace Api {
       total: number;
     };
 
+    /** common search params of table */
+    type CommonSearchParams = Pick<Common.PaginatingCommonParams, 'page' | 'size'>;
+
     /**
      * enable status
      *
