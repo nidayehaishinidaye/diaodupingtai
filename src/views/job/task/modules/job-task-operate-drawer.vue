@@ -183,24 +183,19 @@ const executorCustomOptions = [
   }
 ];
 
-const httpMethodOptions = [
-  {
-    label: 'GET',
-    value: 'get'
-  },
-  {
-    label: 'POST',
-    value: 'post'
-  },
-  {
-    label: 'PUT',
-    value: 'put'
-  },
-  {
-    label: 'DELETE',
-    value: 'delete'
-  }
-];
+type ScriptParams = {
+  method: string;
+  scriptParams: string;
+};
+
+const scriptParams = reactive<ScriptParams>(createDefaultScriptParams());
+
+function createDefaultScriptParams() {
+  return {
+    method: 'LOCAL_SCRIPT',
+    scriptParams: ''
+  };
+}
 
 function handleUpdateModelWhenEdit() {
   if (props.operateType === 'add') {
@@ -235,6 +230,8 @@ function handleUpdateModelWhenEdit() {
             return { key: item, value: httpParams.headers![item] };
           });
         }
+      } else {
+        Object.assign(scriptParams, JSON.parse(model.argsStr));
       }
     }
   }
@@ -275,6 +272,8 @@ async function handleSubmit() {
         httpParams.headers[item.key] = item.value;
       });
       argsStr = JSON.stringify(httpParams);
+    } else {
+      argsStr = JSON.stringify(scriptParams);
     }
   }
 
@@ -394,6 +393,40 @@ function handleChangeExecutorCustomType() {
   }
   model.executorInfo = 'snailJobHttpExecutor';
 }
+
+const httpMethodOptions = [
+  {
+    label: 'GET',
+    value: 'get'
+  },
+  {
+    label: 'POST',
+    value: 'post'
+  },
+  {
+    label: 'PUT',
+    value: 'put'
+  },
+  {
+    label: 'DELETE',
+    value: 'delete'
+  }
+];
+
+const scriptMethodOptions = [
+  {
+    label: '需下载脚本',
+    value: 'DOWNLOAD'
+  },
+  {
+    label: '脚本代码',
+    value: 'SCRIPT_CODE'
+  },
+  {
+    label: '使用本地脚本',
+    value: 'LOCAL_SCRIPT'
+  }
+];
 </script>
 
 <template>
@@ -453,6 +486,7 @@ function handleChangeExecutorCustomType() {
       <NFormItem
         :label="$t('page.jobTask.argsStr')"
         path="argsStr"
+        :show-label="executorCustomType === 0"
         :show-feedback="executorCustomType === 0"
         :rule="model.taskType === 3 ? defaultRequiredRule : undefined"
       >
@@ -485,7 +519,7 @@ function handleChangeExecutorCustomType() {
         </template>
         <template v-else-if="model.executorInfo === 'snailJobHttpExecutor'">
           <NForm ref="customformRef" class="w-full" :model="httpParams">
-            <NFormItem :show-label="false" :rule="defaultRequiredRule" path="url">
+            <NFormItem label="请求参数" :rule="defaultRequiredRule" path="url">
               <NInputGroup>
                 <NSelect v-model:value="httpParams.method" class="http-method" :options="httpMethodOptions" />
                 <NInput v-model:value="httpParams.url" placeholder="请输入请求地址" class="w-full" />
@@ -537,11 +571,20 @@ function handleChangeExecutorCustomType() {
               </div>
             </NDynamicInput>
             <NFormItem label="Body 参数">
-              <CodeMirror v-model="httpParams.body" lang="json" placeholder="请输入Body 参数" />
+              <CodeMirror v-model="httpParams.body" lang="json" placeholder="请输入 Body 参数" />
             </NFormItem>
           </NForm>
         </template>
-        <template v-else></template>
+        <template v-else>
+          <NForm ref="customformRef" class="w-full" :model="scriptParams">
+            <NFormItem label="脚本类型">
+              <NSelect v-model:value="scriptParams.method" :options="scriptMethodOptions" />
+            </NFormItem>
+            <NFormItem label="脚本参数">
+              <CodeMirror v-model="scriptParams.scriptParams" lang="json" placeholder="请输入脚本参数" />
+            </NFormItem>
+          </NForm>
+        </template>
       </NFormItem>
       <NGrid cols="2 s:1 m:2" responsive="screen" x-gap="20">
         <NGi>
