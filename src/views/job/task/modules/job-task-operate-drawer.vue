@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue';
+import type { FormInst } from 'naive-ui';
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 import OperateDrawer from '@/components/common/operate-drawer.vue';
 import { $t } from '@/locales';
@@ -10,7 +11,7 @@ import ExecutorType from '@/components/common/executor-type.vue';
 import TaskType from '@/components/common/task-type.vue';
 import CodeMirror from '@/components/common/code-mirror.vue';
 import JobTriggerInterval from '@/components/common/job-trigger-interval.vue';
-import { translateOptions } from '@/utils/common';
+import { isNotNull, translateOptions } from '@/utils/common';
 
 defineOptions({
   name: 'JobTaskOperateDrawer'
@@ -31,6 +32,7 @@ interface Emits {
 
 const emit = defineEmits<Emits>();
 
+const executorCustomType = ref<0 | 1>(0);
 const visible = defineModel<boolean>('visible', {
   default: false
 });
@@ -40,6 +42,7 @@ const dynamicForm = reactive({
 });
 const shardNum = ref(0);
 
+const customformRef = ref<FormInst | null>(null);
 const { formRef, validate, restoreValidation } = useNaiveForm();
 const { defaultRequiredRule } = useFormRules();
 
@@ -77,7 +80,8 @@ const model: Model = reactive(createDefaultModel());
 
 function createDefaultModel(): Model {
   return {
-    groupName: '',
+    // @ts-expect-error groupName is required
+    groupName: undefined,
     jobName: '',
     argsStr: '',
     argsType: 1,
@@ -85,7 +89,8 @@ function createDefaultModel(): Model {
     routeKey: 4,
     executorType: 1,
     triggerType: 2,
-    executorInfo: '',
+    // @ts-expect-error groupName is required
+    executorInfo: undefined,
     triggerInterval: '60',
     blockStrategy: 1,
     executorTimeout: 60,
@@ -134,9 +139,74 @@ const rules: Record<RuleKey, App.Global.FormRule> = {
   parallelNum: defaultRequiredRule
 };
 
+type HttpParams = {
+  method: string;
+  url: string;
+  mediaType: string;
+  body?: string;
+  headers: {
+    [key in string]: string;
+  };
+  timeout: number;
+};
+
+const httpHeaders = ref<{ key: string; value: string }[]>([]);
+
+const httpParams = reactive<HttpParams>(createDefaultHttpParams());
+
+function createDefaultHttpParams() {
+  return {
+    method: 'POST',
+    url: '',
+    headers: {},
+    mediaType: 'application/json',
+    timeout: 60
+  };
+}
+
+const executorCustomOptions = [
+  {
+    label: 'Http 执行器',
+    value: 'snailJobHttpExecutor'
+  },
+  {
+    label: 'CMD 执行器',
+    value: 'snailJobCMDJobExecutor'
+  },
+  {
+    label: 'PowerShell 执行器',
+    value: 'snailJobPowerShellJobExecutor'
+  },
+  {
+    label: 'Shell 执行器',
+    value: 'snailJobShellJobExecutor'
+  }
+];
+
+const httpMethodOptions = [
+  {
+    label: 'GET',
+    value: 'get'
+  },
+  {
+    label: 'POST',
+    value: 'post'
+  },
+  {
+    label: 'PUT',
+    value: 'put'
+  },
+  {
+    label: 'DELETE',
+    value: 'delete'
+  }
+];
+
 function handleUpdateModelWhenEdit() {
   if (props.operateType === 'add') {
     Object.assign(model, createDefaultModel());
+    executorCustomType.value = 0;
+    Object.assign(httpParams, createDefaultHttpParams());
     return;
   }
 
@@ -155,6 +225,18 @@ function handleUpdateModelWhenEdit() {
       shardNum.value = argsJson.shardNum;
       model.argsStr = argsJson.argsStr;
     }
+
+    if (executorCustomOptions.map(item => item.value).includes(model.executorInfo)) {
+      executorCustomType.value = 1;
+      if (model.executorInfo === 'snailJobHttpExecutor') {
+        Object.assign(httpParams, JSON.parse(model.argsStr));
+        if (httpParams.headers) {
+          httpHeaders.value = Object.keys(httpParams.headers).map((item: string) => {
+            return { key: item, value: httpParams.headers![item] };
+          });
+        }
+      }
+    }
   }
 }
 
@@ -164,31 +246,43 @@ function closeDrawer() {
 
 async function handleSubmit() {
   await validate();
+  const {
+    id,
+    groupName,
+    jobName,
+    argsType,
+    jobStatus,
+    routeKey,
+    executorType,
+    executorInfo,
+    triggerType,
+    triggerInterval,
+    blockStrategy,
+    executorTimeout,
+    maxRetryTimes,
+    retryInterval,
+    taskType,
+    parallelNum,
+    description
+  } = model;
+
+  let argsStr = taskType === 5 ? JSON.stringify({ shardNum: shardNum.value, argsStr: model.argsStr }) : model.argsStr;
+
+  if (executorCustomType.value === 1) {
+    await customformRef.value?.validate();
+    if (model.executorInfo === 'snailJobHttpExecutor') {
+      httpHeaders.value.forEach(item => {
+        httpParams.headers[item.key] = item.value;
+      });
+      argsStr = JSON.stringify(httpParams);
+    }
+  }
 
   if (props.operateType === 'add') {
-    const {
-      groupName,
-      jobName,
-      argsType,
-      argsStr,
-      jobStatus,
-      routeKey,
-      executorType,
-      executorInfo,
-      triggerType,
-      triggerInterval,
-      blockStrategy,
-      executorTimeout,
-      maxRetryTimes,
-      retryInterval,
-      taskType,
-      parallelNum,
-      description
-    } = model;
     const { error } = await fetchAddJob({
       groupName,
       jobName,
-      argsStr: taskType === 5 ? JSON.stringify({ shardNum: shardNum.value, argsStr }) : argsStr,
+      argsStr,
       argsType,
       jobStatus,
       routeKey,
@@ -209,31 +303,11 @@ async function handleSubmit() {
   }
 
   if (props.operateType === 'edit') {
-    const {
-      id,
-      groupName,
-      jobName,
-      argsStr,
-      argsType,
-      jobStatus,
-      routeKey,
-      executorType,
-      executorInfo,
-      triggerType,
-      triggerInterval,
-      blockStrategy,
-      executorTimeout,
-      maxRetryTimes,
-      retryInterval,
-      taskType,
-      parallelNum,
-      description
-    } = model;
     const { error } = await fetchEditJob({
       id,
       groupName,
       jobName,
-      argsStr: taskType === 5 ? JSON.stringify({ shardNum: shardNum.value, argsStr }) : argsStr,
+      argsStr,
       argsType,
       jobStatus,
       routeKey,
@@ -277,6 +351,7 @@ watch(visible, () => {
   if (visible.value) {
     handleUpdateModelWhenEdit();
     restoreValidation();
+    customformRef.value?.restoreValidation();
   }
 });
 
@@ -311,6 +386,14 @@ const blockStrategyOptions = computed(() => {
   }
   return translateOptions(blockStrategyRecordOptions);
 });
+
+function handleChangeExecutorCustomType() {
+  if (executorCustomType.value === 0) {
+    model.executorInfo = '';
+    return;
+  }
+  model.executorInfo = 'snailJobHttpExecutor';
+}
 </script>
 
 <template>
@@ -339,14 +422,30 @@ const blockStrategyOptions = computed(() => {
           </NSpace>
         </NRadioGroup>
       </NFormItem>
+      <NFormItem :label="$t('page.jobTask.taskType')" path="taskType">
+        <TaskType v-model:value="model.taskType" :placeholder="$t('page.jobTask.form.taskType')" />
+      </NFormItem>
       <NFormItem :label="$t('page.jobTask.executorType')" path="executorType">
         <ExecutorType v-model:value="model.executorType" />
       </NFormItem>
       <NFormItem :label="$t('page.jobTask.executorInfo')" path="executorInfo">
-        <NInput v-model:value="model.executorInfo" :placeholder="$t('page.jobTask.form.executorInfo')" />
-      </NFormItem>
-      <NFormItem :label="$t('page.jobTask.taskType')" path="taskType">
-        <TaskType v-model:value="model.taskType" :placeholder="$t('page.jobTask.form.taskType')" />
+        <div class="w-full w-full flex-col items-start gap-12px pt-5px">
+          <NRadioGroup v-model:value="executorCustomType" @change="handleChangeExecutorCustomType">
+            <NRadio :value="0">自定义执行器</NRadio>
+            <NRadio :value="1">内置执行器</NRadio>
+          </NRadioGroup>
+          <NInput
+            v-if="executorCustomType === 0"
+            v-model:value="model.executorInfo"
+            :placeholder="$t('page.jobTask.form.executorInfo')"
+          />
+          <NSelect
+            v-else
+            v-model:value="model.executorInfo"
+            :options="executorCustomOptions"
+            placeholder="请选择内置执行器"
+          />
+        </div>
       </NFormItem>
       <NFormItem v-if="model.taskType === 5" :label="$t('page.jobTask.shardNum')">
         <NInputNumber v-model:value="shardNum" :min="1" :placeholder="$t('page.jobTask.form.shardNum')" />
@@ -354,33 +453,95 @@ const blockStrategyOptions = computed(() => {
       <NFormItem
         :label="$t('page.jobTask.argsStr')"
         path="argsStr"
+        :show-feedback="executorCustomType === 0"
         :rule="model.taskType === 3 ? defaultRequiredRule : undefined"
       >
-        <NCard v-if="model.taskType === 3" class="flex-col">
-          <NFormItem
-            v-for="(item, index) in dynamicForm.args"
-            :key="index"
-            :label="`分片参数 ${index + 1}`"
-            :path="`args[${index}].arg`"
-            :show-feedback="false"
-            class="m-b-12px"
-            :rule="{
-              required: true,
-              message: `${$t('page.jobTask.form.argsStr')} ${index + 1}`,
-              trigger: ['input', 'blur'],
-              validator() {
-                return !!item.arg;
-              }
-            }"
-          >
-            <CodeMirror v-model="item.arg" lang="json" :placeholder="$t('page.jobTask.form.argsStr')" />
-            <NButton class="ml-12px" type="error" dashed @click="removeItem(index)">
-              <icon-ic-round-delete class="text-icon" />
-            </NButton>
-          </NFormItem>
-          <NButton block dashed attr-type="button" @click="addItem"><icon-ic-round-plus class="text-icon" /></NButton>
-        </NCard>
-        <CodeMirror v-else v-model="model.argsStr" lang="json" :placeholder="$t('page.jobTask.form.argsStr')" />
+        <template v-if="executorCustomType === 0">
+          <NCard v-if="model.taskType === 3" class="flex-col">
+            <NFormItem
+              v-for="(item, index) in dynamicForm.args"
+              :key="index"
+              :label="`分片参数 ${index + 1}`"
+              :path="`args[${index}].arg`"
+              :show-feedback="false"
+              class="m-b-12px"
+              :rule="{
+                required: true,
+                message: `${$t('page.jobTask.form.argsStr')} ${index + 1}`,
+                trigger: ['input', 'blur'],
+                validator() {
+                  return !!item.arg;
+                }
+              }"
+            >
+              <CodeMirror v-model="item.arg" lang="json" :placeholder="$t('page.jobTask.form.argsStr')" />
+              <NButton class="ml-12px" type="error" dashed @click="removeItem(index)">
+                <icon-ic-round-delete class="text-icon" />
+              </NButton>
+            </NFormItem>
+            <NButton block dashed attr-type="button" @click="addItem"><icon-ic-round-plus class="text-icon" /></NButton>
+          </NCard>
+          <CodeMirror v-else v-model="model.argsStr" lang="json" :placeholder="$t('page.jobTask.form.argsStr')" />
+        </template>
+        <template v-else-if="model.executorInfo === 'snailJobHttpExecutor'">
+          <NForm ref="customformRef" class="w-full" :model="httpParams">
+            <NFormItem :show-label="false" :rule="defaultRequiredRule" path="url">
+              <NInputGroup>
+                <NSelect v-model:value="httpParams.method" class="http-method" :options="httpMethodOptions" />
+                <NInput v-model:value="httpParams.url" placeholder="请输入请求地址" class="w-full" />
+              </NInputGroup>
+            </NFormItem>
+            <NFormItem label="Media Type">
+              <NInput v-model:value="httpParams.mediaType" placeholder="请输入 Media Type" />
+            </NFormItem>
+            <div class="n-form-item-label">Header 参数</div>
+            <NDynamicInput
+              v-model:value="httpHeaders"
+              :class="httpHeaders.length ? undefined : 'mb-24px'"
+              item-style="margin-bottom: 0;"
+              :on-create="() => ({ key: '', value: '' })"
+              #="{ index }"
+            >
+              <div class="flex">
+                <NFormItem
+                  ignore-path-change
+                  :show-label="false"
+                  :path="`headers[${index}].key`"
+                  :rule="{
+                    required: true,
+                    message: `请输入键`,
+                    trigger: ['input', 'blur'],
+                    validator() {
+                      return isNotNull(httpHeaders[index].key);
+                    }
+                  }"
+                >
+                  <NInput v-model:value="httpHeaders[index].key" placeholder="Key" @keydown.enter.prevent />
+                </NFormItem>
+                <div class="mx-8px h-34px text-center line-height-34px">=</div>
+                <NFormItem
+                  ignore-path-change
+                  :show-label="false"
+                  :path="`headers[${index}].value`"
+                  :rule="{
+                    required: true,
+                    message: `请输入值`,
+                    trigger: ['input', 'blur'],
+                    validator() {
+                      return isNotNull(httpHeaders[index].value);
+                    }
+                  }"
+                >
+                  <NInput v-model:value="httpHeaders[index].value" placeholder="Value" @keydown.enter.prevent />
+                </NFormItem>
+              </div>
+            </NDynamicInput>
+            <NFormItem label="Body 参数">
+              <CodeMirror v-model="httpParams.body" lang="json" placeholder="请输入Body 参数" />
+            </NFormItem>
+          </NForm>
+        </template>
+        <template v-else></template>
       </NFormItem>
       <NGrid cols="2 s:1 m:2" responsive="screen" x-gap="20">
         <NGi>
@@ -477,4 +638,8 @@ const blockStrategyOptions = computed(() => {
   </OperateDrawer>
 </template>
 
-<style scoped></style>
+<style scoped>
+.http-method {
+  width: 130px !important;
+}
+</style>
