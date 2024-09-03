@@ -202,6 +202,7 @@ function handleUpdateModelWhenEdit() {
     Object.assign(model, createDefaultModel());
     executorCustomType.value = 0;
     Object.assign(httpParams, createDefaultHttpParams());
+    Object.assign(scriptParams, createDefaultScriptParams());
     return;
   }
 
