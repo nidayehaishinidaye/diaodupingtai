@@ -546,9 +546,7 @@ const scriptMethodOptions = [
                     required: true,
                     message: `请输入键`,
                     trigger: ['input', 'blur'],
-                    validator() {
-                      return isNotNull(httpHeaders[index].key);
-                    }
+                    validator: () => isNotNull(httpHeaders[index].key)
                   }"
                 >
                   <NInput v-model:value="httpHeaders[index].key" placeholder="Key" @keydown.enter.prevent />
@@ -562,9 +560,7 @@ const scriptMethodOptions = [
                     required: true,
                     message: `请输入值`,
                     trigger: ['input', 'blur'],
-                    validator() {
-                      return isNotNull(httpHeaders[index].value);
-                    }
+                    validator: () => isNotNull(httpHeaders[index].value)
                   }"
                 >
                   <NInput v-model:value="httpHeaders[index].value" placeholder="Value" @keydown.enter.prevent />

@@ -2,10 +2,11 @@
 import { ref, watch } from 'vue';
 import type { SelectOption } from 'naive-ui';
 import SelectGroup from '@/components/common/select-group.vue';
-import TaskBatchStatus from '@/components/common/task-batch-status.vue';
 import DatetimeRange from '@/components/common/datetime-range.vue';
 import { $t } from '@/locales';
 import { fetchGetJobNameList } from '@/service/api';
+import { taskBatchStatusRecordOptions } from '@/constants/business';
+import { translateOptions } from '@/utils/common';
 
 defineOptions({
   name: 'JobBatchSearch'
@@ -56,7 +57,7 @@ watch(
   }
 );
 
-function translateOptions(options: Api.Job.Job[]) {
+function translateJobOptions(options: Api.Job.Job[]) {
   return options.map(option => ({
     value: option.id,
     label: option.jobName
@@ -77,7 +78,7 @@ function renderLabel(option: SelectOption) {
       <NAutoComplete
         v-model:value="keywords"
         :placeholder="$t('page.jobBatch.form.jobName')"
-        :options="translateOptions(jobList)"
+        :options="translateJobOptions(jobList)"
         :empty-visible="noSearchFlag"
         clearable
         filterable
@@ -86,7 +87,14 @@ function renderLabel(option: SelectOption) {
       />
     </NFormItemGi>
     <NFormItemGi span="24 s:12 m:8" :label="$t('page.jobBatch.taskBatchStatus')" path="taskBatchStatus" class="pr-24px">
-      <TaskBatchStatus v-model:value="model.taskBatchStatus" clearable />
+      <NSelect
+        v-model:value="model.taskBatchStatus"
+        :placeholder="$t('common.taskBatchStatus.form')"
+        :options="
+          translateOptions(taskBatchStatusRecordOptions).filter(item => ![98, 99].includes(item.value as number))
+        "
+        clearable
+      />
     </NFormItemGi>
     <NFormItemGi
       span="24 s:24 m:14 l:12 xl:8"
