@@ -572,8 +572,18 @@ const scriptMethodOptions = [
             <NFormItem label="Body 参数">
               <CodeMirror v-model="httpParams.body" lang="json" placeholder="请输入 Body 参数" />
             </NFormItem>
-            <NFormItem label="超时时间">
-              <NInputNumber v-model:value="httpParams.timeout" class="w-full" placeholder="请输入超时时间" />
+            <NFormItem label="接口超时时间">
+              <NInputGroup>
+                <NInputNumber
+                  v-model:value="httpParams.timeout"
+                  class="w-full"
+                  :min="1"
+                  :max="99999999"
+                  :placeholder="$t('page.jobTask.form.executorTimeout')"
+                  clearable
+                />
+                <NInputGroupLabel>{{ $t('common.second') }}</NInputGroupLabel>
+              </NInputGroup>
             </NFormItem>
           </NForm>
         </template>
