@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue';
-import type { FormInst } from 'naive-ui';
+import { type FormInst, NInputNumber } from 'naive-ui';
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 import OperateDrawer from '@/components/common/operate-drawer.vue';
 import { $t } from '@/locales';
@@ -159,6 +159,7 @@ function createDefaultHttpParams() {
     method: 'POST',
     url: '',
     headers: {},
+    body: '',
     mediaType: 'application/json',
     timeout: 60
   };
@@ -201,6 +202,7 @@ function handleUpdateModelWhenEdit() {
   if (props.operateType === 'add') {
     Object.assign(model, createDefaultModel());
     executorCustomType.value = 0;
+    httpHeaders.value = [];
     Object.assign(httpParams, createDefaultHttpParams());
     Object.assign(scriptParams, createDefaultScriptParams());
     return;
@@ -569,6 +571,9 @@ const scriptMethodOptions = [
             </NDynamicInput>
             <NFormItem label="Body 参数">
               <CodeMirror v-model="httpParams.body" lang="json" placeholder="请输入 Body 参数" />
+            </NFormItem>
+            <NFormItem label="超时时间">
+              <NInputNumber v-model:value="httpParams.timeout" class="w-full" placeholder="请输入超时时间" />
             </NFormItem>
           </NForm>
         </template>
