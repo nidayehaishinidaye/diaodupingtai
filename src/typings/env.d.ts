@@ -106,6 +106,8 @@ declare namespace Env {
     /** Used to differentiate storage across different domains */
     readonly VITE_STORAGE_PREFIX?: string;
     readonly VITE_LOGIN_CODE?: string;
+    /** Whether to automatically detect updates after configuring application packaging */
+    readonly VITE_AUTOMATICALLY_DETECT_UPDATE?: CommonType.YesOrNo;
   }
 }
 
