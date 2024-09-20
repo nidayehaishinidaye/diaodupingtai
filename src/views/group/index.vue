@@ -61,17 +61,17 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       align: 'center',
       width: 80,
       render: row => {
-        const fetchFn = async (groupStatus: Api.Common.EnableStatusNumber, callback: () => void) => {
+        const fetchFn = async (groupStatus: Api.Common.EnableStatusNumber, callback: (flag: boolean) => void) => {
           const status = row.groupStatus === 1 ? 0 : 1;
           const { error } = await fetchUpdateGroupStatus({ groupName: row.groupName, groupStatus: status });
           if (!error) {
             row.groupStatus = groupStatus;
             window.$message?.success($t('common.updateSuccess'));
           }
-          callback();
+          callback(!error);
         };
         return (
-          <StatusSwitch v-model:value={row.groupStatus} onFetch={fetchFn} disabled={hasAuth('R_USER') as boolean} />
+          <StatusSwitch v-model:value={row.groupStatus} onSubmitted={fetchFn} disabled={hasAuth('R_USER') as boolean} />
         );
       }
     },

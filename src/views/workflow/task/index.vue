@@ -81,16 +81,16 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       align: 'left',
       minWidth: 120,
       render: row => {
-        const fetchFn = async (workflowStatus: Api.Common.EnableStatusNumber, callback: () => void) => {
+        const fetchFn = async (workflowStatus: Api.Common.EnableStatusNumber, callback: (flag: boolean) => void) => {
           const { error } = await fetchUpdateWorkflowStatus(row.id!);
           if (!error) {
             row.workflowStatus = workflowStatus;
             window.$message?.success($t('common.updateSuccess'));
           }
-          callback();
+          callback(!error);
         };
 
-        return <StatusSwitch v-model:value={row.workflowStatus} onFetch={fetchFn} />;
+        return <StatusSwitch v-model:value={row.workflowStatus} onSubmitted={fetchFn} />;
       }
     },
     {

@@ -83,16 +83,16 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
       align: 'center',
       width: 60,
       render: row => {
-        const fetchFn = async (jobStatus: Api.Common.EnableStatusNumber, callback: () => void) => {
+        const fetchFn = async (jobStatus: Api.Common.EnableStatusNumber, callback: (flag: boolean) => void) => {
           const { error } = await fetchUpdateJobStatus({ id: row.id!, jobStatus });
           if (!error) {
             row.jobStatus = jobStatus;
             window.$message?.success($t('common.updateSuccess'));
           }
-          callback();
+          callback(!error);
         };
 
-        return <StatusSwitch v-model:value={row.jobStatus} onFetch={fetchFn} />;
+        return <StatusSwitch v-model:value={row.jobStatus} onSubmitted={fetchFn} />;
       }
     },
     {

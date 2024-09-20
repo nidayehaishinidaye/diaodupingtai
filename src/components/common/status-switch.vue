@@ -1,36 +1,54 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { useBoolean } from '@sa/hooks';
+import { enableStatusNumberRecord } from '@/constants/business';
 
 defineOptions({
   name: 'StatusSwitch'
 });
 
-const props = defineProps({
-  disabled: Boolean
+interface Props {
+  disabled?: boolean;
+  info?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  disabled: false,
+  info: ''
 });
 
-const modelValue = defineModel<Api.Common.EnableStatusNumber>('value', { default: 0 });
+const value = defineModel<Api.Common.EnableStatusNumber>('value', { required: false, default: 0 });
 
 interface Emits {
-  (e: 'fetch', value: Api.Common.EnableStatusNumber, callback: () => void): void;
+  (e: 'submitted', value: Api.Common.EnableStatusNumber, callback: (flag: boolean) => void): void;
 }
 
 const emit = defineEmits<Emits>();
 
 /** 状态切换过程的 loading 状态 */
-const loading = ref(false);
+const { bool: loading, setTrue: startLoading, setFalse: endLoading } = useBoolean();
 
-const handleUpdateValue = (value: Api.Common.EnableStatusNumber) => {
-  loading.value = true;
-  emit('fetch', value, () => {
-    loading.value = false;
+const handleUpdateValue = (val: Api.Common.EnableStatusNumber) => {
+  value.value = val === 0 ? 1 : 0;
+  window.$dialog?.warning({
+    title: '系统提示',
+    content: `确定要${enableStatusNumberRecord[val]}${props.info}吗？`,
+    positiveText: '确定',
+    negativeText: '取消',
+    onPositiveClick: () => {
+      startLoading();
+      emit('submitted', val, flag => {
+        if (flag) value.value = val;
+        endLoading();
+      });
+    },
+    onNegativeClick: () => {}
   });
 };
 </script>
 
 <template>
   <NSwitch
-    :value="modelValue"
+    v-model:value="value"
     :loading="loading"
     :rubber-band="false"
     :checked-value="1"

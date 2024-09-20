@@ -81,16 +81,16 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       align: 'left',
       width: 50,
       render: row => {
-        const fetchFn = async (sceneStatus: Api.Common.EnableStatusNumber, callback: () => void) => {
+        const fetchFn = async (sceneStatus: Api.Common.EnableStatusNumber, callback: (flag: boolean) => void) => {
           const { error } = await fetchUpdateSceneStatus(row.id!, sceneStatus);
           if (!error) {
             row.sceneStatus = sceneStatus;
             window.$message?.success($t('common.updateSuccess'));
           }
-          callback();
+          callback(!error);
         };
 
-        return <StatusSwitch v-model:value={row.sceneStatus} onFetch={fetchFn} />;
+        return <StatusSwitch v-model:value={row.sceneStatus} onSubmitted={fetchFn} />;
       }
     },
     {

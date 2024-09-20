@@ -90,16 +90,16 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       align: 'left',
       width: 120,
       render: row => {
-        const fetchFn = async (notifyStatus: Api.Common.EnableStatusNumber, callback: () => void) => {
+        const fetchFn = async (notifyStatus: Api.Common.EnableStatusNumber, callback: (flag: boolean) => void) => {
           const { error } = await fetchUpdateNotifyStatus(row.id!, notifyStatus);
           if (!error) {
             row.notifyStatus = notifyStatus;
             window.$message?.success($t('common.updateSuccess'));
           }
-          callback();
+          callback(!error);
         };
 
-        return <StatusSwitch v-model:value={row.notifyStatus} onFetch={fetchFn} />;
+        return <StatusSwitch v-model:value={row.notifyStatus} onSubmitted={fetchFn} />;
       }
     },
     {
