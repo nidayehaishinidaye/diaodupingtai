@@ -10,12 +10,14 @@ import { $t } from '@/locales';
 import { roleTypeRecord } from '@/constants/business';
 import { useRouteStore } from '../route';
 import { useTabStore } from '../tab';
+import { useSearchStore } from '../search';
 import { clearAuthStorage, getToken } from './shared';
 
 export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
   const route = useRoute();
   const routeStore = useRouteStore();
   const tabStore = useTabStore();
+  const searchStore = useSearchStore();
   const { toLogin, redirectFromLogin } = useRouterPush(false);
   const { loading: loginLoading, startLoading, endLoading } = useLoading();
 
@@ -54,6 +56,7 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
     clearAuthStorage();
 
     authStore.$reset();
+    searchStore.$reset();
 
     if (!route.meta.constant) {
       await toLogin();

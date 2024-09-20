@@ -8,6 +8,7 @@ import { useRouterPush } from '@/hooks/common/router';
 import { localStg } from '@/utils/storage';
 import { useRouteStore } from '@/store/modules/route';
 import { useThemeStore } from '../theme';
+import { useSearchStore } from '../search';
 import {
   extractTabsByAllRoutes,
   filterTabsById,
@@ -26,6 +27,7 @@ import {
 export const useTabStore = defineStore(SetupStoreId.Tab, () => {
   const routeStore = useRouteStore();
   const themeStore = useThemeStore();
+  const searchStore = useSearchStore();
   const { routerPush } = useRouterPush(false);
 
   /** Tabs */
@@ -98,6 +100,7 @@ export const useTabStore = defineStore(SetupStoreId.Tab, () => {
   async function removeTab(tabId: string) {
     const isRemoveActiveTab = activeTabId.value === tabId;
     const updatedTabs = filterTabsById(tabId, tabs.value);
+    searchStore.remove(tabId);
 
     function update() {
       tabs.value = updatedTabs;
@@ -144,6 +147,8 @@ export const useTabStore = defineStore(SetupStoreId.Tab, () => {
 
     const isRemoveActiveTab = removedTabsIds.includes(activeTabId.value);
     const updatedTabs = filterTabsByIds(removedTabsIds, tabs.value);
+
+    searchStore.clear();
 
     function update() {
       tabs.value = updatedTabs;

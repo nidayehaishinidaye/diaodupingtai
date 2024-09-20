@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useNaiveForm } from '@/hooks/common/form';
+import { useSearchStore } from '@/store/modules/search';
 
 defineOptions({
   name: 'SearchForm'
@@ -22,7 +24,9 @@ interface Emits {
 
 const emit = defineEmits<Emits>();
 
+const route = useRoute();
 const appStore = useAppStore();
+const searchStore = useSearchStore();
 
 const title = ref(appStore.isMobile ? $t('common.search') : undefined);
 
@@ -31,18 +35,26 @@ const { formRef, validate, restoreValidation } = useNaiveForm();
 async function reset() {
   await restoreValidation();
   Object.assign(props.model, { ...props.model, page: 1 });
+  searchStore.remove(String(route.path));
   emit('reset');
 }
 
 async function search() {
   await validate();
   Object.assign(props.model, { ...props.model, page: 1 });
+  searchStore.set(String(route.path), props.model);
   emit('search');
 }
 
 const btnSpan = computed(() => {
   const keyNum = Object.keys(props.model).length - 2;
   return props.btnSpan || (keyNum % 4 !== 0 ? `24 m:12 m:${(4 - (keyNum % 4)) * 6}` : '24');
+});
+
+onMounted(() => {
+  const searchParams = searchStore.get(String(route.path));
+  if (!searchParams) return;
+  Object.assign(props.model, searchParams);
 });
 </script>
 

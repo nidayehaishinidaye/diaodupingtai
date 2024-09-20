@@ -59,7 +59,7 @@ export const generatedRoutes: GeneratedRoute[] = [
       i18nKey: 'route.group',
       order: 30,
       icon: 'material-symbols:group-work-outline',
-      keepAlive: true
+      keepAlive: false
     }
   },
   {
@@ -71,7 +71,7 @@ export const generatedRoutes: GeneratedRoute[] = [
       i18nKey: 'route.home',
       icon: 'material-symbols:dashboard-outline-rounded',
       order: 1,
-      keepAlive: true
+      keepAlive: false
     }
   },
   {
@@ -96,7 +96,7 @@ export const generatedRoutes: GeneratedRoute[] = [
       i18nKey: 'route.job',
       order: 50,
       icon: 'eos-icons:cronjob',
-      keepAlive: true
+      keepAlive: false
     },
     children: [
       {
@@ -108,7 +108,7 @@ export const generatedRoutes: GeneratedRoute[] = [
           i18nKey: 'route.job_batch',
           icon: 'carbon:batch-job',
           order: 20,
-          keepAlive: true
+          keepAlive: false
         }
       },
       {
@@ -120,7 +120,7 @@ export const generatedRoutes: GeneratedRoute[] = [
           i18nKey: 'route.job_task',
           icon: 'octicon:tasklist',
           order: 10,
-          keepAlive: true
+          keepAlive: false
         }
       }
     ]
@@ -158,7 +158,7 @@ export const generatedRoutes: GeneratedRoute[] = [
       icon: 'eos-icons:namespace',
       order: 20,
       roles: ['R_ADMIN'],
-      keepAlive: true
+      keepAlive: false
     }
   },
   {
@@ -170,7 +170,7 @@ export const generatedRoutes: GeneratedRoute[] = [
       i18nKey: 'route.notify',
       order: 100,
       icon: 'material-symbols:notifications-active-outline-rounded',
-      keepAlive: true
+      keepAlive: false
     },
     children: [
       {
@@ -181,7 +181,7 @@ export const generatedRoutes: GeneratedRoute[] = [
           title: 'notify_config',
           i18nKey: 'route.notify_config',
           icon: 'cbi:scene-dynamic',
-          keepAlive: true
+          keepAlive: false
         }
       },
       {
@@ -192,7 +192,7 @@ export const generatedRoutes: GeneratedRoute[] = [
           title: 'notify_recipient',
           i18nKey: 'route.notify_recipient',
           icon: 'fluent:people-call-20-filled',
-          keepAlive: true
+          keepAlive: false
         }
       }
     ]
@@ -206,7 +206,7 @@ export const generatedRoutes: GeneratedRoute[] = [
       i18nKey: 'route.pods',
       icon: 'ant-design:database-outlined',
       order: 10,
-      keepAlive: true
+      keepAlive: false
     }
   },
   {
@@ -218,7 +218,7 @@ export const generatedRoutes: GeneratedRoute[] = [
       i18nKey: 'route.retry',
       order: 70,
       icon: 'carbon:retry-failed',
-      keepAlive: true
+      keepAlive: false
     },
     children: [
       {
@@ -230,7 +230,7 @@ export const generatedRoutes: GeneratedRoute[] = [
           i18nKey: 'route.retry_dead-letter',
           icon: 'streamline:interface-arrows-synchronize-warning-arrow-fail-notification-sync-warning-failure-synchronize-error',
           order: 30,
-          keepAlive: true
+          keepAlive: false
         }
       },
       {
@@ -242,7 +242,7 @@ export const generatedRoutes: GeneratedRoute[] = [
           i18nKey: 'route.retry_log',
           icon: 'tabler:logs',
           order: 20,
-          keepAlive: true
+          keepAlive: false
         }
       },
       {
@@ -254,7 +254,7 @@ export const generatedRoutes: GeneratedRoute[] = [
           i18nKey: 'route.retry_scene',
           icon: 'cbi:scene-dynamic',
           order: 1,
-          keepAlive: true
+          keepAlive: false
         }
       },
       {
@@ -266,7 +266,7 @@ export const generatedRoutes: GeneratedRoute[] = [
           i18nKey: 'route.retry_task',
           icon: 'octicon:tasklist',
           order: 10,
-          keepAlive: true
+          keepAlive: false
         }
       }
     ]
@@ -281,7 +281,7 @@ export const generatedRoutes: GeneratedRoute[] = [
       order: 900,
       icon: 'material-symbols:manage-accounts',
       roles: ['R_ADMIN'],
-      keepAlive: true
+      keepAlive: false
     },
     children: [
       {
@@ -294,7 +294,7 @@ export const generatedRoutes: GeneratedRoute[] = [
           icon: 'streamline:interface-user-multiple-close-geometric-human-multiple-person-up-user',
           order: 900,
           roles: ['R_ADMIN'],
-          keepAlive: true
+          keepAlive: false
         }
       }
     ]
@@ -308,7 +308,7 @@ export const generatedRoutes: GeneratedRoute[] = [
       i18nKey: 'route.workflow',
       order: 60,
       icon: 'lucide:workflow',
-      keepAlive: true
+      keepAlive: false
     },
     children: [
       {
@@ -320,7 +320,7 @@ export const generatedRoutes: GeneratedRoute[] = [
           i18nKey: 'route.workflow_batch',
           icon: 'carbon:batch-job',
           order: 10,
-          keepAlive: true
+          keepAlive: false
         }
       },
       {
@@ -393,7 +393,7 @@ export const generatedRoutes: GeneratedRoute[] = [
           i18nKey: 'route.workflow_task',
           icon: 'octicon:tasklist',
           order: 1,
-          keepAlive: true
+          keepAlive: false
         }
       }
     ]

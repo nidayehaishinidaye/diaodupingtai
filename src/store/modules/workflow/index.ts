@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { fetchGetJobList } from '@/service/api';
+import { SetupStoreId } from '@/enum';
 
-export const useWorkflowStore = defineStore('workflow', () => {
+export const useWorkflowStore = defineStore(SetupStoreId.Workflow, () => {
   const id = ref<string>();
   const type = ref<number>();
   const groupName = ref<string>();
