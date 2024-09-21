@@ -6,7 +6,7 @@ import RouteKey from '@/components/common/route-key.vue';
 import { $t } from '@/locales';
 import { fetchAddRetryScene, fetchEditRetryScene } from '@/service/api';
 import { DelayLevel, backOffRecordOptions, enableStatusNumberOptions } from '@/constants/business';
-import { translateOptions } from '@/utils/common';
+import { isNotNull, translateOptions } from '@/utils/common';
 
 defineOptions({
   name: 'SceneOperateDrawer'
@@ -103,7 +103,9 @@ const rules = {
   sceneStatus: [defaultRequiredRule],
   backOff: [defaultRequiredRule],
   maxRetryCount: [defaultRequiredRule],
-  triggerInterval: [defaultRequiredRule],
+  triggerInterval: [
+    { ...defaultRequiredRule, validator: () => isNotNull(model.triggerInterval) || model.backOff === 1 }
+  ],
   deadlineRequest: [defaultRequiredRule],
   executorTimeout: [defaultRequiredRule],
   routeKey: [defaultRequiredRule]
@@ -210,7 +212,8 @@ watch(
   () => model.maxRetryCount,
   () => {
     delayLevelDesc.value = Object.values(DelayLevel).slice(0, model.maxRetryCount).join(',');
-  }
+  },
+  { immediate: true }
 );
 </script>
 
