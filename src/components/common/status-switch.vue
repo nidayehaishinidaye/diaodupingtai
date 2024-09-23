@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useBoolean } from '@sa/hooks';
 import { enableStatusNumberRecord } from '@/constants/business';
+import { $t } from '@/locales';
 
 defineOptions({
   name: 'StatusSwitch'
@@ -31,7 +32,7 @@ const handleUpdateValue = (val: Api.Common.EnableStatusNumber) => {
   value.value = val === 0 ? 1 : 0;
   window.$dialog?.warning({
     title: '系统提示',
-    content: `确定要${enableStatusNumberRecord[val]}${props.info}吗？`,
+    content: `确定要${$t(enableStatusNumberRecord[val])}${props.info}吗？`,
     positiveText: '确定',
     negativeText: '取消',
     onPositiveClick: () => {
