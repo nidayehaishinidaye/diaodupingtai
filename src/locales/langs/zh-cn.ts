@@ -148,7 +148,7 @@ const local: App.I18n.Schema = {
       items: {
         cluster: '集群',
         broadcast: '广播',
-        slice: '静态切片',
+        slice: '静态分片',
         map: 'Map',
         mapreduce: 'MapReduce'
       }

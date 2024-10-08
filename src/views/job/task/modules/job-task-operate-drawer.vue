@@ -659,7 +659,11 @@ const scriptMethodOptions = [
           </NFormItem>
         </NGi>
         <NGi>
-          <NFormItem v-if="model.taskType !== 1" :label="$t('page.jobTask.parallelNum')" path="parallelNum">
+          <NFormItem
+            v-if="model.taskType !== 1 && model.taskType !== 2"
+            :label="$t('page.jobTask.parallelNum')"
+            path="parallelNum"
+          >
             <NInputNumber
               v-model:value="model.parallelNum"
               :min="1"
