@@ -53,6 +53,8 @@ watch(
       model.value.jobName = value;
     } else {
       noSearchFlag.value = false;
+      model.value.jobId = null;
+      model.value.jobName = null;
     }
   }
 );
