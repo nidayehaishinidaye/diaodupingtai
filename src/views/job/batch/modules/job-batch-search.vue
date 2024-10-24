@@ -91,6 +91,8 @@ function renderLabel(option: SelectOption) {
     <NFormItemGi span="24 s:12 m:8" :label="$t('page.jobBatch.taskBatchStatus')" path="taskBatchStatus" class="pr-24px">
       <NSelect
         v-model:value="model.taskBatchStatus"
+        multiple
+        max-tag-count="responsive"
         :placeholder="$t('common.taskBatchStatus.form')"
         :options="
           translateOptions(taskBatchStatusRecordOptions).filter(item => ![98, 99].includes(item.value as number))
