@@ -147,6 +147,13 @@ export function monthRangeISO8601(months: number = 1, startOf: dayjs.OpUnitType 
   ] as [string, string];
 }
 
+export function weekRangeISO8601(weeks: number = 1, startOf: dayjs.OpUnitType = 'day') {
+  return [
+    dayjs().subtract(weeks, 'week').startOf(startOf).format('YYYY-MM-DDTHH:mm:ss'),
+    dayjs().endOf('day').format('YYYY-MM-DDTHH:mm:ss')
+  ] as [string, string];
+}
+
 export function isNotNull(value: any) {
   return value !== undefined && value !== null && value !== '' && value !== 'undefined';
 }
@@ -190,7 +197,7 @@ export function stringToContent(
   if (typeof jsonString === 'string') {
     try {
       parsedObj = JSON.parse(jsonString);
-    } catch (e) {
+    } catch {
       return [];
     }
   }
