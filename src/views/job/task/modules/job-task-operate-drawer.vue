@@ -188,6 +188,7 @@ const executorCustomOptions = [
 type ScriptParams = {
   method: string;
   scriptParams: string;
+  charset: string;
 };
 
 const scriptParams = reactive<ScriptParams>(createDefaultScriptParams());
@@ -195,7 +196,8 @@ const scriptParams = reactive<ScriptParams>(createDefaultScriptParams());
 function createDefaultScriptParams() {
   return {
     method: 'LOCAL_SCRIPT',
-    scriptParams: ''
+    scriptParams: '',
+    charset: ''
   };
 }
 
@@ -588,6 +590,9 @@ const scriptMethodOptions = [
             </NFormItem>
             <NFormItem label="脚本参数">
               <CodeMirror v-model="scriptParams.scriptParams" lang="json" placeholder="请输入脚本参数" />
+            </NFormItem>
+            <NFormItem label="编码格式">
+              <NInput v-model:value="scriptParams.charset" placeholder="请输入编码格式" />
             </NFormItem>
           </NForm>
         </template>
