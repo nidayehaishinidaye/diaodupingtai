@@ -120,7 +120,7 @@ export function toggleHtmlClass(className: string) {
 }
 
 /**
- * 创建 `最近n个自然月` timestamp时间区间
+ * 创建 `最近n个自然月` timestamp 时间区间
  *
  * @param months 月数
  * @param startOf 时间的开始类型
@@ -131,6 +131,23 @@ export function monthRange(months: number = 1, startOf: dayjs.OpUnitType = 'day'
     number,
     number
   ];
+}
+
+/**
+ * 创建 `最近n个自然月` timestamp 时间区间
+ *
+ * @param days 日数
+ * @param startOf 时间的开始类型
+ * @returns timestamp时间区间
+ */
+export function dayRange(days: number = 1) {
+  return [
+    dayjs()
+      .subtract(days - 1, 'day')
+      .startOf('day')
+      .valueOf(),
+    dayjs().endOf('day').valueOf()
+  ] as [number, number];
 }
 
 /**

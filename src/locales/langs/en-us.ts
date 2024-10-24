@@ -210,6 +210,8 @@ const local: App.I18n.Schema = {
     },
     updateDt: 'Updated Time',
     createDt: 'Created Time',
+    today: 'Today',
+    lastWeek: 'Last Week',
     currentMonth: 'Current Month',
     lastMonth: 'Last Month',
     lastTwoMonth: 'Last 2 Month'

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { $t } from '@/locales';
-import { monthRange } from '@/utils/common';
+import { dayRange, monthRange } from '@/utils/common';
 
 defineOptions({
   name: 'DatetimeRange'
@@ -13,6 +13,9 @@ const modelValue = defineModel<[string, string] | null>('value');
 
 const createShortcuts = () => {
   const shortcuts: any = {};
+  shortcuts[$t('common.today')] = dayRange(1);
+  shortcuts[$t('common.lastWeek')] = dayRange(7);
+  shortcuts[$t('common.lastMonth')] = monthRange(1, 'month');
   shortcuts[$t('common.currentMonth')] = monthRange(0, 'month');
   shortcuts[$t('common.lastMonth')] = monthRange(1, 'month');
   shortcuts[$t('common.lastTwoMonth')] = monthRange(2, 'month');
