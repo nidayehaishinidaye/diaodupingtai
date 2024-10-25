@@ -146,9 +146,17 @@ const getClass = (item: Workflow.ConditionNodeType) => {
                 <div class="auto-judge" :class="getClass(item)" @click="showDetail(item, index)">
                   <div class="title">
                     <span class="text text-#935af6">
-                      <NBadge processing dot :color="item.workflowNodeStatus === 1 ? '#52c41a' : '#ff4d4f'" />
-                      &nbsp;{{ item.nodeName }}
-                      <span v-if="item.id">&nbsp;({{ item.id }})</span>
+                      <span class="flex items-center">
+                        <NBadge processing dot :color="item.workflowNodeStatus === 1 ? '#52c41a' : '#ff4d4f'" />
+                        &nbsp;{{ item.nodeName }}
+                        <span v-if="item.id">&nbsp;({{ item.id }})</span>
+                        <NTooltip>
+                          <template #trigger>
+                            <icon-ant-design:info-circle-outlined class="ml-3px text-16px" />
+                          </template>
+                          此节点后续将废弃，请使用定时任务中的 HTTP 内置执行器进行替换。
+                        </NTooltip>
+                      </span>
                     </span>
                     <icon-ant-design:close-outlined v-if="!disabled" class="close" @click.stop="delTerm" />
                   </div>

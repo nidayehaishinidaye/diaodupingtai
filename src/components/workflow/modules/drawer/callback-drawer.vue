@@ -77,7 +77,7 @@ const rules: FormRules = {
   <NDrawer v-model:show="drawer" display-directive="if" :width="500" @after-leave="close">
     <NDrawerContent>
       <template #header>
-        <div class="w-460px flex-center">
+        <div class="w-460px flex items-center">
           <EditableInput v-model="form.nodeName" class="mr-16px max-w-320px min-w-320px" />
         </div>
       </template>
