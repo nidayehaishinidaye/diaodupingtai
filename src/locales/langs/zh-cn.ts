@@ -210,6 +210,8 @@ const local: App.I18n.Schema = {
     },
     updateDt: '更新时间',
     createDt: '创建时间',
+    today: '今天',
+    lastWeek: '最近一周',
     currentMonth: '当月',
     lastMonth: '最近一月',
     lastTwoMonth: '最近两月'

@@ -491,6 +491,8 @@ declare namespace App {
         };
         updateDt: string;
         createDt: string;
+        today: string;
+        lastWeek: string;
         currentMonth: string;
         lastMonth: string;
         lastTwoMonth: string;
