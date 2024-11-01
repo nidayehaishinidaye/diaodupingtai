@@ -1,6 +1,7 @@
 <script setup lang="tsx">
-import { NButton, NPopconfirm } from 'naive-ui';
+import { NButton, NPopconfirm, NPopover } from 'naive-ui';
 import { ref } from 'vue';
+import { useClipboard } from '@vueuse/core';
 import { fetchDeleteNamespace, fetchGetNamespaceList } from '@/service/api';
 import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
@@ -14,11 +15,26 @@ import NamespaceSearch from './modules/namespace-search.vue';
 const appStore = useAppStore();
 const authStore = useAuthStore();
 const namespaceId = ref<string>(localStg.get('namespaceId')!);
+const { copy, isSupported } = useClipboard();
 
 const handleChange = (uniqueId: string) => {
   namespaceId.value = uniqueId;
   authStore.setNamespaceId(uniqueId);
 };
+
+async function handleCopy(source: string) {
+  if (!isSupported) {
+    window.$message?.error('您的浏览器不支持 Clipboard API');
+    return;
+  }
+
+  if (!source) {
+    return;
+  }
+
+  await copy(source);
+  window.$message?.success('复制成功');
+}
 
 const { columns, columnChecks, data, getData, loading, mobilePagination, searchParams, resetSearchParams } = useTable({
   apiFn: fetchGetNamespaceList,
@@ -59,7 +75,19 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       key: 'uniqueId',
       title: $t('page.namespace.uniqueId'),
       align: 'left',
-      width: 180
+      width: 180,
+      render: row => (
+        <NPopover>
+          {{
+            trigger: () => (
+              <NButton text type="primary" onClick={() => handleCopy(row.uniqueId)}>
+                {row.uniqueId}
+              </NButton>
+            ),
+            default: () => <span>点击复制</span>
+          }}
+        </NPopover>
+      )
     },
     {
       key: 'createDt',
