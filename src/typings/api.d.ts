@@ -125,7 +125,7 @@ declare namespace Api {
     interface LoginToken {
       id: string;
       mode: string;
-      role: String;
+      role: string;
       token: string;
       refreshToken: string;
       createDt: string;
@@ -934,7 +934,7 @@ declare namespace Api {
     >;
 
     type ExportWorkflow = Common.CommonRecord<{
-      workflowIds: String[];
+      workflowIds: string[];
     }> &
       WorkflowSearchParams;
 
@@ -1072,6 +1072,8 @@ declare namespace Api {
       children: JobTaskTree[];
       /** 是否存在下级 */
       isLeaf: boolean;
+      /** 执行时长(virtual) */
+      duration?: number;
     }>;
 
     type JobTaskTree = {
