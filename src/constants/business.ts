@@ -52,18 +52,21 @@ export const retryNotifyScene: Record<Api.NotifyConfig.RetryNotifyScene, App.I18
   3: 'page.notifyConfig.retryNotifyScene.clientReportError',
   4: 'page.notifyConfig.retryNotifyScene.clientComponentError',
   5: 'page.notifyConfig.retryNotifyScene.retryTaskReachThreshold',
-  6: 'page.notifyConfig.retryNotifyScene.retryTaskEnterDeadLetter'
+  6: 'page.notifyConfig.retryNotifyScene.retryTaskEnterDeadLetter',
+  7: 'page.notifyConfig.retryNotifyScene.retryNoClientNodesError'
 };
 export const retryNotifySceneOptions = transformRecordToNumberOption(retryNotifyScene);
 
 export const jobNotifyScene: Record<Api.NotifyConfig.JobNotifyScene, App.I18n.I18nKey> = {
   1: 'page.notifyConfig.jobNotifyScene.jobTaskError',
-  2: 'page.notifyConfig.jobNotifyScene.jobClientError'
+  2: 'page.notifyConfig.jobNotifyScene.jobClientError',
+  3: 'page.notifyConfig.jobNotifyScene.jobNoClientNodesError'
 };
 export const jobNotifySceneOptions = transformRecordToNumberOption(jobNotifyScene);
 
 export const workflowNotifyScene: Record<Api.NotifyConfig.WorkflowNotifyScene, App.I18n.I18nKey> = {
   2: 'page.notifyConfig.workflowNotifyScene.workflowClientError',
+  3: 'page.notifyConfig.workflowNotifyScene.workNoClientNodesError',
   100: 'page.notifyConfig.workflowNotifyScene.workTaskError'
 };
 export const workflowNotifySceneOptions = transformRecordToNumberOption(workflowNotifyScene);

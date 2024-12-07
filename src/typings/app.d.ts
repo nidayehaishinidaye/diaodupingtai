@@ -741,6 +741,7 @@ declare namespace App {
           title: string;
           groupName: string;
           businessName: string;
+          notifyName: string;
           notifyStatus: string;
           notifyType: string;
           notifyScene: string;
@@ -751,13 +752,13 @@ declare namespace App {
           job: string;
           workflow: string;
           form: {
-            businessId: string;
             description: string;
             notifyType: string;
             notifyAttribute: string;
             notifyScene: string;
             groupName: string;
             notifyThreshold: string;
+            notifyName: string;
             notifyStatus: string;
             systemTaskType: string;
             notifyRecipient: string;
@@ -776,14 +777,17 @@ declare namespace App {
             clientComponentError: string;
             retryTaskReachThreshold: string;
             retryTaskEnterDeadLetter: string;
+            retryNoClientNodesError: string;
           };
           jobNotifyScene: {
             jobTaskError: string;
             jobClientError: string;
+            jobNoClientNodesError: string;
           };
           workflowNotifyScene: {
-            workTaskError: string;
             workflowClientError: string;
+            workNoClientNodesError: string;
+            workTaskError: string;
           };
           notifyRecipient: string;
           rateLimiterStatus: string;

@@ -125,7 +125,7 @@ declare namespace Api {
     interface LoginToken {
       id: string;
       mode: string;
-      role: String;
+      role: string;
       token: string;
       refreshToken: string;
       createDt: string;
@@ -576,14 +576,14 @@ declare namespace Api {
     type NotifyConfig = Common.CommonRecord<{
       /** 组名称 */
       groupName: string | null;
-      /** 业务ID */
-      businessId: string | null;
       /** 通知人id */
       recipientIds: number[];
       /** 任务类型 1、重试任务 2、回调任务、3、JOB任务 4、WORKFLOW任务 */
       systemTaskType: SystemTaskType | null;
       /** 业务名称 */
       businessName?: string;
+      /** 通知名称 */
+      notifyName: string;
       /** 状态 */
       notifyStatus: Api.Common.EnableStatusNumber;
       /** 通知场景 */
@@ -600,10 +600,7 @@ declare namespace Api {
 
     /** notify-config search params */
     type NotifySearchParams = CommonType.RecordNullable<
-      Pick<
-        Api.NotifyConfig.NotifyConfig,
-        'groupName' | 'businessId' | 'systemTaskType' | 'notifyStatus' | 'notifyScene'
-      > &
+      Pick<Api.NotifyConfig.NotifyConfig, 'groupName' | 'systemTaskType' | 'notifyStatus' | 'notifyScene'> &
         CommonSearchParams
     >;
 
@@ -613,14 +610,14 @@ declare namespace Api {
     /** 任务类型 1、重试任务 2、回调任务、 3、JOB任务 4、WORKFLOW任务 */
     type SystemTaskType = 1 | 3 | 4;
 
-    /** 1、场景重试数量超过阈值 2、场景重试失败数量超过阈值 3、客户端上报失败 4、客户端组件异常 5、任务重试失败数量超过阈值 6、任务重试失败进入死信队列 */
-    type RetryNotifyScene = 1 | 2 | 3 | 4 | 5 | 6;
+    /** 1、场景重试数量超过阈值 2、场景重试失败数量超过阈值 3、客户端上报失败 4、客户端组件异常 5、任务重试失败数量超过阈值 6、任务重试失败进入死信队列 7、没有可执行的客户端节点 */
+    type RetryNotifyScene = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
-    /** 1、任务执行失败 2、客户端执行失败 */
-    type JobNotifyScene = 1 | 2;
+    /** 1、任务执行失败 2、客户端执行失败 3、没有可执行的客户端节点 */
+    type JobNotifyScene = 1 | 2 | 3;
 
-    /** 2、 客户端执行失败 100、工作流任务执行失败 */
-    type WorkflowNotifyScene = 2 | 100;
+    /** 2、 客户端执行失败 3、没有可执行的客户端节点 100、工作流任务执行失败 */
+    type WorkflowNotifyScene = 2 | 3 | 100;
   }
 
   /**
@@ -934,7 +931,7 @@ declare namespace Api {
     >;
 
     type ExportWorkflow = Common.CommonRecord<{
-      workflowIds: String[];
+      workflowIds: string[];
     }> &
       WorkflowSearchParams;
 
@@ -954,6 +951,8 @@ declare namespace Api {
     type Job = Common.CommonRecord<{
       /** 组名称 */
       groupName: string;
+      /** 通知场景ids */
+      notifyIds: number[];
       /** 任务名称 */
       jobName: string;
       /** 方法参数 */
@@ -992,6 +991,8 @@ declare namespace Api {
       bucketIndex?: number;
       /** 描述 */
       description?: string;
+      /** 通知场景 */
+      notifyScene?: string;
     }>;
 
     /** JobTask search params */

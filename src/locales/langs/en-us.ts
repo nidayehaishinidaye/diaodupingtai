@@ -533,6 +533,7 @@ const local: App.I18n.Schema = {
       title: 'Alarm Notify List',
       groupName: 'Group name',
       businessName: 'Business ID',
+      notifyName: 'Notify name',
       notifyStatus: 'State',
       notifyType: 'Notify type',
       notifyScene: 'Notify scene',
@@ -543,13 +544,13 @@ const local: App.I18n.Schema = {
       job: 'Job',
       workflow: 'Workflow',
       form: {
-        businessId: 'Please select Business ID',
         description: 'Please enter Describe',
         notifyType: 'Please select Notification type',
         notifyAttribute: 'Please enter notify attribute',
         notifyScene: 'Please select Notification scene',
         groupName: 'Please select Group name',
         notifyThreshold: 'Please enter Notification threshold',
+        notifyName: 'Please enter name',
         notifyStatus: 'Please select State',
         systemTaskType: 'Please enter task type',
         notifyRecipient: 'Please enter recipient',
@@ -567,15 +568,18 @@ const local: App.I18n.Schema = {
         clientReportError: 'Client report error',
         clientComponentError: 'Client component error',
         retryTaskReachThreshold: 'Retry task reach threshold',
-        retryTaskEnterDeadLetter: 'Retry task enter dead letter'
+        retryTaskEnterDeadLetter: 'Retry task enter dead letter',
+        retryNoClientNodesError: 'Retry task no client node'
       },
       jobNotifyScene: {
         jobTaskError: 'Task execute error',
-        jobClientError: 'Client execute error'
+        jobClientError: 'Client execute error',
+        jobNoClientNodesError: 'Job No Client execute error'
       },
       workflowNotifyScene: {
-        workTaskError: 'Workflow task execute error',
-        workflowClientError: 'Client execute error'
+        workflowClientError: 'Client execute error',
+        workNoClientNodesError: 'Workflow No Client execute error',
+        workTaskError: 'Workflow task execute error'
       },
       notifyRecipient: 'Notify recipient',
       rateLimiterStatus: 'Rate limiter status',

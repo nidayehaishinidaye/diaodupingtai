@@ -9,6 +9,14 @@ export function fetchGetNotifyConfigList(params?: Api.NotifyConfig.NotifySearchP
   });
 }
 
+/** get notify systemTaskType list */
+export function fetchGetNotifyConfigSystemTaskTypeList(systemTaskType: number) {
+  return request<CommonType.Option<number>[]>({
+    url: `/notify-config/all/${systemTaskType}`,
+    method: 'get'
+  });
+}
+
 /** add notify */
 export function fetchAddNotify(data: Api.NotifyConfig.NotifyConfig) {
   return request<boolean>({

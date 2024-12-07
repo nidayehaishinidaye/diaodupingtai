@@ -541,6 +541,7 @@ const local: App.I18n.Schema = {
       title: '告警通知列表',
       groupName: '组名称',
       businessName: '业务ID',
+      notifyName: '告警通知名称',
       notifyStatus: '通知状态',
       notifyType: '通知类型',
       notifyScene: '通知场景',
@@ -551,7 +552,7 @@ const local: App.I18n.Schema = {
       job: '定时任务',
       workflow: '工作流',
       form: {
-        businessId: '请选择业务ID',
+        notifyName: '请选择告警通知名称',
         description: '请输入描述',
         notifyType: '请选择通知类型',
         notifyAttribute: '请求输入通知属性',
@@ -575,15 +576,18 @@ const local: App.I18n.Schema = {
         clientReportError: '客户端上报失败',
         clientComponentError: '客户端组件异常',
         retryTaskReachThreshold: '任务重试失败数量超过阈值',
-        retryTaskEnterDeadLetter: '任务重试失败进入死信队列'
+        retryTaskEnterDeadLetter: '任务重试失败进入死信队列',
+        retryNoClientNodesError: '没有可执行的客户端节点'
       },
       jobNotifyScene: {
         jobTaskError: '任务执行失败',
-        jobClientError: '客户端执行失败'
+        jobClientError: '客户端执行失败',
+        jobNoClientNodesError: '没有可执行的客户端节点'
       },
       workflowNotifyScene: {
-        workTaskError: '工作流任务执行失败',
-        workflowClientError: '客户端执行失败'
+        workflowClientError: '客户端执行失败',
+        workNoClientNodesError: '没有可执行的客户端节点',
+        workTaskError: '工作流任务执行失败'
       },
       notifyRecipient: '通知人信息',
       rateLimiterStatus: '限流状态',

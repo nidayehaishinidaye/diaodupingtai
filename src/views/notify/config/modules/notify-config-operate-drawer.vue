@@ -74,9 +74,9 @@ type Model = Pick<
   Api.NotifyConfig.NotifyConfig,
   | 'id'
   | 'groupName'
-  | 'businessId'
   | 'recipientIds'
   | 'systemTaskType'
+  | 'notifyName'
   | 'notifyStatus'
   | 'notifyScene'
   | 'notifyThreshold'
@@ -101,9 +101,9 @@ const model: Model = reactive(createDefaultModel());
 function createDefaultModel(): Model {
   return {
     groupName: null,
-    businessId: '',
     recipientIds: [],
     systemTaskType: null,
+    notifyName: '',
     notifyStatus: 1,
     notifyScene: null,
     notifyThreshold: 16,
@@ -116,9 +116,9 @@ function createDefaultModel(): Model {
 type RuleKey = Extract<
   keyof Model,
   | 'groupName'
-  | 'businessId'
   | 'systemTaskType'
   | 'recipientIds'
+  | 'notifyName'
   | 'notifyStatus'
   | 'notifyScene'
   | 'rateLimiterStatus'
@@ -127,8 +127,8 @@ type RuleKey = Extract<
 
 const rules: Record<RuleKey, App.Global.FormRule> = {
   groupName: defaultRequiredRule,
-  businessId: defaultRequiredRule,
   systemTaskType: defaultRequiredRule,
+  notifyName: defaultRequiredRule,
   notifyStatus: defaultRequiredRule,
   notifyScene: defaultRequiredRule,
   recipientIds: defaultRequiredRule,
@@ -160,9 +160,9 @@ async function handleSubmit() {
   if (props.operateType === 'add') {
     const {
       groupName,
-      businessId,
       recipientIds,
       systemTaskType,
+      notifyName,
       notifyStatus,
       notifyScene,
       notifyThreshold,
@@ -172,9 +172,9 @@ async function handleSubmit() {
     } = model;
     const { error } = await fetchAddNotify({
       groupName,
-      businessId,
       recipientIds,
       systemTaskType,
+      notifyName,
       notifyStatus,
       notifyScene,
       notifyThreshold,
@@ -189,9 +189,9 @@ async function handleSubmit() {
     const {
       id,
       groupName,
-      businessId,
       recipientIds,
       notifyStatus,
+      notifyName,
       systemTaskType,
       notifyScene,
       notifyThreshold,
@@ -202,9 +202,9 @@ async function handleSubmit() {
     const { error } = await fetchEditNotify({
       id,
       groupName,
-      businessId,
       recipientIds,
       systemTaskType,
+      notifyName,
       notifyStatus,
       notifyScene,
       notifyThreshold,
@@ -239,14 +239,6 @@ async function systemTaskTypeChange(value: number | null) {
     }) as Api.Workflow.Workflow[];
     notifySceneOptions.value = translateOptions(workflowNotifySceneOptions);
   }
-
-  if (value !== props.rowData?.systemTaskType) {
-    model.businessId = null;
-    model.notifyScene = null;
-  } else {
-    model.businessId = props.rowData?.businessId;
-    model.notifyScene = props.rowData?.notifyScene;
-  }
 }
 
 async function retrySceneChange(
@@ -278,7 +270,7 @@ watch(visible, () => {
   <OperateDrawer v-model="visible" :title="title" :min-size="480" @handle-submit="handleSubmit">
     <NForm ref="formRef" :model="model" :rules="rules">
       <NFormItem :label="$t('page.notifyConfig.groupName')" path="groupName">
-        <SelectGroup v-model:modelValue="model.groupName" @update:model-value="groupNameUpdate" />
+        <SelectGroup v-model:value="model.groupName" @update:model-value="groupNameUpdate" />
       </NFormItem>
       <NFormItem :label="$t('page.notifyConfig.systemTaskType')" path="systemTaskType">
         <NSelect
@@ -288,32 +280,8 @@ watch(visible, () => {
           @update:value="systemTaskTypeChange"
         />
       </NFormItem>
-      <NFormItem v-if="model.systemTaskType === 1" :label="$t('page.notifyConfig.retryScene')" path="businessId">
-        <NSelect
-          v-model:value="model.businessId"
-          :placeholder="$t('page.notifyConfig.form.sceneName')"
-          :options="retryScenes"
-          label-field="sceneName"
-          value-field="sceneName"
-        />
-      </NFormItem>
-      <NFormItem v-if="model.systemTaskType === 3" :label="$t('page.notifyConfig.job')" path="businessId">
-        <NSelect
-          v-model:value="model.businessId"
-          :placeholder="$t('page.notifyConfig.form.jobName')"
-          :options="jobs"
-          label-field="jobName"
-          value-field="id"
-        />
-      </NFormItem>
-      <NFormItem v-if="model.systemTaskType === 4" :label="$t('page.notifyConfig.workflow')" path="businessId">
-        <NSelect
-          v-model:value="model.businessId"
-          :placeholder="$t('page.notifyConfig.form.workflowName')"
-          :options="workflows"
-          label-field="workflowName"
-          value-field="id"
-        />
+      <NFormItem :label="$t('page.notifyConfig.notifyName')" path="notifyName">
+        <NInput v-model:value="model.notifyName" :placeholder="$t('page.notifyConfig.form.notifyName')" />
       </NFormItem>
       <NFormItem :label="$t('page.notifyConfig.notifyScene')" path="notifyScene">
         <NSelect

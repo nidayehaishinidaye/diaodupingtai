@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue';
 import { type FormInst, NInputNumber } from 'naive-ui';
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 import OperateDrawer from '@/components/common/operate-drawer.vue';
 import { $t } from '@/locales';
 import { enableStatusNumberOptions } from '@/constants/business';
-import { fetchAddJob, fetchEditJob } from '@/service/api';
+import { fetchAddJob, fetchEditJob, fetchGetNotifyConfigSystemTaskTypeList } from '@/service/api';
 import RouteKey from '@/components/common/route-key.vue';
 import BlockStrategy from '@/components/common/block-strategy.vue';
 import ExecutorType from '@/components/common/executor-type.vue';
@@ -13,6 +13,7 @@ import TaskType from '@/components/common/task-type.vue';
 import CodeMirror from '@/components/common/code-mirror.vue';
 import JobTriggerInterval from '@/components/common/job-trigger-interval.vue';
 import { isNotNull } from '@/utils/common';
+import SelectGroup from '@/components/common/select-group.vue';
 
 defineOptions({
   name: 'JobTaskOperateDrawer'
@@ -25,6 +26,7 @@ interface Props {
   rowData?: Api.Job.Job | null;
 }
 
+const notifyNameList = ref<CommonType.Option<number>[]>([]);
 const props = defineProps<Props>();
 
 interface Emits {
@@ -59,6 +61,7 @@ type Model = Pick<
   Api.Job.Job,
   | 'id'
   | 'groupName'
+  | 'notifyIds'
   | 'jobName'
   | 'argsStr'
   | 'argsType'
@@ -75,7 +78,19 @@ type Model = Pick<
   | 'taskType'
   | 'parallelNum'
   | 'description'
+  | 'notifyScene'
 >;
+
+onMounted(() => {
+  nextTick(() => {
+    getNotifyConfigSystemTaskTypeList();
+  });
+});
+
+async function getNotifyConfigSystemTaskTypeList() {
+  const res = await fetchGetNotifyConfigSystemTaskTypeList(3);
+  notifyNameList.value = res.data as CommonType.Option<number>[];
+}
 
 const model: Model = reactive(createDefaultModel());
 
@@ -83,6 +98,7 @@ function createDefaultModel(): Model {
   return {
     // @ts-expect-error groupName is required
     groupName: undefined,
+    notifyIds: [],
     jobName: '',
     argsStr: '',
     argsType: 1,
@@ -252,6 +268,7 @@ async function handleSubmit() {
   const {
     id,
     groupName,
+    notifyIds,
     jobName,
     argsType,
     jobStatus,
@@ -286,6 +303,7 @@ async function handleSubmit() {
   if (props.operateType === 'add') {
     const { error } = await fetchAddJob({
       groupName,
+      notifyIds,
       jobName,
       argsStr,
       argsType,
@@ -311,6 +329,7 @@ async function handleSubmit() {
     const { error } = await fetchEditJob({
       id,
       groupName,
+      notifyIds,
       jobName,
       argsStr,
       argsType,
@@ -512,7 +531,9 @@ const scriptMethodOptions = [
                 <icon-ic-round-delete class="text-icon" />
               </NButton>
             </NFormItem>
-            <NButton block dashed attr-type="button" @click="addItem"><icon-ic-round-plus class="text-icon" /></NButton>
+            <NButton block dashed attr-type="button" @click="addItem">
+              <icon-ic-round-plus class="text-icon" />
+            </NButton>
           </NCard>
           <CodeMirror v-else v-model="model.argsStr" lang="json" :placeholder="$t('page.jobTask.form.argsStr')" />
         </template>
@@ -679,6 +700,17 @@ const scriptMethodOptions = [
           </NFormItem>
         </NGi>
       </NGrid>
+      <NFormItem :label="$t('page.notifyConfig.notifyName')" path="notifyIds">
+        <NSelect
+          v-model:value="model.notifyIds"
+          value-field="id"
+          label-field="notifyName"
+          :placeholder="$t('page.notifyConfig.form.notifyName')"
+          :options="notifyNameList"
+          clearable
+          multiple
+        />
+      </NFormItem>
       <NFormItem :label="$t('page.jobTask.description')" path="description">
         <NInput v-model:value="model.description" type="textarea" :placeholder="$t('page.jobTask.form.description')" />
       </NFormItem>
