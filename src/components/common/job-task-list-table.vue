@@ -4,6 +4,7 @@ import { NButton, NCode, NTag } from 'naive-ui';
 import hljs from 'highlight.js/lib/core';
 import json from 'highlight.js/lib/languages/json';
 import { ref, render } from 'vue';
+import dayjs from 'dayjs';
 import { taskStatusRecord, taskStatusRecordOptions } from '@/constants/business';
 import { $t } from '@/locales';
 import { isNotNull, parseArgsJson, translateOptions } from '@/utils/common';
@@ -251,6 +252,18 @@ const { columns, searchParams, columnChecks, data, getData, loading, mobilePagin
       title: $t('page.jobBatch.jobTask.createDt'),
       align: 'left',
       minWidth: 130
+    },
+    {
+      key: 'duration',
+      title: $t('page.jobBatch.duration'),
+      align: 'center',
+      width: 120,
+      render: row => {
+        if (row.taskStatus === 3) {
+          return Math.round(dayjs(row.updateDt).diff(dayjs(row.createDt)) / 1000);
+        }
+        return null;
+      }
     }
   ]
 });

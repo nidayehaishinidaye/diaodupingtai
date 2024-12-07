@@ -1073,6 +1073,8 @@ declare namespace Api {
       children: JobTaskTree[];
       /** 是否存在下级 */
       isLeaf: boolean;
+      /** 执行时长(virtual) */
+      duration?: number;
     }>;
 
     type JobTaskTree = {

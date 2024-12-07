@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue';
+import { useClipboard } from '@vueuse/core';
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 import { $t } from '@/locales';
 import { translateOptions, translateOptions2 } from '@/utils/common';
@@ -29,6 +30,7 @@ const visible = defineModel<boolean>('visible', {
   default: false
 });
 
+const { copy, isSupported } = useClipboard();
 const { formRef, validate, restoreValidation } = useNaiveForm();
 const { defaultRequiredRule } = useFormRules();
 
@@ -160,6 +162,20 @@ watch(visible, () => {
     restoreValidation();
   }
 });
+
+async function handleCopy(source: string) {
+  if (!isSupported) {
+    window.$message?.error('您的浏览器不支持 Clipboard API');
+    return;
+  }
+
+  if (!source) {
+    return;
+  }
+
+  await copy(source);
+  window.$message?.success('复制成功');
+}
 </script>
 
 <template>
@@ -196,9 +212,17 @@ watch(visible, () => {
                 :placeholder="$t('page.groupConfig.form.token')"
                 :disabled="props.operateType === 'edit'"
               />
-              <NTooltip trigger="hover">
+              <NTooltip v-if="props.operateType === 'edit'" trigger="hover">
                 <template #trigger>
-                  <NButton type="default" ghost :disabled="props.operateType === 'edit'" @click="setToken">
+                  <NButton type="default" ghost @click="handleCopy(model.token)">
+                    <icon-ic:round-content-copy class="text-icon" />
+                  </NButton>
+                </template>
+                复制
+              </NTooltip>
+              <NTooltip v-else trigger="hover">
+                <template #trigger>
+                  <NButton type="default" ghost @click="setToken">
                     <icon-ic-round-refresh class="text-icon" />
                   </NButton>
                 </template>
