@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { NButton, NPopconfirm, NTag } from 'naive-ui';
+import { NButton, NDropdown, NPopconfirm, NTag } from 'naive-ui';
 import { useBoolean } from '@sa/hooks';
 import { ref } from 'vue';
 import { fetchBatchDeleteJob, fetchGetJobPage, fetchTriggerJob, fetchUpdateJobStatus } from '@/service/api';
@@ -177,41 +177,86 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
       key: 'operate',
       title: $t('common.operate'),
       align: 'center',
-      width: 180,
+      width: 120,
       fixed: 'right',
-      render: row => (
-        <div class="flex-center gap-8px">
-          <NPopconfirm onPositiveClick={() => handleTriggerJob(row.id!)}>
-            {{
-              default: () => $t('common.confirmExecute'),
-              trigger: () => (
-                <NButton type="error" text ghost size="small">
-                  {$t('common.execute')}
-                </NButton>
-              )
-            }}
-          </NPopconfirm>
-          <n-divider vertical />
-          <NButton type="primary" ghost text size="small" onClick={() => goToBatch(row.id!)}>
-            {$t('common.batchList')}
-          </NButton>
-          <n-divider vertical />
-          <NButton type="warning" ghost text size="small" onClick={() => edit(row.id!)}>
-            {$t('common.edit')}
-          </NButton>
-          <n-divider vertical />
-          <NPopconfirm onPositiveClick={() => handleDelete(row.id!)}>
-            {{
-              default: () => $t('common.confirmDelete'),
-              trigger: () => (
-                <NButton type="error" text ghost size="small">
-                  {$t('common.delete')}
-                </NButton>
-              )
-            }}
-          </NPopconfirm>
-        </div>
-      )
+      render: row => {
+        const options = [
+          {
+            label: $t('common.copy'),
+            key: 'copy',
+            click: () => copy(row.id!)
+          },
+          {
+            type: 'divider',
+            key: 'd2'
+          },
+          {
+            label: $t('common.batchList'),
+            key: 'batchList',
+            click: () => goToBatch(row.id!)
+          },
+          {
+            type: 'divider',
+            key: 'd2'
+          },
+          {
+            type: 'render',
+            key: 'delete',
+            render: () => (
+              <div class="flex-center">
+                <NPopconfirm onPositiveClick={() => handleDelete(row.id!)}>
+                  {{
+                    default: () => $t('common.confirmDelete'),
+                    trigger: () => (
+                      <NButton quaternary size="small">
+                        {$t('common.delete')}
+                      </NButton>
+                    )
+                  }}
+                </NPopconfirm>
+              </div>
+            )
+          }
+        ];
+
+        const onSelect = (key: string) => {
+          const fun = options.filter(o => o.key === key)[0].click;
+          if (fun) fun();
+        };
+
+        return (
+          <div class="flex-center gap-8px">
+            <NButton text type="warning" ghost size="small" onClick={() => edit(row.id!)}>
+              {$t('common.edit')}
+            </NButton>
+
+            <n-divider vertical />
+
+            <NPopconfirm onPositiveClick={() => handleTriggerJob(row.id!)}>
+              {{
+                default: () => $t('common.confirmExecute'),
+                trigger: () => (
+                  <NButton type="error" text ghost size="small">
+                    {$t('common.execute')}
+                  </NButton>
+                )
+              }}
+            </NPopconfirm>
+
+            <n-divider vertical />
+
+            <NDropdown trigger="click" show-arrow={false} options={options} size="small" on-select={onSelect}>
+              {{
+                default: () => (
+                  <NButton text type="primary" ghost size="small">
+                    更多
+                  </NButton>
+                )
+              }}
+            </NDropdown>
+          </div>
+        );
+      }
     }
   ]
 });
@@ -222,6 +267,7 @@ const {
   editingData,
   handleAdd,
   handleEdit,
+  handleCopy,
   checkedRowKeys,
   onDeleted,
   onBatchDeleted
@@ -242,6 +288,10 @@ async function handleBatchDelete() {
 
 function edit(id: string) {
   handleEdit(id);
+}
+
+function copy(id: string) {
+  handleCopy(id);
 }
 
 async function handleTriggerJob(id: string) {

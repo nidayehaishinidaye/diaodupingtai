@@ -245,6 +245,15 @@ export function useTableOperate<T extends TableData = TableData>(data: Ref<T[]>,
     openDrawer();
   }
 
+  function handleCopy(id: T['id']) {
+    operateType.value = 'add';
+    const findItem = data.value.find(item => item.id === id) || null;
+    editingData.value = jsonClone(findItem);
+    delete editingData.value?.id;
+
+    openDrawer();
+  }
+
   /** the checked row keys of table */
   const checkedRowKeys = ref<string[]>([]);
 
@@ -272,6 +281,7 @@ export function useTableOperate<T extends TableData = TableData>(data: Ref<T[]>,
     handleAdd,
     editingData,
     handleEdit,
+    handleCopy,
     checkedRowKeys,
     onBatchDeleted,
     onDeleted

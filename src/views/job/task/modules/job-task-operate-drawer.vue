@@ -202,7 +202,7 @@ function createDefaultScriptParams() {
 }
 
 function handleUpdateModelWhenEdit() {
-  if (props.operateType === 'add') {
+  if (props.operateType === 'add' && !props.rowData) {
     Object.assign(model, createDefaultModel());
     executorCustomType.value = 0;
     httpHeaders.value = [];
@@ -211,7 +211,7 @@ function handleUpdateModelWhenEdit() {
     return;
   }
 
-  if (props.operateType === 'edit' && props.rowData) {
+  if (props.rowData) {
     Object.assign(model, props.rowData);
     if (model.taskType === 3 && model.argsStr) {
       Object.assign(dynamicForm, {
