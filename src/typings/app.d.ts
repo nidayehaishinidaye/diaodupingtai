@@ -894,6 +894,7 @@ declare namespace App {
           detail: string;
           groupName: string;
           sceneName: string;
+          notifyName: string;
           sceneStatus: string;
           backOff: string;
           maxRetryCount: string;
@@ -905,6 +906,7 @@ declare namespace App {
           description: string;
           routeKey: string;
           form: {
+            notifyName: string;
             maxRetryCount: string;
             triggerInterval: string;
             groupName: string;

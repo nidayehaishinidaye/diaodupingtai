@@ -7,6 +7,8 @@ declare namespace Workflow {
     workflowName?: string;
     /** 组名称 */
     groupName?: string;
+    /** 告警通知场景ids */
+    notifyIds?: number[];
     /** 触发类型 */
     triggerType?: Api.Common.TriggerType;
     /** 触发间隔 */
@@ -179,13 +181,13 @@ declare namespace Workflow {
     taskStatus?: Api.Common.TaskBatchStatus;
   };
 
-  export type JobBatchPage = {
+  /* export type JobBatchPage = {
     total: number;
     data: JobTaskType[];
-  };
+  }; */
 
   /** 任务日志 */
-  export type JobLogType = {};
+  /* export type JobLogType = {}; */
 
   /** Tag */
   export type JobTagType = {

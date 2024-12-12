@@ -838,6 +838,8 @@ declare namespace Api {
       groupName: string;
       /** 场景名 */
       sceneName: string;
+      /** 通知场景ids */
+      notifyIds: number[];
       /** 状态 */
       sceneStatus: EnableStatusNumber;
       /** 退避策略 */
@@ -903,6 +905,8 @@ declare namespace Api {
       groupName: string;
       /** 触发时间 */
       nextTriggerAt: string;
+      /** 告警通知场景ids */
+      notifyIds: number[];
       /** 状态 */
       workflowStatus: EnableStatusNumber;
       /** 触发类型 */

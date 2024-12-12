@@ -694,6 +694,7 @@ const local: App.I18n.Schema = {
       detail: '场景详情',
       groupName: '组名',
       sceneName: '场景名',
+      notifyName: '告警通知名称',
       sceneStatus: '状态',
       backOff: '退避策略',
       maxRetryCount: '最大重试次数',
@@ -705,6 +706,7 @@ const local: App.I18n.Schema = {
       description: '描述',
       routeKey: '路由策略',
       form: {
+        notifyName: '请选择告警通知名称',
         maxRetryCount: '请输入最大重试次数',
         triggerInterval: '请输入间隔时间(秒)',
         groupName: '请输入组名',

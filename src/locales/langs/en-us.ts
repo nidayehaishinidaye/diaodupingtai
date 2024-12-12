@@ -686,6 +686,7 @@ const local: App.I18n.Schema = {
       detail: 'Scene Detail',
       groupName: 'Group name',
       sceneName: 'Scene name',
+      notifyName: 'Notify name',
       sceneStatus: 'State',
       backOff: 'Backoff strategy',
       maxRetryCount: 'Maximum number of retries',
@@ -698,6 +699,7 @@ const local: App.I18n.Schema = {
       routeKey: 'Routing strategy',
       form: {
         maxRetryCount: 'Please enter Maximum number of retries',
+        notifyName: 'Plase enter Notify name',
         triggerInterval: 'Please enter Intervals(s)',
         groupName: 'Please enter Group name',
         description: 'Please enter Describe',

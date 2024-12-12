@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue';
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 import OperateDrawer from '@/components/common/operate-drawer.vue';
 import RouteKey from '@/components/common/route-key.vue';
 import { $t } from '@/locales';
-import { fetchAddRetryScene, fetchEditRetryScene } from '@/service/api';
+import { fetchAddRetryScene, fetchEditRetryScene, fetchGetNotifyConfigSystemTaskTypeList } from '@/service/api';
 import { DelayLevel, backOffRecordOptions, enableStatusNumberOptions } from '@/constants/business';
 import { isNotNull, translateOptions } from '@/utils/common';
 
@@ -21,6 +21,7 @@ interface Props {
 
 const delayLevelDesc = ref<string>('10s');
 
+const notifyNameList = ref<CommonType.Option<number>[]>([]);
 const props = defineProps<Props>();
 
 interface Emits {
@@ -48,6 +49,7 @@ type Model = Pick<
   Api.RetryScene.Scene,
   | 'id'
   | 'groupName'
+  | 'notifyIds'
   | 'sceneName'
   | 'sceneStatus'
   | 'backOff'
@@ -59,12 +61,24 @@ type Model = Pick<
   | 'routeKey'
 >;
 
+onMounted(() => {
+  nextTick(() => {
+    getNotifyConfigSystemTaskTypeList();
+  });
+});
+
+async function getNotifyConfigSystemTaskTypeList() {
+  const res = await fetchGetNotifyConfigSystemTaskTypeList(1);
+  notifyNameList.value = res.data as CommonType.Option<number>[];
+}
+
 const model: Model = reactive(createDefaultModel());
 
 function createDefaultModel(): Model {
   return {
     groupName: '',
     sceneName: '',
+    notifyIds: [],
     sceneStatus: 1,
     backOff: 2,
     maxRetryCount: 1,
@@ -133,6 +147,7 @@ async function handleSubmit() {
     const {
       groupName,
       sceneName,
+      notifyIds,
       sceneStatus,
       backOff,
       maxRetryCount,
@@ -145,6 +160,7 @@ async function handleSubmit() {
     const { error } = await fetchAddRetryScene({
       groupName,
       sceneName,
+      notifyIds,
       sceneStatus,
       backOff,
       maxRetryCount,
@@ -163,6 +179,7 @@ async function handleSubmit() {
       id,
       groupName,
       sceneName,
+      notifyIds,
       sceneStatus,
       backOff,
       maxRetryCount,
@@ -176,6 +193,7 @@ async function handleSubmit() {
       id,
       groupName,
       sceneName,
+      notifyIds,
       sceneStatus,
       backOff,
       maxRetryCount,
@@ -342,6 +360,17 @@ watch(
           </NFormItem>
         </NGi>
       </NGrid>
+      <NFormItem :label="$t('page.retryScene.notifyName')" path="notifyIds">
+        <NSelect
+          v-model:value="model.notifyIds"
+          value-field="id"
+          label-field="notifyName"
+          :placeholder="$t('page.retryScene.form.notifyName')"
+          :options="notifyNameList"
+          clearable
+          multiple
+        />
+      </NFormItem>
       <NFormItem :label="$t('page.retryScene.description')" path="description">
         <NInput
           v-model:value="model.description"

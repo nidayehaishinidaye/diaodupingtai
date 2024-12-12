@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { nextTick, onMounted, ref, watch } from 'vue';
 import CronInput from '@sa/cron-input';
 import { type FormInst, type FormItemRule } from 'naive-ui';
 import {
@@ -8,7 +8,7 @@ import {
   workFlowNodeStatusOptions
 } from '@/constants/business';
 import { $t } from '@/locales';
-import { fetchGetAllGroupNameList } from '@/service/api';
+import { fetchGetAllGroupNameList, fetchGetNotifyConfigSystemTaskTypeList } from '@/service/api';
 import { isNotNull, parseContent, stringToContent } from '@/utils/common';
 import { useWorkflowStore } from '@/store/modules/workflow';
 import EditableInput from '@/components/common/editable-input.vue';
@@ -22,6 +22,7 @@ interface Props {
   open?: boolean;
 }
 
+const notifyNameList = ref<CommonType.Option<number>[]>([]);
 const props = withDefaults(defineProps<Props>(), {
   open: false,
   modelValue: () => ({
@@ -34,6 +35,16 @@ interface Emits {
   (e: 'save', form: Workflow.NodeDataType): void;
 }
 
+onMounted(() => {
+  nextTick(() => {
+    getNotifyConfigSystemTaskTypeList();
+  });
+});
+
+async function getNotifyConfigSystemTaskTypeList() {
+  const res = await fetchGetNotifyConfigSystemTaskTypeList(4);
+  notifyNameList.value = res.data as CommonType.Option<number>[];
+}
 const emit = defineEmits<Emits>();
 
 const store = useWorkflowStore();
@@ -224,6 +235,17 @@ const rules: Record<RuleKey, FormItemRule> = {
               />
             </NSpace>
           </NRadioGroup>
+        </NFormItem>
+        <NFormItem path="notifyIds" label="通知场景名称">
+          <NSelect
+            v-model:value="form.notifyIds"
+            value-field="id"
+            label-field="notifyName"
+            placeholder="请选择告警通知名称"
+            :options="notifyNameList"
+            clearable
+            multiple
+          />
         </NFormItem>
         <NFormItem path="description" label="描述">
           <NInput
