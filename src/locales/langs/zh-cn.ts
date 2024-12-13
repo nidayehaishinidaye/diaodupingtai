@@ -577,7 +577,7 @@ const local: App.I18n.Schema = {
         clientComponentError: '客户端组件异常',
         retryTaskReachThreshold: '任务重试失败数量超过阈值',
         retryTaskEnterDeadLetter: '任务重试失败进入死信队列',
-        retryNoClientNodesError: '没有可执行的客户端节点'
+        retryNoClientNodesError: '任务重试失败（没有可执行的客户端节点）'
       },
       jobNotifyScene: {
         jobTaskError: '任务执行失败',
