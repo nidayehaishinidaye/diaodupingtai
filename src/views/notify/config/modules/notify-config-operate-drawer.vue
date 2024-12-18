@@ -53,6 +53,10 @@ const visible = defineModel<boolean>('visible', {
   default: false
 });
 
+const retryNotifyStatusDisable = defineModel<boolean>('retryNotifyStatusDisable', {
+  default: true
+});
+
 const retrySceneDisable = defineModel<boolean>('retrySceneDisable', {
   default: true
 });
@@ -107,7 +111,7 @@ function createDefaultModel(): Model {
     notifyStatus: 1,
     notifyScene: null,
     notifyThreshold: 16,
-    rateLimiterStatus: 0,
+    rateLimiterStatus: 1,
     rateLimiterThreshold: 100,
     description: ''
   };
@@ -140,6 +144,7 @@ function handleUpdateModelWhenEdit() {
   if (props.operateType === 'add') {
     Object.assign(model, createDefaultModel());
     retrySceneDisable.value = true;
+    retryNotifyStatusDisable.value = true;
     return;
   }
 
@@ -239,6 +244,17 @@ async function systemTaskTypeChange(value: number | null) {
     }) as Api.Workflow.Workflow[];
     notifySceneOptions.value = translateOptions(workflowNotifySceneOptions);
   }
+  await retrySceneChange(model.notifyScene);
+  let notifySceneEmpty = false;
+  notifySceneOptions.value.map(i => {
+    if (i.value === model.notifyScene) {
+      notifySceneEmpty = true;
+    }
+    return String(i.value);
+  });
+  if (!notifySceneEmpty) {
+    model.notifyScene = null;
+  }
 }
 
 async function retrySceneChange(
@@ -248,7 +264,14 @@ async function retrySceneChange(
     | Api.NotifyConfig.WorkflowNotifyScene
     | null
 ) {
-  retrySceneDisable.value = !(value === 5 || value === 6);
+  retrySceneDisable.value = !(model.systemTaskType === 1 && (value === 1 || value === 2 || value === 5 || value === 6));
+  retryNotifyStatusDisable.value = retrySceneDisable.value;
+  model.notifyStatus = retrySceneDisable.value ? 0 : 1;
+  if (value === 7) {
+    model.notifyThreshold = 0;
+    model.rateLimiterStatus = 1;
+    retrySceneDisable.value = true;
+  }
 }
 
 function groupNameUpdate(groupName: string) {
@@ -303,7 +326,7 @@ watch(visible, () => {
       <NGrid cols="2 s:1 m:2" responsive="screen" x-gap="20">
         <NGi>
           <NFormItem :label="$t('page.notifyConfig.notifyStatus')" path="notifyStatus">
-            <NRadioGroup v-model:value="model.notifyStatus" name="notifyStatus">
+            <NRadioGroup v-model:value="model.notifyStatus" name="notifyStatus" :disabled="retryNotifyStatusDisable">
               <NSpace>
                 <NRadio
                   v-for="item in enableStatusNumberOptions"

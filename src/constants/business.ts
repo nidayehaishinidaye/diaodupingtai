@@ -51,7 +51,7 @@ export const retryNotifyScene: Record<Api.NotifyConfig.RetryNotifyScene, App.I18
   2: 'page.notifyConfig.retryNotifyScene.maxRetryError',
   3: 'page.notifyConfig.retryNotifyScene.clientReportError',
   4: 'page.notifyConfig.retryNotifyScene.clientComponentError',
-  5: 'page.notifyConfig.retryNotifyScene.retryTaskReachThreshold',
+  5: 'page.notifyConfig.retryNotifyScene.retryTaskFailError',
   6: 'page.notifyConfig.retryNotifyScene.retryTaskEnterDeadLetter',
   7: 'page.notifyConfig.retryNotifyScene.retryNoClientNodesError'
 };

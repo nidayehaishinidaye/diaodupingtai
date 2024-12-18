@@ -775,7 +775,7 @@ declare namespace App {
             maxRetryError: string;
             clientReportError: string;
             clientComponentError: string;
-            retryTaskReachThreshold: string;
+            retryTaskFailError: string;
             retryTaskEnterDeadLetter: string;
             retryNoClientNodesError: string;
           };

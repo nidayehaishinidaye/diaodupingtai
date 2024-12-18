@@ -575,7 +575,7 @@ const local: App.I18n.Schema = {
         maxRetryError: '场景重试失败数量超过阈值',
         clientReportError: '客户端上报失败',
         clientComponentError: '客户端组件异常',
-        retryTaskReachThreshold: '任务重试失败数量超过阈值',
+        retryTaskFailError: '任务重试失败',
         retryTaskEnterDeadLetter: '任务重试失败进入死信队列',
         retryNoClientNodesError: '任务重试失败（没有可执行的客户端节点）'
       },

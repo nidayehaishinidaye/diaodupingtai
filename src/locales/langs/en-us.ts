@@ -567,7 +567,7 @@ const local: App.I18n.Schema = {
         maxRetryError: 'Maximum retry error count reached',
         clientReportError: 'Client report error',
         clientComponentError: 'Client component error',
-        retryTaskReachThreshold: 'Retry task reach threshold',
+        retryTaskFailError: 'Retry task fail error',
         retryTaskEnterDeadLetter: 'Retry task enter dead letter',
         retryNoClientNodesError: 'Retry task no client node'
       },
