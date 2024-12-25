@@ -46,8 +46,8 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       width: 64
     },
     {
-      key: 'businessName',
-      title: $t('page.notifyConfig.businessName'),
+      key: 'notifyName',
+      title: $t('page.notifyConfig.notifyName'),
       align: 'left',
       width: 120,
       render: row => {
@@ -58,7 +58,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
 
         return (
           <n-button text tag="a" type="primary" onClick={showDetailDrawer} class="ws-normal">
-            {row.businessName}
+            {row.notifyName}
           </n-button>
         );
       }

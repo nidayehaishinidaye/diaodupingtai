@@ -541,7 +541,7 @@ const local: App.I18n.Schema = {
       title: '告警通知列表',
       groupName: '组名称',
       businessName: '业务ID',
-      notifyName: '告警通知名称',
+      notifyName: '通知名称',
       notifyStatus: '通知状态',
       notifyType: '通知类型',
       notifyScene: '通知场景',
