@@ -541,7 +541,7 @@ const local: App.I18n.Schema = {
       title: '告警通知列表',
       groupName: '组名称',
       businessName: '业务ID',
-      notifyName: '告警通知名称',
+      notifyName: '通知名称',
       notifyStatus: '通知状态',
       notifyType: '通知类型',
       notifyScene: '通知场景',
@@ -552,7 +552,7 @@ const local: App.I18n.Schema = {
       job: '定时任务',
       workflow: '工作流',
       form: {
-        notifyName: '请选择告警通知名称',
+        notifyName: '请输入通知名称',
         description: '请输入描述',
         notifyType: '请选择通知类型',
         notifyAttribute: '请求输入通知属性',

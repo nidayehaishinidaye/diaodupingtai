@@ -31,7 +31,9 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     // the value can not be undefined, otherwise the property in Form will not be reactive
     groupName: null,
     notifyStatus: null,
-    notifyScene: null
+    notifyScene: null,
+    notifyName: null,
+    systemTaskType: null
   },
   columns: () => [
     {
@@ -101,6 +103,12 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
 
         return <StatusSwitch v-model:value={row.notifyStatus} onSubmitted={fetchFn} />;
       }
+    },
+    {
+      key: 'notifyName',
+      title: $t('page.notifyConfig.notifyName'),
+      align: 'left',
+      width: 120
     },
     {
       key: 'notifyScene',

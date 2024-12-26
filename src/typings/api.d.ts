@@ -600,7 +600,10 @@ declare namespace Api {
 
     /** notify-config search params */
     type NotifySearchParams = CommonType.RecordNullable<
-      Pick<Api.NotifyConfig.NotifyConfig, 'groupName' | 'systemTaskType' | 'notifyStatus' | 'notifyScene'> &
+      Pick<
+        Api.NotifyConfig.NotifyConfig,
+        'groupName' | 'systemTaskType' | 'notifyStatus' | 'notifyScene' | 'notifyName'
+      > &
         CommonSearchParams
     >;
 
