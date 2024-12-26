@@ -61,7 +61,7 @@ const retrySceneDisable = defineModel<boolean>('retrySceneDisable', {
   default: true
 });
 
-const notifySceneOptions = ref<CommonType.Option<string | number>[]>(translateOptions(retryNotifySceneOptions));
+const notifySceneOptions = ref<CommonType.Option<string | number>[]>([]);
 
 const { formRef, validate, restoreValidation } = useNaiveForm();
 const { defaultRequiredRule } = useFormRules();
@@ -145,6 +145,7 @@ function handleUpdateModelWhenEdit() {
     Object.assign(model, createDefaultModel());
     retrySceneDisable.value = true;
     retryNotifyStatusDisable.value = true;
+    notifySceneOptions.value = [];
     return;
   }
 
@@ -292,6 +293,13 @@ watch(visible, () => {
 <template>
   <OperateDrawer v-model="visible" :title="title" :min-size="480" @handle-submit="handleSubmit">
     <NForm ref="formRef" :model="model" :rules="rules">
+      <NFormItem :label="$t('page.notifyConfig.notifyName')" path="notifyName">
+        <NInput
+          v-model:value="model.notifyName"
+          :placeholder="$t('page.notifyConfig.form.notifyName')"
+          :maxlength="32"
+        />
+      </NFormItem>
       <NFormItem :label="$t('page.notifyConfig.groupName')" path="groupName">
         <SelectGroup v-model:value="model.groupName" @update:model-value="groupNameUpdate" />
       </NFormItem>
@@ -302,9 +310,6 @@ watch(visible, () => {
           :options="translateOptions(systemTaskTypeOptions)"
           @update:value="systemTaskTypeChange"
         />
-      </NFormItem>
-      <NFormItem :label="$t('page.notifyConfig.notifyName')" path="notifyName">
-        <NInput v-model:value="model.notifyName" :placeholder="$t('page.notifyConfig.form.notifyName')" />
       </NFormItem>
       <NFormItem :label="$t('page.notifyConfig.notifyScene')" path="notifyScene">
         <NSelect

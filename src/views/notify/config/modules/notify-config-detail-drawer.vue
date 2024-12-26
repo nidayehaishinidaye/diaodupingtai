@@ -22,8 +22,8 @@ const visible = defineModel<boolean>('visible', {
 <template>
   <OperateDrawer v-model="visible" :title="$t('page.groupConfig.detail')">
     <NDescriptions label-placement="top" bordered :column="2">
-      <NDescriptionsItem :label="$t('page.notifyConfig.businessName')" :span="2">
-        {{ rowData?.businessName }}
+      <NDescriptionsItem :label="$t('page.notifyConfig.notifyName')" :span="2">
+        {{ rowData?.notifyName }}
       </NDescriptionsItem>
       <NDescriptionsItem :label="$t('page.groupConfig.groupName')" :span="2">
         {{ rowData?.groupName }}
