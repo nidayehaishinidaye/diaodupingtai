@@ -708,12 +708,12 @@ const scriptMethodOptions = [
           </NFormItem>
         </NGi>
       </NGrid>
-      <NFormItem :label="$t('page.notifyConfig.notifyName')" path="notifyIds">
+      <NFormItem :label="$t('page.jobTask.notifyId')" path="notifyIds">
         <NSelect
           v-model:value="model.notifyIds"
           value-field="id"
           label-field="notifyName"
-          :placeholder="$t('page.notifyConfig.form.notifyName')"
+          :placeholder="$t('page.jobTask.form.notifyId')"
           :options="notifyNameList"
           clearable
           multiple

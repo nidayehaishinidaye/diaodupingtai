@@ -800,6 +800,7 @@ const local: App.I18n.Schema = {
       bucketIndex: 'Bucket',
       description: 'Description',
       updateDt: 'Update time',
+      notifyId: 'Notify',
       form: {
         jobStatus: 'Please enter status',
         ownerName: 'Please enter ownerName',
@@ -821,7 +822,8 @@ const local: App.I18n.Schema = {
         argsStr: 'Please enter executor arguments',
         shardNum: 'Please enter reduce shard num',
         groupName: 'Please enter Group name',
-        retryInterval: 'Please enter retry interval'
+        retryInterval: 'Please enter retry interval',
+        notifyId: 'Please select notify config'
       },
       addJobTask: 'Add job task',
       editJobTask: 'Edit job task',

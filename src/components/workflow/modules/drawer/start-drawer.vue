@@ -237,7 +237,7 @@ const rules: Record<RuleKey, FormItemRule> = {
             </NSpace>
           </NRadioGroup>
         </NFormItem>
-        <NFormItem path="notifyIds" label="通知场景名称">
+        <NFormItem path="notifyIds" label="告警通知">
           <NSelect
             v-model:value="form.notifyIds"
             value-field="id"

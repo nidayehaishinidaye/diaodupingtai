@@ -694,7 +694,7 @@ const local: App.I18n.Schema = {
       detail: '场景详情',
       groupName: '组名',
       sceneName: '场景名',
-      notifyName: '告警通知名称',
+      notifyName: '告警通知',
       sceneStatus: '状态',
       backOff: '退避策略',
       maxRetryCount: '最大重试次数',
@@ -807,6 +807,7 @@ const local: App.I18n.Schema = {
       bucketIndex: 'Bucket',
       description: '描述',
       updateDt: '更新时间',
+      notifyId: '告警通知',
       form: {
         jobStatus: '请输入状态',
         ownerName: '请输入负责人名称',
@@ -828,7 +829,8 @@ const local: App.I18n.Schema = {
         argsStr: '请输入方法参数',
         shardNum: '请输入 reduce 分片数',
         groupName: '请输入组名称',
-        retryInterval: '请输入重试间隔'
+        retryInterval: '请输入重试间隔',
+        notifyId: '请输入选择告警配置'
       },
       addJobTask: '新增定时任务',
       editJobTask: '编辑定时任务',

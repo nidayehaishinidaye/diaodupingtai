@@ -1007,6 +1007,7 @@ declare namespace App {
           bucketIndex: string;
           description: string;
           updateDt: string;
+          notifyId: string;
           form: {
             jobName: string;
             jobStatus: string;
@@ -1029,6 +1030,7 @@ declare namespace App {
             shardNum: string;
             groupName: string;
             retryInterval: string;
+            notifyId: string;
           };
           addJobTask: string;
           editJobTask: string;
