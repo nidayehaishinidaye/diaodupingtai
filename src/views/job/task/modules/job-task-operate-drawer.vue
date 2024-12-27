@@ -61,6 +61,8 @@ type Model = Pick<
   Api.Job.Job,
   | 'id'
   | 'groupName'
+  | 'owerId'
+  | 'owerName'
   | 'notifyIds'
   | 'jobName'
   | 'argsStr'
@@ -98,6 +100,7 @@ function createDefaultModel(): Model {
   return {
     // @ts-expect-error groupName is required
     groupName: undefined,
+    owerId: '',
     notifyIds: [],
     jobName: '',
     argsStr: '',
@@ -122,6 +125,7 @@ function createDefaultModel(): Model {
 type RuleKey = Extract<
   keyof Model,
   | 'groupName'
+  | 'owerId'
   | 'jobName'
   | 'argsType'
   | 'jobStatus'
@@ -140,6 +144,7 @@ type RuleKey = Extract<
 
 const rules: Record<RuleKey, App.Global.FormRule> = {
   groupName: defaultRequiredRule,
+  owerId: defaultRequiredRule,
   jobName: defaultRequiredRule,
   argsType: defaultRequiredRule,
   jobStatus: defaultRequiredRule,
@@ -268,6 +273,8 @@ async function handleSubmit() {
   const {
     id,
     groupName,
+    owerId,
+    owerName,
     notifyIds,
     jobName,
     argsType,
@@ -303,6 +310,8 @@ async function handleSubmit() {
   if (props.operateType === 'add') {
     const { error } = await fetchAddJob({
       groupName,
+      owerId,
+      owerName,
       notifyIds,
       jobName,
       argsStr,
@@ -329,6 +338,8 @@ async function handleSubmit() {
     const { error } = await fetchEditJob({
       id,
       groupName,
+      owerId,
+      owerName,
       notifyIds,
       jobName,
       argsStr,
@@ -460,6 +471,9 @@ const scriptMethodOptions = [
       </NFormItem>
       <NFormItem :label="$t('page.jobTask.groupName')" path="groupName">
         <SelectGroup v-model:value="model.groupName" :disabled="props.operateType === 'edit'" />
+      </NFormItem>
+      <NFormItem :label="$t('page.jobTask.owerName')" path="owerId">
+        <SystemUser v-model:value="model.owerId" />
       </NFormItem>
       <NFormItem :label="$t('page.jobTask.jobStatus')" path="jobStatus">
         <NRadioGroup v-model:value="model.jobStatus" name="jobStatus">

@@ -958,6 +958,10 @@ declare namespace Api {
     type Job = Common.CommonRecord<{
       /** 组名称 */
       groupName: string;
+      /** 负责人id */
+      owerId: string;
+      /** 负责人名 */
+      owerName: string;
       /** 通知场景ids */
       notifyIds: number[];
       /** 任务名称 */
@@ -1008,6 +1012,7 @@ declare namespace Api {
         Api.Job.Job,
         | 'groupName'
         | 'jobName'
+        | 'owerName'
         | 'argsStr'
         | 'argsType'
         | 'jobStatus'
@@ -1269,7 +1274,7 @@ declare namespace Api {
 
     /** userManager search params */
     type UserManagerSearchParams = CommonType.RecordNullable<
-      Pick<Api.UserManager.UserManager, 'username' | 'password' | 'checkPassword' | 'role' | 'permissions'> &
+      Pick<Api.UserManager.UserManager, 'id' | 'username' | 'password' | 'checkPassword' | 'role' | 'permissions'> &
         CommonSearchParams
     >;
 

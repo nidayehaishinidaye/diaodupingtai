@@ -32,7 +32,8 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
     size: 10,
     groupName: null,
     jobName: null,
-    jobStatus: null
+    jobStatus: null,
+    owerName: null
   },
   columns: () => [
     {
@@ -70,6 +71,12 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
       title: $t('page.jobTask.groupName'),
       align: 'left',
       width: 180
+    },
+    {
+      key: 'owerName',
+      title: $t('page.jobTask.owerName'),
+      align: 'left',
+      width: 120
     },
     {
       key: 'nextTriggerAt',
@@ -313,7 +320,8 @@ function body(): Api.Job.ExportJob {
     jobIds: checkedRowKeys.value,
     groupName: searchParams.groupName,
     jobName: searchParams.jobName,
-    jobStatus: searchParams.jobStatus
+    jobStatus: searchParams.jobStatus,
+    owerName: searchParams.owerName
   };
 }
 
