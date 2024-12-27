@@ -88,6 +88,15 @@ export function fetchTriggerJob(jobId: string) {
   });
 }
 
+/** trigger Job by id */
+export function fetchTriggerJobParams(data: Api.Job.TriggerJobParams) {
+  return request<boolean>({
+    url: '/job/trigger',
+    method: 'post',
+    data
+  });
+}
+
 /** job name list */
 export function fetchGetJobNameList(params?: Api.Job.JobNameListSearchParams) {
   return request<Api.Job.Job[]>({

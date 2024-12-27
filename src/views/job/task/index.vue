@@ -2,7 +2,7 @@
 import { NButton, NDropdown, NPopconfirm, NTag } from 'naive-ui';
 import { useBoolean } from '@sa/hooks';
 import { ref } from 'vue';
-import { fetchBatchDeleteJob, fetchGetJobPage, fetchTriggerJob, fetchUpdateJobStatus } from '@/service/api';
+import { fetchBatchDeleteJob, fetchGetJobPage, fetchUpdateJobStatus } from '@/service/api';
 import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
@@ -12,6 +12,7 @@ import { useRouterPush } from '@/hooks/common/router';
 import { useAuth } from '@/hooks/business/auth';
 import { downloadFetch } from '@/utils/download';
 import JobTaskOperateDrawer from './modules/job-task-operate-drawer.vue';
+import JobTaskTriggerModal from './modules/job-task-trigger-modal.vue';
 import JobTaskSearch from './modules/job-task-search.vue';
 import JobTaskDetailDrawer from './modules/job-task-detail-drawer.vue';
 
@@ -24,6 +25,8 @@ const { routerPushByKey } = useRouterPush();
 const detailData = ref<Api.Job.Job | null>();
 /** 详情页可见状态 */
 const { bool: detailVisible, setTrue: openDetail } = useBoolean(false);
+const triggerData = ref<Api.Job.Job | null>();
+const { bool: triggerVisible, setTrue: openTriggerModal } = useBoolean(false);
 
 const { columnChecks, columns, data, getData, loading, mobilePagination, searchParams, resetSearchParams } = useTable({
   apiFn: fetchGetJobPage,
@@ -245,16 +248,9 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
 
             <n-divider vertical />
 
-            <NPopconfirm onPositiveClick={() => handleTriggerJob(row.id!)}>
-              {{
-                default: () => $t('common.confirmExecute'),
-                trigger: () => (
-                  <NButton type="error" text ghost size="small">
-                    {$t('common.execute')}
-                  </NButton>
-                )
-              }}
-            </NPopconfirm>
+            <NButton type="error" text ghost size="small" onClick={() => handleTriggerJob(row)}>
+              {$t('common.execute')}
+            </NButton>
 
             <n-divider vertical />
 
@@ -312,13 +308,9 @@ function copy(id: string) {
   handleCopy(id);
 }
 
-async function handleTriggerJob(id: string) {
-  const { error } = await fetchTriggerJob(id);
-  if (error) {
-    window.$message?.error($t('common.executeFailed'));
-  } else {
-    window.$message?.success($t('common.executeSuccess'));
-  }
+async function handleTriggerJob(job: Api.Job.Job) {
+  triggerData.value = job;
+  openTriggerModal();
 }
 
 function goToBatch(jobId: string) {
@@ -404,6 +396,7 @@ function handleExport() {
       @submitted="getData"
     />
     <JobTaskDetailDrawer v-model:visible="detailVisible" :row-data="detailData" />
+    <JobTaskTriggerModal v-model:visible="triggerVisible" :row-data="triggerData" />
   </div>
 </template>
 

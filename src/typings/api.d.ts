@@ -1006,6 +1006,11 @@ declare namespace Api {
       notifyScene?: string;
     }>;
 
+    type TriggerJobParams = {
+      jobId?: string;
+      tmpArgsStr?: string;
+    };
+
     /** JobTask search params */
     type JobSearchParams = CommonType.RecordNullable<
       Pick<
