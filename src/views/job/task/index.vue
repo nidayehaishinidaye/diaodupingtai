@@ -299,6 +299,11 @@ async function handleBatchDelete() {
   onBatchDeleted();
 }
 
+function add() {
+  editingData.value = null;
+  handleAdd();
+}
+
 function edit(id: string) {
   handleEdit(id);
 }
@@ -353,7 +358,7 @@ function handleExport() {
           :loading="loading"
           :disabled-delete="checkedRowKeys.length === 0"
           :show-delete="hasAuth('R_ADMIN')"
-          @add="handleAdd"
+          @add="add"
           @delete="handleBatchDelete"
           @refresh="getData"
         >

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 import { type FormInst, NInputNumber } from 'naive-ui';
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 import OperateDrawer from '@/components/common/operate-drawer.vue';
@@ -62,7 +62,6 @@ type Model = Pick<
   | 'id'
   | 'groupName'
   | 'owerId'
-  | 'owerName'
   | 'notifyIds'
   | 'jobName'
   | 'argsStr'
@@ -83,12 +82,6 @@ type Model = Pick<
   | 'notifyScene'
 >;
 
-onMounted(() => {
-  nextTick(() => {
-    getNotifyConfigSystemTaskTypeList();
-  });
-});
-
 async function getNotifyConfigSystemTaskTypeList() {
   const res = await fetchGetNotifyConfigSystemTaskTypeList(3);
   notifyNameList.value = res.data as CommonType.Option<number>[];
@@ -100,7 +93,8 @@ function createDefaultModel(): Model {
   return {
     // @ts-expect-error groupName is required
     groupName: undefined,
-    owerId: '',
+    // @ts-expect-error owerId is required
+    owerId: undefined,
     notifyIds: [],
     jobName: '',
     argsStr: '',
@@ -272,7 +266,6 @@ async function handleSubmit() {
     id,
     groupName,
     owerId,
-    owerName,
     notifyIds,
     jobName,
     argsType,
@@ -309,7 +302,6 @@ async function handleSubmit() {
     const { error } = await fetchAddJob({
       groupName,
       owerId,
-      owerName,
       notifyIds,
       jobName,
       argsStr,
@@ -337,7 +329,6 @@ async function handleSubmit() {
       id,
       groupName,
       owerId,
-      owerName,
       notifyIds,
       jobName,
       argsStr,
@@ -384,6 +375,7 @@ watch(visible, () => {
   if (visible.value) {
     handleUpdateModelWhenEdit();
     restoreValidation();
+    getNotifyConfigSystemTaskTypeList();
     customformRef.value?.restoreValidation();
   }
 });

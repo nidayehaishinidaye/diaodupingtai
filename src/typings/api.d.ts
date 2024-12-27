@@ -961,7 +961,7 @@ declare namespace Api {
       /** 负责人id */
       owerId: string;
       /** 负责人名 */
-      owerName: string;
+      owerName?: string;
       /** 通知场景ids */
       notifyIds: number[];
       /** 任务名称 */
