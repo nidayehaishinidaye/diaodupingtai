@@ -986,7 +986,7 @@ declare namespace App {
         jobTask: {
           title: string;
           groupName: string;
-          owerName: string;
+          ownerName: string;
           jobName: string;
           argsStr: string;
           shardNum: string;
@@ -1010,7 +1010,7 @@ declare namespace App {
           form: {
             jobName: string;
             jobStatus: string;
-            owerName: string;
+            ownerName: string;
             maxRetryTimes: string;
             description: string;
             triggerType: string;
@@ -1080,7 +1080,7 @@ declare namespace App {
           oldPassword: string;
           newPassword: string;
           form: {
-            owerName: string;
+            ownerName: string;
             role: string;
             password: string;
             username: string;

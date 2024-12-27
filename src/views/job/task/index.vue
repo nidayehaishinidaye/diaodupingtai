@@ -36,7 +36,7 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
     groupName: null,
     jobName: null,
     jobStatus: null,
-    owerName: null
+    ownerName: null
   },
   columns: () => [
     {
@@ -82,8 +82,8 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
       width: 120
     },
     {
-      key: 'owerName',
-      title: $t('page.jobTask.owerName'),
+      key: 'ownerName',
+      title: $t('page.jobTask.ownerName'),
       align: 'left',
       width: 120
     },
@@ -324,7 +324,7 @@ function body(): Api.Job.ExportJob {
     groupName: searchParams.groupName,
     jobName: searchParams.jobName,
     jobStatus: searchParams.jobStatus,
-    owerName: searchParams.owerName
+    ownerName: searchParams.ownerName
   };
 }
 

@@ -43,7 +43,7 @@ getUserNameList();
 <template>
   <NSelect
     v-model:value="model"
-    :placeholder="$t('page.userManager.form.owerName')"
+    :placeholder="$t('page.userManager.form.ownerName')"
     :options="userNameList"
     value-field="id"
     label-field="username"

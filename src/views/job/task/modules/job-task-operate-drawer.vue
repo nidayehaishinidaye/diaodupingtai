@@ -61,7 +61,8 @@ type Model = Pick<
   Api.Job.Job,
   | 'id'
   | 'groupName'
-  | 'owerId'
+  | 'ownerId'
+  | 'ownerName'
   | 'notifyIds'
   | 'jobName'
   | 'argsStr'
@@ -94,7 +95,7 @@ function createDefaultModel(): Model {
     // @ts-expect-error groupName is required
     groupName: undefined,
     // @ts-expect-error owerId is required
-    owerId: undefined,
+    ownerId: undefined,
     notifyIds: [],
     jobName: '',
     argsStr: '',
@@ -265,7 +266,8 @@ async function handleSubmit() {
   const {
     id,
     groupName,
-    owerId,
+    ownerId,
+    ownerName,
     notifyIds,
     jobName,
     argsType,
@@ -301,7 +303,8 @@ async function handleSubmit() {
   if (props.operateType === 'add') {
     const { error } = await fetchAddJob({
       groupName,
-      owerId,
+      ownerId,
+      ownerName,
       notifyIds,
       jobName,
       argsStr,
@@ -328,7 +331,8 @@ async function handleSubmit() {
     const { error } = await fetchEditJob({
       id,
       groupName,
-      owerId,
+      ownerId,
+      ownerName,
       notifyIds,
       jobName,
       argsStr,
@@ -462,8 +466,8 @@ const scriptMethodOptions = [
       <NFormItem :label="$t('page.jobTask.groupName')" path="groupName">
         <SelectGroup v-model:value="model.groupName" :disabled="props.operateType === 'edit'" />
       </NFormItem>
-      <NFormItem :label="$t('page.jobTask.owerName')" path="owerId">
-        <SystemUser v-model:value="model.owerId" />
+      <NFormItem :label="$t('page.jobTask.ownerName')" path="ownerId">
+        <SystemUser v-model:value="model.ownerId" />
       </NFormItem>
       <NFormItem :label="$t('page.jobTask.jobStatus')" path="jobStatus">
         <NRadioGroup v-model:value="model.jobStatus" name="jobStatus">

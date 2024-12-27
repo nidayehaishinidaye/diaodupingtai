@@ -779,7 +779,7 @@ const local: App.I18n.Schema = {
     jobTask: {
       title: 'JobTask List',
       groupName: 'Group name',
-      owerName: 'Ower name',
+      ownerName: 'Ower name',
       jobName: 'Mission name',
       argsStr: 'Method parameters',
       shardNum: 'Reduce shard num',
@@ -802,7 +802,7 @@ const local: App.I18n.Schema = {
       updateDt: 'Update time',
       form: {
         jobStatus: 'Please enter status',
-        owerName: 'Please enter owerName',
+        ownerName: 'Please enter ownerName',
         maxRetryTimes: 'Please enter maximum number of retry',
         description: 'Please enter description',
         triggerType: 'Please enter trigger type',
@@ -873,7 +873,7 @@ const local: App.I18n.Schema = {
       oldPassword: 'Old Password',
       newPassword: 'New Password',
       form: {
-        owerName: 'Please select owername',
+        ownerName: 'Please select ownerName',
         role: 'Please enter role',
         password: 'Please enter password',
         username: 'Please enter username',
