@@ -1014,6 +1014,7 @@ declare namespace Api {
         | 'jobName'
         | 'owerName'
         | 'argsStr'
+        | 'executorInfo'
         | 'argsType'
         | 'jobStatus'
         | 'routeKey'

@@ -70,7 +70,13 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
       key: 'groupName',
       title: $t('page.jobTask.groupName'),
       align: 'left',
-      width: 180
+      width: 150
+    },
+    {
+      key: 'executorInfo',
+      title: $t('page.jobTask.executorInfo'),
+      align: 'left',
+      width: 120
     },
     {
       key: 'owerName',

@@ -27,12 +27,21 @@ function search() {
 </script>
 
 <template>
-  <SearchForm :model="model" @search="search" @reset="reset">
+  <SearchForm btn-span="12 s:24 m:24 l:24 xl:24" :model="model" @search="search" @reset="reset">
     <NFormItemGi span="24 s:12 m:6" :label="$t('page.jobTask.groupName')" path="groupName" class="pr-24px">
       <SelectGroup v-model:value="model.groupName" clearable />
     </NFormItemGi>
     <NFormItemGi span="24 s:12 m:6" :label="$t('page.jobTask.jobName')" path="jobName" class="pr-24px">
       <NInput v-model:value="model.jobName" :placeholder="$t('page.jobTask.form.jobName')" clearable />
+    </NFormItemGi>
+    <NFormItemGi
+      span="24 s:12 m:6"
+      :label="$t('page.jobTask.executorInfo')"
+      path="executorInfo"
+      class="pr-24px"
+      :label-width="100"
+    >
+      <NInput v-model:value="model.executorInfo" :placeholder="$t('page.jobTask.form.executorInfo')" clearable />
     </NFormItemGi>
     <NFormItemGi span="24 s:12 m:6" :label="$t('page.jobTask.jobStatus')" path="jobStatus" class="pr-24px">
       <NSelect
