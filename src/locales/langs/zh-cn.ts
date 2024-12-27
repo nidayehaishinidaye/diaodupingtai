@@ -786,7 +786,7 @@ const local: App.I18n.Schema = {
     jobTask: {
       title: '定时任务列表',
       groupName: '组名称',
-      owerName: '负责人',
+      ownerName: '负责人',
       jobName: '任务名称',
       argsStr: '方法参数',
       shardNum: 'reduce 分片数',
@@ -809,7 +809,7 @@ const local: App.I18n.Schema = {
       updateDt: '更新时间',
       form: {
         jobStatus: '请输入状态',
-        owerName: '请输入负责人名称',
+        ownerName: '请输入负责人名称',
         maxRetryTimes: '请输入最大重试次数',
         description: '请输入描述',
         triggerType: '请输入触发类型',
@@ -880,7 +880,7 @@ const local: App.I18n.Schema = {
       oldPassword: '旧密码',
       newPassword: '新密码',
       form: {
-        owerName: '请选择负责人',
+        ownerName: '请选择负责人',
         role: '请输入角色',
         password: '请输入密码',
         username: '请输入用户名',

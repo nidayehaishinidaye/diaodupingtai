@@ -959,9 +959,9 @@ declare namespace Api {
       /** 组名称 */
       groupName: string;
       /** 负责人id */
-      owerId: string;
+      ownerId: string;
       /** 负责人名 */
-      owerName?: string;
+      ownerName: string;
       /** 通知场景ids */
       notifyIds: number[];
       /** 任务名称 */
@@ -1012,7 +1012,7 @@ declare namespace Api {
         Api.Job.Job,
         | 'groupName'
         | 'jobName'
-        | 'owerName'
+        | 'ownerName'
         | 'argsStr'
         | 'executorInfo'
         | 'argsType'
