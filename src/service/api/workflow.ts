@@ -18,6 +18,15 @@ export function fetchTriggerWorkflow(id: string) {
   });
 }
 
+/** trigger workflow */
+export function fetchTriggerWorkflowParams(data: Api.Workflow.WorkflowTriggerParams) {
+  return request({
+    url: '/workflow/trigger',
+    method: 'post',
+    data
+  });
+}
+
 /** get namespace list */
 export function fetchGetWorkflowNameList(params?: Api.Workflow.WorkflowNameSearchParams) {
   return request<Api.Workflow.Workflow[]>({

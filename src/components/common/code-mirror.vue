@@ -4,6 +4,7 @@ import CodeMirror from 'vue-codemirror6';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { json } from '@codemirror/lang-json';
 import { javascript } from '@codemirror/lang-javascript';
+import { useBoolean } from '@sa/hooks';
 import { useThemeStore } from '@/store/modules/theme';
 
 defineOptions({
@@ -38,6 +39,8 @@ const emit = defineEmits<Emits>();
 const themeStore = useThemeStore();
 
 const nodeExpression = ref<string>(props.modelValue);
+
+const { bool: visible, setTrue: openModal } = useBoolean();
 
 const codeLang = computed(() => {
   switch (props.lang) {
@@ -116,16 +119,42 @@ watch(
 </script>
 
 <template>
-  <CodeMirror
-    v-model="nodeExpression"
-    class="w-100%"
-    :readonly="readonly"
-    :disabled="disabled"
-    :theme="theme"
-    :placeholder="placeholder"
-    basic
-    :line-number="false"
-    :lang="codeLang"
-    :extensions="[oneDark]"
-  />
+  <div class="w-100% flex-x-center gap-8px">
+    <CodeMirror
+      v-model="nodeExpression"
+      class="w-100%"
+      :readonly="readonly"
+      :disabled="disabled"
+      :theme="theme"
+      :placeholder="placeholder"
+      basic
+      :line-number="false"
+      :lang="codeLang"
+      :extensions="[oneDark]"
+    />
+    <NButton @click="openModal">
+      <icon-flowbite:expand-outline class="text-18px" />
+    </NButton>
+    <NModal v-model:show="visible" class="max-w-90% w-600px" preset="card" title="编辑器" :bordered="false">
+      <CodeMirror
+        v-model="nodeExpression"
+        class="w-100%"
+        :readonly="readonly"
+        :disabled="disabled"
+        :theme="{
+          ...theme,
+          '.cm-scroller': {
+            height: '300px',
+            overflowY: 'auto',
+            overflowX: 'hidden'
+          }
+        }"
+        :placeholder="placeholder"
+        basic
+        :line-number="false"
+        :lang="codeLang"
+        :extensions="[oneDark]"
+      />
+    </NModal>
+  </div>
 </template>

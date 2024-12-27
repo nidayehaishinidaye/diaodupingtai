@@ -52,7 +52,8 @@ const store = useWorkflowStore();
 let title: string = '';
 const drawer = ref<boolean>(false);
 const form = ref<Workflow.NodeDataType>({
-  wfContexts: []
+  wfContexts: [],
+  notifyIds: []
 });
 const groupNameList = ref<string[]>([]);
 
@@ -221,7 +222,7 @@ const rules: Record<RuleKey, FormItemRule> = {
             </NFormItem>
           </NGi>
         </NGrid>
-        <NFormItem path="wfContext" label="工作流上下文" :show-feedback="false">
+        <NFormItem path="wfContext" label="工作流上下文" :show-feedback="form.wfContexts?.length ? false : true">
           <DynamicInput v-model:value="form.wfContexts!" path="wfContexts" />
         </NFormItem>
         <NFormItem path="workflowStatus" label="节点状态">

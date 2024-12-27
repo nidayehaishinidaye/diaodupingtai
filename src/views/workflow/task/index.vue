@@ -1,12 +1,9 @@
 <script setup lang="tsx">
 import { NButton, NDropdown, NPopconfirm, NTag } from 'naive-ui';
 import { useRouter } from 'vue-router';
-import {
-  fetchBatchDeleteWorkflow,
-  fetchGetWorkflowPageList,
-  fetchTriggerWorkflow,
-  fetchUpdateWorkflowStatus
-} from '@/service/api';
+import { ref } from 'vue';
+import { useBoolean } from '@sa/hooks';
+import { fetchBatchDeleteWorkflow, fetchGetWorkflowPageList, fetchUpdateWorkflowStatus } from '@/service/api';
 import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
@@ -17,11 +14,16 @@ import { useAuth } from '@/hooks/business/auth';
 import { downloadFetch } from '@/utils/download';
 import { useRouterPush } from '@/hooks/common/router';
 import WorkflowSearch from './modules/workflow-search.vue';
+import WorkflowTriggerModal from './modules/workflow-trigger-modal.vue';
+
 const { hasAuth } = useAuth();
 
 const router = useRouter();
 const appStore = useAppStore();
 const { routerPushByKey } = useRouterPush();
+
+const triggerData = ref<Api.Workflow.Workflow | null>();
+const { bool: triggerVisible, setTrue: openTriggerModal } = useBoolean(false);
 
 const { columns, columnChecks, data, getData, loading, mobilePagination, searchParams, resetSearchParams } = useTable({
   apiFn: fetchGetWorkflowPageList,
@@ -184,16 +186,9 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
 
             <n-divider vertical />
 
-            <NPopconfirm onPositiveClick={() => execute(row.id!)}>
-              {{
-                default: () => $t('common.confirmExecute'),
-                trigger: () => (
-                  <NButton type="error" text ghost size="small">
-                    {$t('common.execute')}
-                  </NButton>
-                )
-              }}
-            </NPopconfirm>
+            <NButton type="error" text ghost size="small" onClick={() => execute(row)}>
+              {$t('common.execute')}
+            </NButton>
 
             <n-divider vertical />
 
@@ -253,12 +248,9 @@ function copy(id: string) {
 //   router.push({ path: '/workflow/batch', state: { workflowId: id } });
 // }
 
-async function execute(id: string) {
-  const { error } = await fetchTriggerWorkflow(id);
-  if (!error) {
-    window.$message?.success($t('common.executeSuccess'));
-    getData();
-  }
+async function execute(row: Api.Workflow.Workflow) {
+  triggerData.value = row;
+  openTriggerModal();
 }
 
 function body(): Api.Workflow.ExportWorkflow {
@@ -335,6 +327,7 @@ function goToBatch(workflowId: string) {
         class="sm:h-full"
       />
     </NCard>
+    <WorkflowTriggerModal v-model:visible="triggerVisible" :row-data="triggerData" />
   </div>
 </template>
 

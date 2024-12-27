@@ -920,6 +920,11 @@ declare namespace Api {
       executorTimeout: number;
     }>;
 
+    type WorkflowTriggerParams = {
+      workflowId?: string;
+      tmpWfContext?: string;
+    };
+
     /** workflow search params */
     type WorkflowSearchParams = CommonType.RecordNullable<
       Pick<Api.Workflow.Workflow, 'workflowName' | 'groupName' | 'workflowStatus'> & CommonSearchParams
