@@ -125,7 +125,6 @@ function createDefaultModel(): Model {
 type RuleKey = Extract<
   keyof Model,
   | 'groupName'
-  | 'owerId'
   | 'jobName'
   | 'argsType'
   | 'jobStatus'
@@ -144,7 +143,6 @@ type RuleKey = Extract<
 
 const rules: Record<RuleKey, App.Global.FormRule> = {
   groupName: defaultRequiredRule,
-  owerId: defaultRequiredRule,
   jobName: defaultRequiredRule,
   argsType: defaultRequiredRule,
   jobStatus: defaultRequiredRule,
