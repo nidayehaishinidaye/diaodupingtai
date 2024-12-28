@@ -109,40 +109,52 @@ function createDefaultScriptParams() {
 }
 
 function handleUpdateModelWhenEdit() {
-  if (props.rowData) {
-    Object.assign(model, props.rowData);
-    // 任务类型 1:集群 2:广播 3:切片 4:Map 5:MapReduce
-    if (props.rowData.taskType === 3 && props.rowData.argsStr) {
-      Object.assign(dynamicForm, {
-        args: JSON.parse(props.rowData.argsStr).map((item: string) => {
-          return { arg: item };
-        })
-      });
-    }
-
-    if (props.rowData.taskType === 5 && props.rowData.argsStr) {
-      const argsJson = JSON.parse(props.rowData.argsStr);
-      shardNum.value = argsJson.shardNum;
-      model.tmpArgsStr = argsJson.argsStr;
-    }
-
-    if (executorCustomOptions.map(item => item.value).includes(props.rowData.executorInfo)) {
-      if (props.rowData.executorInfo === 'snailJobHttpExecutor') {
-        Object.assign(httpParams, JSON.parse(props.rowData.argsStr));
-        if (httpParams.headers) {
-          httpHeaders.value = Object.keys(httpParams.headers).map((item: string) => {
-            return { key: item, value: httpParams.headers![item] };
-          });
-        }
-      } else {
-        Object.assign(scriptParams, JSON.parse(props.rowData.argsStr));
-      }
-    }
-  } else {
+  if (!props.rowData) {
     Object.assign(model, createDefaultModel());
     httpHeaders.value = [];
     Object.assign(httpParams, createDefaultHttpParams());
     Object.assign(scriptParams, createDefaultScriptParams());
+    return;
+  }
+
+  Object.assign(model, props.rowData);
+
+  const taskType = props.rowData.taskType;
+  const argsStr = props.rowData.argsStr;
+  if (!argsStr) {
+    return;
+  }
+
+  // 1:集群 2:广播 4:Map
+  model.tmpArgsStr = argsStr;
+
+  // 任务类型 3:切片
+  if (taskType === 3) {
+    Object.assign(dynamicForm, {
+      args: JSON.parse(argsStr).map((item: string) => {
+        return { arg: item };
+      })
+    });
+  }
+
+  // 5:MapReduce
+  if (taskType === 5) {
+    const argsJson = JSON.parse(argsStr);
+    shardNum.value = argsJson.shardNum;
+    model.tmpArgsStr = argsJson.argsStr;
+  }
+
+  if (executorCustomOptions.map(item => item.value).includes(props.rowData.executorInfo)) {
+    if (props.rowData.executorInfo === 'snailJobHttpExecutor') {
+      Object.assign(httpParams, JSON.parse(argsStr));
+      if (httpParams.headers) {
+        httpHeaders.value = Object.keys(httpParams.headers).map((item: string) => {
+          return { key: item, value: httpParams.headers![item] };
+        });
+      }
+    } else {
+      Object.assign(scriptParams, JSON.parse(argsStr));
+    }
   }
 }
 
