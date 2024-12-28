@@ -111,6 +111,7 @@ function createDefaultScriptParams() {
 function handleUpdateModelWhenEdit() {
   if (props.rowData) {
     Object.assign(model, props.rowData);
+    // 任务类型 1:集群 2:广播 3:切片 4:Map 5:MapReduce
     if (props.rowData.taskType === 3 && props.rowData.argsStr) {
       Object.assign(dynamicForm, {
         args: JSON.parse(props.rowData.argsStr).map((item: string) => {
@@ -302,7 +303,7 @@ async function handleSubmit() {
               <icon-ic-round-plus class="text-icon" />
             </NButton>
           </NCard>
-          <CodeMirror v-else v-model="rowData!.argsStr" lang="json" :placeholder="$t('page.jobTask.form.argsStr')" />
+          <CodeMirror v-else v-model="model.tmpArgsStr" lang="json" :placeholder="$t('page.jobTask.form.argsStr')" />
         </template>
         <template v-else-if="rowData.executorInfo === 'snailJobHttpExecutor'">
           <NForm ref="customformRef" class="w-full" :model="httpParams">

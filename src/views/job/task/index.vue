@@ -36,7 +36,8 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
     groupName: null,
     jobName: null,
     jobStatus: null,
-    ownerId: null
+    ownerId: null,
+    executorInfo: null
   },
   columns: () => [
     {
