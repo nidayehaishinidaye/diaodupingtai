@@ -918,6 +918,8 @@ declare namespace Api {
       triggerInterval: string;
       /** 超时时间 */
       executorTimeout: number;
+      /** 上下文 */
+      wfContext: string;
     }>;
 
     type WorkflowTriggerParams = {

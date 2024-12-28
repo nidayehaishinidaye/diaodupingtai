@@ -2,7 +2,7 @@
 import { reactive, watch } from 'vue';
 import { $t } from '@/locales';
 import { fetchTriggerWorkflowParams } from '@/service/api';
-import { parseContent } from '@/utils/common';
+import { parseContent, stringToContent } from '@/utils/common';
 
 defineOptions({
   name: 'WorkflowTriggerModal'
@@ -40,7 +40,16 @@ function createDefaultModel(): Model {
 }
 
 function handleUpdateModelWhenEdit() {
-  Object.assign(model, createDefaultModel());
+  const rowData = props.rowData;
+  if (!rowData) {
+    Object.assign(model, createDefaultModel());
+    return;
+  }
+
+  const wfContext = rowData?.wfContext;
+  if (wfContext) {
+    model.wfContexts = stringToContent(rowData?.wfContext) || [];
+  }
 }
 
 function closeDrawer() {
