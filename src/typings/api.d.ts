@@ -1022,7 +1022,7 @@ declare namespace Api {
         Api.Job.Job,
         | 'groupName'
         | 'jobName'
-        | 'ownerName'
+        | 'ownerId'
         | 'argsStr'
         | 'executorInfo'
         | 'argsType'

@@ -36,7 +36,7 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
     groupName: null,
     jobName: null,
     jobStatus: null,
-    ownerName: null
+    ownerId: null
   },
   columns: () => [
     {
@@ -324,7 +324,7 @@ function body(): Api.Job.ExportJob {
     groupName: searchParams.groupName,
     jobName: searchParams.jobName,
     jobStatus: searchParams.jobStatus,
-    ownerName: searchParams.ownerName
+    ownerId: searchParams.ownerId
   };
 }
 

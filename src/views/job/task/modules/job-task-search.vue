@@ -51,8 +51,8 @@ function search() {
         clearable
       />
     </NFormItemGi>
-    <NFormItemGi span="24 s:12 m:6" :label="$t('page.jobTask.ownerName')" path="ownerName" class="pr-24px">
-      <NInput v-model:value="model.ownerName" :placeholder="$t('page.jobTask.form.ownerName')" clearable />
+    <NFormItemGi span="24 s:12 m:6" :label="$t('page.jobTask.ownerName')" path="ownerId" class="pr-24px">
+      <SystemUser v-model:value="model.ownerId" clearable />
     </NFormItemGi>
   </SearchForm>
 </template>
