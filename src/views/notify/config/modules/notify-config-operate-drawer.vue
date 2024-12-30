@@ -266,12 +266,8 @@ async function retrySceneChange(
     | null
 ) {
   retrySceneDisable.value = !(model.systemTaskType === 1 && (value === 1 || value === 2 || value === 5 || value === 6));
-  retryNotifyStatusDisable.value = retrySceneDisable.value;
-  model.notifyStatus = retrySceneDisable.value ? 0 : 1;
   if (value === 7) {
     model.notifyThreshold = 0;
-    model.rateLimiterStatus = 1;
-    retrySceneDisable.value = true;
   }
 }
 
@@ -331,7 +327,7 @@ watch(visible, () => {
       <NGrid cols="2 s:1 m:2" responsive="screen" x-gap="20">
         <NGi>
           <NFormItem :label="$t('page.notifyConfig.notifyStatus')" path="notifyStatus">
-            <NRadioGroup v-model:value="model.notifyStatus" name="notifyStatus" :disabled="retryNotifyStatusDisable">
+            <NRadioGroup v-model:value="model.notifyStatus" name="notifyStatus">
               <NSpace>
                 <NRadio
                   v-for="item in enableStatusNumberOptions"
