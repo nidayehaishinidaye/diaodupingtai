@@ -289,13 +289,6 @@ watch(visible, () => {
 <template>
   <OperateDrawer v-model="visible" :title="title" :min-size="480" @handle-submit="handleSubmit">
     <NForm ref="formRef" :model="model" :rules="rules">
-      <NFormItem :label="$t('page.notifyConfig.notifyName')" path="notifyName">
-        <NInput
-          v-model:value="model.notifyName"
-          :placeholder="$t('page.notifyConfig.form.notifyName')"
-          :maxlength="32"
-        />
-      </NFormItem>
       <NFormItem :label="$t('page.notifyConfig.groupName')" path="groupName">
         <SelectGroup v-model:value="model.groupName" @update:model-value="groupNameUpdate" />
       </NFormItem>
@@ -322,6 +315,13 @@ watch(visible, () => {
           :options="notifyRecipientList"
           clearable
           multiple
+        />
+      </NFormItem>
+      <NFormItem :label="$t('page.notifyConfig.notifyName')" path="notifyName">
+        <NInput
+          v-model:value="model.notifyName"
+          :placeholder="$t('page.notifyConfig.form.notifyName')"
+          :maxlength="32"
         />
       </NFormItem>
       <NGrid cols="2 s:1 m:2" responsive="screen" x-gap="20">
