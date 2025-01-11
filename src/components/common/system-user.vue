@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { $t } from '@/locales';
-import { fetchGetUserPageList } from '@/service/api';
+import { fetchGetUserSimpleList } from '@/service/api';
 
 defineOptions({
   name: 'SystemUser'
@@ -27,9 +27,9 @@ const emit = defineEmits<Emits>();
 const userNameList = ref();
 
 async function getUserNameList() {
-  const { data, error } = await fetchGetUserPageList();
+  const { data, error } = await fetchGetUserSimpleList();
   if (!error) {
-    userNameList.value = data?.data;
+    userNameList.value = data;
   }
 }
 

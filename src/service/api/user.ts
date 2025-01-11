@@ -1,11 +1,19 @@
 import { request } from '../request';
 
-/** get user list */
+/** get user page list */
 export function fetchGetUserPageList(params?: Api.UserManager.UserManagerSearchParams) {
   return request<Api.UserManager.UserManagerList>({
     url: '/user/page/list',
     method: 'get',
     params
+  });
+}
+
+/** get user simple list */
+export function fetchGetUserSimpleList() {
+  return request<Api.UserManager.UserManagerList>({
+    url: '/user/simple/list',
+    method: 'get'
   });
 }
 
