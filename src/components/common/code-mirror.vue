@@ -119,10 +119,10 @@ watch(
 </script>
 
 <template>
-  <div class="w-100% flex-x-center gap-8px">
+  <div class="w-100% flex gap-8px">
     <CodeMirror
       v-model="nodeExpression"
-      class="w-100%"
+      class="snial-code-mirror w-100%"
       :readonly="readonly"
       :disabled="disabled"
       :theme="theme"
@@ -158,3 +158,9 @@ watch(
     </NModal>
   </div>
 </template>
+
+<style scoped>
+:deep(.snial-code-mirror) {
+  max-width: calc(100% - 58px);
+}
+</style>

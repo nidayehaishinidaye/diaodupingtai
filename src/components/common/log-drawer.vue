@@ -7,6 +7,7 @@ import {
   NDivider,
   NDropdown,
   NEmpty,
+  NScrollbar,
   NSpin,
   NVirtualList,
   type VirtualListInst
@@ -282,7 +283,11 @@ const SnailLogComponent = defineComponent({
         return <></>;
       }
       const restOfText = throwable.replace(/^.+(\n|$)/m, '');
-      return <NCollapseItem title={firstLine[0]} name={`throwable-${message.index}`}>{`${restOfText}`}</NCollapseItem>;
+      return (
+        <NCollapseItem title={firstLine[0]} name={`throwable-${message.index}`}>
+          <NScrollbar content-class="p-8px" class="message-scroll-body">{`${restOfText}`}</NScrollbar>
+        </NCollapseItem>
+      );
     };
 
     const messageComponent = (message: Api.JobLog.JobMessage) => {
@@ -297,7 +302,9 @@ const SnailLogComponent = defineComponent({
       const restOfText = msg.replace(/^.+(\n|$)/m, '').replaceAll('\n', '\n - ');
       if (restOfText) {
         return (
-          <NCollapseItem title={firstLine[0]} name={`message-${message.index}`}>{` - ${restOfText}`}</NCollapseItem>
+          <NCollapseItem title={firstLine[0]} name={`message-${message.index}`}>
+            <NScrollbar content-class="p-8px" class="message-scroll-body">{` - ${restOfText}`}</NScrollbar>
+          </NCollapseItem>
         );
       }
       return <div class="pl-6px">- {`${msg}`}</div>;
@@ -322,12 +329,11 @@ const SnailLogComponent = defineComponent({
             ref={virtualListInst}
             class="virtual-list"
             itemSize={85}
-            item-resizable
-            ignore-item-resize
-            padding-bottom={16}
+            itemResizable
+            paddingBottom={16}
             items={logList.value}
-            scrollbar-props={{ xScrollable: true }}
-            on-resize={handleResize}
+            scrollbarProps={{ xScrollable: true }}
+            onResize={handleResize}
           >
             {{
               default: ({ item: message }: { item: Api.JobLog.JobMessage }) => (
@@ -591,5 +597,16 @@ const SnailLogComponent = defineComponent({
 :deep(.v-vl-items) {
   display: inline-block !important;
   min-width: 100%;
+}
+
+:deep(.message-scroll-body) {
+  margin-top: 6px;
+  max-height: 150px;
+  border: 1px solid rgb(239, 239, 245);
+  border-radius: var(--n-border-radius);
+}
+
+:deep(.dark .message-scroll-body) {
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
 }
 </style>
