@@ -467,7 +467,7 @@ const scriptMethodOptions = [
         <SelectGroup v-model:value="model.groupName" :disabled="props.operateType === 'edit'" />
       </NFormItem>
       <NFormItem :label="$t('page.jobTask.ownerName')" path="ownerId">
-        <SystemUser v-model:value="model.ownerId" />
+        <SystemUser v-model:value="model.ownerId" :clearable="true" />
       </NFormItem>
       <NFormItem :label="$t('page.jobTask.jobStatus')" path="jobStatus">
         <NRadioGroup v-model:value="model.jobStatus" name="jobStatus">
