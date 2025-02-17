@@ -14,7 +14,7 @@ import {
 import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import { retryTaskStatusTypeRecord, retryTaskTypeRecord } from '@/constants/business';
+import { retryStatusTypeRecord, retryTaskTypeRecord } from '@/constants/business';
 import { tagColor } from '@/utils/common';
 import RetryTaskOperateDrawer from './modules/retry-task-operate-drawer.vue';
 import RetryTaskBatchAddDrawer from './modules/retry-task-batch-add-drawer.vue';
@@ -33,7 +33,6 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
   apiParams: {
     page: 1,
     size: 10,
-    uniqueId: null,
     groupName: null,
     sceneName: null,
     idempotentId: null,
@@ -51,14 +50,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       key: 'id',
       title: $t('common.index'),
       align: 'center',
-      width: 64
-    },
-    {
-      key: 'uniqueId',
-      title: $t('page.retryTask.uniqueId'),
-      align: 'center',
-      fixed: 'left',
-      minWidth: 120,
+      width: 64,
       render: row => {
         async function showDetailDrawer() {
           await loadRetryInfo(row);
@@ -67,7 +59,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
 
         return (
           <n-button text tag="a" type="primary" onClick={showDetailDrawer} class="ws-normal">
-            {row.uniqueId}
+            {row.id}
           </n-button>
         );
       }
@@ -109,7 +101,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
         if (row.retryStatus === null) {
           return null;
         }
-        const label = $t(retryTaskStatusTypeRecord[row.retryStatus!]);
+        const label = $t(retryStatusTypeRecord[row.retryStatus!]);
 
         return <NTag type={tagColor(row.retryStatus!)}>{label}</NTag>;
       }

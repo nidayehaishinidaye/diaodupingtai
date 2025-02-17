@@ -5,7 +5,7 @@ export * from './dashboard';
 export * from './namespace';
 export * from './notify';
 export * from './group';
-export * from './retry-task';
+export * from './retry';
 export * from './retry-scene';
 export * from './retry-log';
 export * from './retry-dead-letter';

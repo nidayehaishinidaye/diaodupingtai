@@ -5,7 +5,7 @@ import OperateDrawer from '@/components/common/operate-drawer.vue';
 import { $t } from '@/locales';
 import { fetchAddRetryTask, fetchIdempotentIdGenerate } from '@/service/api';
 import { translateOptions } from '@/utils/common';
-import { retryTaskStatusTypeOptions } from '@/constants/business';
+import { retryStatusTypeOptions } from '@/constants/business';
 import CodeMirror from '@/components/common/code-mirror.vue';
 import SelectGroup from '@/components/common/select-group.vue';
 import SelectScene from '@/components/common/select-scene.vue';
@@ -224,7 +224,7 @@ async function setIdempotentId() {
         <NSelect
           v-model:value="model.retryStatus"
           :placeholder="$t('page.retryTask.form.retryStatus')"
-          :options="translateOptions(retryTaskStatusTypeOptions)"
+          :options="translateOptions(retryStatusTypeOptions)"
         />
       </NFormItem>
     </NForm>

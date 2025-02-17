@@ -2,7 +2,7 @@
 import { onBeforeUnmount, ref } from 'vue';
 import { $t } from '@/locales';
 import { tagColor } from '@/utils/common';
-import { retryTaskStatusTypeRecord, retryTaskTypeRecord } from '@/constants/business';
+import { retryStatusTypeRecord, retryTaskTypeRecord } from '@/constants/business';
 import { fetchRetryLogList } from '@/service/api/log';
 
 defineOptions({
@@ -90,7 +90,7 @@ onBeforeUnmount(() => {
           </NDescriptionsItem>
           <NDescriptionsItem :label="$t('page.retryTask.retryStatus')" :span="1">
             <NTag :type="tagColor(rowData?.retryStatus!)">
-              {{ $t(retryTaskStatusTypeRecord[rowData?.retryStatus!]) }}
+              {{ $t(retryStatusTypeRecord[rowData?.retryStatus!]) }}
             </NTag>
           </NDescriptionsItem>
           <NDescriptionsItem :label="$t('page.retryTask.taskType')" :span="1">

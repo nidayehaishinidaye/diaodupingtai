@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { $t } from '@/locales';
 import { tagColor } from '@/utils/common';
-import { retryTaskStatusTypeRecord, retryTaskTypeRecord } from '@/constants/business';
+import { retryStatusTypeRecord, retryTaskTypeRecord } from '@/constants/business';
 
 defineOptions({
   name: 'SceneDetailDrawer'
@@ -35,7 +35,7 @@ const visible = defineModel<boolean>('visible', {
           </NDescriptionsItem>
           <NDescriptionsItem :label="$t('page.retryLog.retryStatus')" :span="1">
             <NTag :type="tagColor(rowData?.retryStatus!)">
-              {{ $t(retryTaskStatusTypeRecord[rowData?.retryStatus!]) }}
+              {{ $t(retryStatusTypeRecord[rowData?.retryStatus!]) }}
             </NTag>
           </NDescriptionsItem>
           <NDescriptionsItem :label="$t('page.retryLog.taskType')" :span="1">

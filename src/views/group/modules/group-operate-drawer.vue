@@ -243,13 +243,13 @@ async function handleCopy(source: string) {
           </NFormItem>
         </NCollapseItem>
         <NCollapseItem :title="$t('page.groupConfig.retryConfig')" name="2">
-          <NFormItem :label="$t('page.groupConfig.idGeneratorMode')" path="idGeneratorMode">
-            <NSelect
-              v-model:value="model.idGeneratorMode"
-              :placeholder="$t('page.groupConfig.form.idGeneratorMode')"
-              :options="translateOptions(groupConfigIdModeOptions)"
-            />
-          </NFormItem>
+          <!--          <NFormItem :label="$t('page.groupConfig.idGeneratorMode')" path="idGeneratorMode">-->
+          <!--            <NSelect-->
+          <!--              v-model:value="model.idGeneratorMode"-->
+          <!--              :placeholder="$t('page.groupConfig.form.idGeneratorMode')"-->
+          <!--              :options="translateOptions(groupConfigIdModeOptions)"-->
+          <!--            />-->
+          <!--          </NFormItem>-->
           <NFormItem :label="$t('page.groupConfig.initScene')" path="initScene">
             <NRadioGroup v-model:value="model.initScene" name="initScene">
               <NSpace>
@@ -262,13 +262,13 @@ async function handleCopy(source: string) {
               </NSpace>
             </NRadioGroup>
           </NFormItem>
-          <NFormItem :label="$t('page.groupConfig.groupPartition')" path="groupPartition">
-            <NSelect
-              v-model:value="model.groupPartition"
-              :placeholder="$t('page.groupConfig.form.groupPartition')"
-              :options="translateOptions2(partitionList)"
-            />
-          </NFormItem>
+          <!--          <NFormItem :label="$t('page.groupConfig.groupPartition')" path="groupPartition">-->
+          <!--            <NSelect-->
+          <!--              v-model:value="model.groupPartition"-->
+          <!--              :placeholder="$t('page.groupConfig.form.groupPartition')"-->
+          <!--              :options="translateOptions2(partitionList)"-->
+          <!--            />-->
+          <!--          </NFormItem>-->
         </NCollapseItem>
       </NCollapse>
     </NForm>

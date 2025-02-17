@@ -89,11 +89,21 @@ export const groupConfigYesOrNoRecord: Record<Api.GroupConfig.YesOrNoType, App.I
 };
 export const groupConfigYesOrNoOptions = transformRecordToNumberOption(groupConfigYesOrNoRecord, true);
 
-export const retryTaskStatusTypeRecord: Record<Api.RetryTask.RetryStatusType, App.I18n.I18nKey> = {
+export const retryStatusTypeRecord: Record<Api.RetryTask.RetryStatusType, App.I18n.I18nKey> = {
   0: 'page.retryTask.retryStatusType.retrying',
   1: 'page.retryTask.retryStatusType.finished',
   2: 'page.retryTask.retryStatusType.maxRetry',
   3: 'page.retryTask.retryStatusType.paused'
+};
+export const retryStatusTypeOptions = transformRecordToNumberOption(retryStatusTypeRecord);
+
+export const retryTaskStatusTypeRecord: Record<Api.RetryTask.RetryTaskStatusType, App.I18n.I18nKey> = {
+  1: 'page.retryTask.retryStatusType.finished',
+  2: 'page.retryTask.retryStatusType.maxRetry',
+  3: 'page.retryTask.retryStatusType.paused',
+  4: 'page.retryTask.retryStatusType.paused',
+  5: 'page.retryTask.retryStatusType.paused',
+  6: 'page.retryTask.retryStatusType.paused'
 };
 export const retryTaskStatusTypeOptions = transformRecordToNumberOption(retryTaskStatusTypeRecord);
 

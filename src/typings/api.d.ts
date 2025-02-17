@@ -747,6 +747,8 @@ declare namespace Api {
 
     type RetryStatusType = 0 | 1 | 2 | 3;
 
+    type RetryTaskStatusType = 1 | 2 | 3 | 4 | 5 | 6;
+
     type TaskType = 1 | 2;
 
     /** RetryTask */
@@ -818,7 +820,7 @@ declare namespace Api {
 
     /** RetryTask search params */
     type RetryTaskSearchParams = CommonType.RecordNullable<
-      Pick<Api.RetryTask.RetryTask, 'uniqueId' | 'groupName' | 'sceneName' | 'idempotentId' | 'bizNo' | 'retryStatus'> &
+      Pick<Api.RetryTask.RetryTask, 'groupName' | 'sceneName' | 'idempotentId' | 'bizNo' | 'retryStatus'> &
         CommonSearchParams
     >;
 
@@ -859,6 +861,14 @@ declare namespace Api {
       executorTimeout: number;
       /** 描述 */
       description: string;
+      /** 回调状态 0、不开启 1、开启 */
+      cbStatus: EnableStatusNumber;
+      /** 触发类型 */
+      cbTriggerType: BackOff;
+      /** 回调间隔时间 */
+      cbTriggerInterval: string;
+      /** 回调的最大执行次数 */
+      cbMaxCount: number;
     }>;
 
     /** scene search params */
@@ -1214,43 +1224,33 @@ declare namespace Api {
    * backend api module: "retryLog"
    */
   namespace RetryLog {
-    import RetryStatusType = Api.RetryTask.RetryStatusType;
     import TaskType = Api.RetryTask.TaskType;
+    import RetryTaskStatusType = Api.RetryTask.RetryTaskStatusType;
     type CommonSearchParams = Pick<Common.PaginatingCommonParams, 'page' | 'size'>;
 
     /** retryLog */
     type RetryLog = Common.CommonRecord<{
       /** UniqueId */
-      uniqueId: string;
+      retryId: string;
       /** 组名称 */
       groupName: string;
       /** 场景名称 */
       sceneName: string;
       /** 重试状态 */
-      retryStatus: RetryStatusType;
+      taskStatus: RetryTaskStatusType;
       /** 任务类型 */
       taskType: TaskType;
-      /** 幂等id */
-      idempotentId: string;
-      /** 业务编号 */
-      bizNo: string;
-      /** 创建时间 */
-      createDt: string;
-      /** 执行器名称 */
-      executorName: string;
-      /** 执行方法参数 */
-      argsStr: string;
       /** 扩展字段 */
       extAttrs?: string;
-      /** 下次触发时间 */
-      nextTriggerAt?: string;
-      /** 重试次数 */
-      retryCount?: number;
+      /** 客户端信息 */
+      clientInfo: string;
+      /** 失败原因 */
+      operationReason: Common.OperationReason;
     }>;
 
     /** retryLog search params */
-    type RetryLogSearchParams = CommonType.RecordNullable<
-      Pick<Api.RetryLog.RetryLog, 'uniqueId' | 'groupName' | 'sceneName' | 'idempotentId' | 'bizNo' | 'retryStatus'> &
+    type RetryTaskSearchParams = CommonType.RecordNullable<
+      Pick<Api.RetryLog.RetryLog, 'retryId' | 'groupName' | 'sceneName' | 'taskStatus' | 'operationReason'> &
         CommonSearchParams & { datetimeRange?: [string, string] }
     >;
 

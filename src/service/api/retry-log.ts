@@ -1,9 +1,9 @@
 import { request } from '../request';
 
 /** get retry log list */
-export function fetchRetryLogPageList(params?: Api.RetryLog.RetryLogSearchParams) {
+export function fetchRetryLogPageList(params?: Api.RetryLog.RetryTaskSearchParams) {
   return request<Api.RetryLog.RetryLogList>({
-    url: '/retry-task-log/list',
+    url: '/retry-task/list',
     method: 'get',
     params
   });
@@ -12,7 +12,7 @@ export function fetchRetryLogPageList(params?: Api.RetryLog.RetryLogSearchParams
 /** get retry log list */
 export function fetchRetryLogById(id: string) {
   return request<Api.RetryLog.RetryLog>({
-    url: `/retry-task-log/${id}`,
+    url: `/retry-task/${id}`,
     method: 'get'
   });
 }
@@ -20,7 +20,7 @@ export function fetchRetryLogById(id: string) {
 /** delete retry log */
 export function fetchDeleteRetryLog(id: number) {
   return request<boolean>({
-    url: `/retry-task-log/${id}`,
+    url: `/retry-task/${id}`,
     method: 'delete'
   });
 }
@@ -28,7 +28,7 @@ export function fetchDeleteRetryLog(id: number) {
 /** delete retry log */
 export function fetchBatchDeleteRetryLog(ids: number[]) {
   return request<boolean>({
-    url: `/retry-task-log/ids`,
+    url: `/retry-task/ids`,
     method: 'delete',
     data: ids
   });

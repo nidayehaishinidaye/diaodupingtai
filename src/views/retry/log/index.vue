@@ -17,7 +17,7 @@ const appStore = useAppStore();
 const detailData = ref<Api.RetryLog.RetryLog | null>();
 /** 详情页可见状态 */
 const { bool: detailVisible, setTrue: openDetail } = useBoolean(false);
-const retryStatus = history.state.retryStatus;
+const taskStatus = history.state.taskStatus;
 
 const { columns, columnChecks, data, getData, loading, mobilePagination, searchParams, resetSearchParams } = useTable({
   apiFn: fetchRetryLogPageList,
@@ -26,35 +26,26 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     size: 10,
     // if you want to use the searchParams in Form, you need to define the following properties, and the value is null
     // the value can not be undefined, otherwise the property in Form will not be reactive
-    uniqueId: null,
     groupName: null,
     sceneName: null,
-    idempotentId: null,
-    bizNo: null,
-    retryStatus: null,
+    taskStatus: null,
     datetimeRange: monthRangeISO8601()
   },
   searchParams: {
-    retryStatus
+    taskStatus
   },
   columns: () => [
     {
       type: 'selection',
       align: 'center',
       width: 48,
-      disabled: row => row.retryStatus === 0
+      disabled: row => row.taskStatus === 1
     },
     {
       key: 'id',
       title: $t('common.index'),
       align: 'center',
-      width: 64
-    },
-    {
-      key: 'uniqueId',
-      title: $t('page.retryLog.UniqueId'),
-      align: 'left',
-      minWidth: 120,
+      width: 64,
       render: row => {
         async function showDetailDrawer() {
           await loadRetryInfo(row);
@@ -63,7 +54,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
 
         return (
           <n-button text tag="a" type="primary" onClick={showDetailDrawer} class="ws-normal">
-            {row.uniqueId}
+            {row.id}
           </n-button>
         );
       }
@@ -81,17 +72,26 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       minWidth: 120
     },
     {
-      key: 'retryStatus',
+      key: 'taskStatus',
       title: $t('page.retryLog.retryStatus'),
       align: 'left',
       minWidth: 120,
       render: row => {
-        if (row.retryStatus === null) {
+        if (row.taskStatus === null) {
           return null;
         }
-        const label = $t(retryTaskStatusTypeRecord[row.retryStatus!]);
+        const tagMap: Record<number, NaiveUI.ThemeColor> = {
+          1: 'info',
+          2: 'info',
+          3: 'info',
+          4: 'error',
+          5: 'error',
+          6: 'error'
+        };
 
-        return <NTag type={tagColor(row.retryStatus!)}>{label}</NTag>;
+        const label = $t(retryTaskStatusTypeRecord[row.taskStatus!]);
+
+        return <NTag type={tagMap[row.taskStatus!]}>{label}</NTag>;
       }
     },
     {
@@ -109,18 +109,6 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       }
     },
     {
-      key: 'idempotentId',
-      title: $t('page.retryLog.idempotentId'),
-      align: 'left',
-      minWidth: 120
-    },
-    {
-      key: 'bizNo',
-      title: $t('page.retryLog.bizNo'),
-      align: 'left',
-      minWidth: 120
-    },
-    {
       key: 'createDt',
       title: $t('page.retryLog.createDt'),
       align: 'left',
@@ -133,7 +121,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       width: 80,
       render: row => (
         <div class="flex-center gap-8px">
-          {row.retryStatus === 1 || row.retryStatus === 2 ? (
+          {row.taskStatus === 1 || row.taskStatus === 2 ? (
             <NPopconfirm onPositiveClick={() => handleDelete(row.id)}>
               {{
                 default: () => $t('common.confirmDelete'),

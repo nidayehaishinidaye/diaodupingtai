@@ -3,7 +3,7 @@ import { request } from '../request';
 /** get retryTask list */
 export function fetchGetRetryTaskList(params?: Api.RetryTask.RetryTaskSearchParams) {
   return request<Api.RetryTask.RetryTaskList>({
-    url: '/retry-task/list',
+    url: '/retry/list',
     method: 'get',
     params
   });
@@ -12,7 +12,7 @@ export function fetchGetRetryTaskList(params?: Api.RetryTask.RetryTaskSearchPara
 /** get retryTask */
 export function fetchGetRetryTaskById(id: string, groupName: string) {
   return request<Api.RetryTask.RetryTask>({
-    url: `/retry-task/${id}?groupName=${groupName}`,
+    url: `/retry/${id}?groupName=${groupName}`,
     method: 'get'
   });
 }
@@ -20,7 +20,7 @@ export function fetchGetRetryTaskById(id: string, groupName: string) {
 /** add retryTask */
 export function fetchAddRetryTask(data: Api.RetryTask.RetryTask) {
   return request<boolean>({
-    url: '/retry-task',
+    url: '/retry',
     method: 'post',
     data
   });
@@ -29,7 +29,7 @@ export function fetchAddRetryTask(data: Api.RetryTask.RetryTask) {
 /** batch add retryTask */
 export function fetchBatchAddRetryTask(data: Api.RetryTask.RetryTaskBatchAdd) {
   return request<boolean>({
-    url: '/retry-task/batch',
+    url: '/retry/batch',
     method: 'post',
     data
   });
@@ -38,7 +38,7 @@ export function fetchBatchAddRetryTask(data: Api.RetryTask.RetryTaskBatchAdd) {
 /** edit retryTask */
 export function fetchEditRetryTask(data: Api.RetryTask.RetryTask) {
   return request<boolean>({
-    url: '/retry-task',
+    url: '/retry',
     method: 'put',
     data
   });
@@ -47,7 +47,7 @@ export function fetchEditRetryTask(data: Api.RetryTask.RetryTask) {
 /** update retryTask status */
 export function fetchUpdateRetryTaskStatus(data: Api.RetryTask.RetryTaskUpdateStatusRequest) {
   return request<boolean>({
-    url: '/retry-task/status',
+    url: '/retry/status',
     method: 'put',
     data
   });
@@ -56,7 +56,7 @@ export function fetchUpdateRetryTaskStatus(data: Api.RetryTask.RetryTaskUpdateSt
 /** manual execute retryTask */
 export function fetchExecuteRetryTask(data: Api.RetryTask.ManualTriggerTaskRequestVO) {
   return request<boolean>({
-    url: '/retry-task/manual/trigger/retry/task',
+    url: '/retry/manual/trigger/retry/task',
     method: 'post',
     data
   });
@@ -65,7 +65,7 @@ export function fetchExecuteRetryTask(data: Api.RetryTask.ManualTriggerTaskReque
 /** manual execute callbackTask */
 export function fetchExecuteCallbackTask(data: Api.RetryTask.ManualTriggerTaskRequestVO) {
   return request<boolean>({
-    url: '/retry-task/manual/trigger/callback/task',
+    url: '/retry/manual/trigger/callback/task',
     method: 'post',
     data
   });
@@ -74,7 +74,7 @@ export function fetchExecuteCallbackTask(data: Api.RetryTask.ManualTriggerTaskRe
 /** batch delete retryTask */
 export function fetchBatchDeleteRetryTask(data: Api.RetryTask.BatchDeleteRetryTaskVO) {
   return request<number>({
-    url: '/retry-task/batch',
+    url: '/retry/batch',
     method: 'delete',
     data
   });
@@ -83,7 +83,7 @@ export function fetchBatchDeleteRetryTask(data: Api.RetryTask.BatchDeleteRetryTa
 /** generate retryTask idempotent id */
 export function fetchIdempotentIdGenerate(data: Api.RetryTask.GenerateRetryIdempotentIdVO) {
   return request<string>({
-    url: '/retry-task/generate/idempotent-id',
+    url: '/retry/generate/idempotent-id',
     method: 'post',
     data
   });

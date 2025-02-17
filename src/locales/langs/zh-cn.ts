@@ -692,6 +692,8 @@ const local: App.I18n.Schema = {
     retryScene: {
       title: '场景列表',
       detail: '场景详情',
+      baseConfig: '基础配置',
+      cbConfig: '回调配置',
       groupName: '组名',
       sceneName: '场景名',
       notifyName: '告警通知',
@@ -705,6 +707,10 @@ const local: App.I18n.Schema = {
       updateDt: '更新时间',
       description: '描述',
       routeKey: '路由策略',
+      cbStatus: '回调开关',
+      cbTriggerType: '回调触发类型',
+      cbTriggerInterval: '回调触发间隔',
+      cbMaxCount: '最大回调执行次数',
       form: {
         notifyName: '请选择告警通知名称',
         maxRetryCount: '请输入最大重试次数',
@@ -717,7 +723,10 @@ const local: App.I18n.Schema = {
         deadlineRequest: '请输入调用链超时时间(毫秒)',
         routeKey: '请输入路由策略',
         backOff: '请输入退避策略',
-        sceneName2: '场景名称: 仅支持长度为:1~64位字符.格式为:数字、字母、下划线和中横线。'
+        sceneName2: '场景名称: 仅支持长度为:1~64位字符.格式为:数字、字母、下划线和中横线。',
+        cbTriggerType: '请选择回调触发类型',
+        cbTriggerInterval: '请输入触发间隔',
+        cbMaxCount: '请输入回调次数'
       },
       addScene: '新增场景',
       editScene: '编辑场景',

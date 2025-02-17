@@ -5,7 +5,7 @@ import OperateDrawer from '@/components/common/operate-drawer.vue';
 import { $t } from '@/locales';
 import { fetchBatchAddRetryTask } from '@/service/api';
 import { translateOptions } from '@/utils/common';
-import { retryTaskStatusTypeOptions } from '@/constants/business';
+import { retryStatusTypeOptions } from '@/constants/business';
 import SelectGroup from '@/components/common/select-group.vue';
 
 defineOptions({
@@ -78,7 +78,7 @@ watch(visible, () => {
         <NSelect
           v-model:value="model.retryStatus"
           :placeholder="$t('page.retryTask.form.retryStatus')"
-          :options="translateOptions(retryTaskStatusTypeOptions)"
+          :options="translateOptions(retryStatusTypeOptions)"
         />
       </NFormItem>
       <NFormItem :label="$t('page.retryTask.form.logStr')" path="logStr">

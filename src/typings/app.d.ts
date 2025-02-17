@@ -892,6 +892,8 @@ declare namespace App {
         retryScene: {
           title: string;
           detail: string;
+          baseConfig: string;
+          cbConfig: string;
           groupName: string;
           sceneName: string;
           notifyName: string;
@@ -905,6 +907,10 @@ declare namespace App {
           updateDt: string;
           description: string;
           routeKey: string;
+          cbStatus: string;
+          cbTriggerType: string;
+          cbTriggerInterval: string;
+          cbMaxCount: string;
           form: {
             notifyName: string;
             maxRetryCount: string;
@@ -918,6 +924,9 @@ declare namespace App {
             routeKey: string;
             backOff: string;
             sceneName2: string;
+            cbTriggerType: string;
+            cbTriggerInterval: string;
+            cbMaxCount: string;
           };
           addScene: string;
           editScene: string;
