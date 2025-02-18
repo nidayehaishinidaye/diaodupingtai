@@ -143,22 +143,22 @@ const cardData = computed<CardData[]>(() => [
       {
         label: $t('common.success'),
         value: props.modelValue?.retryTask.finishNum ?? 0,
-        click: () => routerPushByKey('retry_log', { state: { retryStatus: 1 } })
+        click: () => routerPushByKey('retry_info', { state: { retryStatus: 1 } })
       },
       {
         label: $t('common.running'),
         value: props.modelValue?.retryTask.runningNum ?? 0,
-        click: () => routerPushByKey('retry_log', { state: { retryStatus: 0 } })
+        click: () => routerPushByKey('retry_info', { state: { retryStatus: 0 } })
       },
       {
         label: $t('page.home.retryTask.status.maxRetryTimes'),
         value: props.modelValue?.retryTask.maxCountNum ?? 0,
-        click: () => routerPushByKey('retry_log', { state: { retryStatus: 2 } })
+        click: () => routerPushByKey('retry_info', { state: { retryStatus: 2 } })
       },
       {
         label: $t('page.home.retryTask.status.pauseRetry'),
         value: props.modelValue?.retryTask.suspendNum ?? 0,
-        click: () => routerPushByKey('retry_log', { state: { retryStatus: 3 } })
+        click: () => routerPushByKey('retry_info', { state: { retryStatus: 3 } })
       }
     ]
   },

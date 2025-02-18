@@ -234,15 +234,13 @@ export const generatedRoutes: GeneratedRoute[] = [
         }
       },
       {
-        name: 'retry_log',
-        path: '/retry/log',
-        component: 'view.retry_log',
+        name: 'retry_info',
+        path: '/retry/info',
+        component: 'view.retry_info',
         meta: {
-          title: 'retry_log',
-          i18nKey: 'route.retry_log',
-          icon: 'tabler:logs',
-          order: 20,
-          keepAlive: false
+          title: 'retry_info',
+          i18nKey: 'route.retry_info',
+          icon: 'octicon:tasklist'
         }
       },
       {
@@ -264,8 +262,7 @@ export const generatedRoutes: GeneratedRoute[] = [
         meta: {
           title: 'retry_task',
           i18nKey: 'route.retry_task',
-          icon: 'octicon:tasklist',
-          order: 10,
+          icon: 'carbon:batch-job',
           keepAlive: false
         }
       }
