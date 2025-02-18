@@ -22,7 +22,7 @@ import RetryTaskSearch from './modules/retry-task-search.vue';
 import RetryTaskDetailDrawerVue from './modules/retry-task-detail-drawer.vue';
 
 /** 详情页属性数据 */
-const detailData = ref<Api.RetryTask.RetryTask | null>();
+const detailData = ref<Api.Retry.Retry | null>();
 /** 详情页可见状态 */
 const { bool: detailVisible, setTrue: openDetail } = useBoolean(false);
 
@@ -50,7 +50,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       key: 'id',
       title: $t('common.index'),
       align: 'center',
-      width: 64,
+      width: 128,
       render: row => {
         async function showDetailDrawer() {
           await loadRetryInfo(row);
@@ -115,7 +115,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
         if (row.taskType === null) {
           return null;
         }
-        const tagMap: Record<Api.RetryTask.TaskType, NaiveUI.ThemeColor> = {
+        const tagMap: Record<Api.Retry.TaskType, NaiveUI.ThemeColor> = {
           1: 'warning',
           2: 'error'
         };
@@ -151,7 +151,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
           {/* 非[完成,最大次数], 显示[执行]按钮 */}
           {row.retryStatus !== 1 && row.retryStatus !== 2 ? (
             <>
-              <NPopconfirm onPositiveClick={() => handleExecute(row.groupName!, row.uniqueId!, row.taskType!)}>
+              <NPopconfirm onPositiveClick={() => handleExecute(row.groupName!, row.id! as any, row.taskType!)}>
                 {{
                   default: () => $t('common.confirmExecute'),
                   trigger: () => (
@@ -256,9 +256,9 @@ async function handleDelete(groupName: string, id: string) {
   onDeleted();
 }
 
-async function loadRetryInfo(row: Api.RetryTask.RetryTask) {
+async function loadRetryInfo(row: Api.Retry.Retry) {
   const res = await fetchGetRetryTaskById(row.id!, row.groupName!);
-  detailData.value = (res.data as Api.RetryLog.RetryLog) || null;
+  detailData.value = (res.data as Api.Retry.Retry) || null;
 }
 
 async function handleBatchDelete() {
@@ -274,14 +274,14 @@ function handleBatchAdd() {
   openBatchAddDrawer();
 }
 
-function handleExecute(groupName: string, uniqueId: string, type: Api.RetryTask.TaskType) {
+function handleExecute(groupName: string, retryId: number, type: Api.Retry.TaskType) {
   if (type === 1) {
-    fetchExecuteRetryTask({ groupName, uniqueIds: [uniqueId] });
+    fetchExecuteRetryTask({ groupName, retryIds: [retryId] });
     return;
   }
 
   if (type === 2) {
-    fetchExecuteCallbackTask({ groupName, uniqueIds: [uniqueId] });
+    fetchExecuteCallbackTask({ groupName, retryIds: [retryId] });
   }
 }
 
@@ -297,7 +297,7 @@ function handleFinish(id: number, groupName: string) {
   updateRetryTaskStatus(id, groupName, 1);
 }
 
-async function updateRetryTaskStatus(id: number, groupName: string, retryStatus: Api.RetryTask.RetryStatusType) {
+async function updateRetryTaskStatus(id: number, groupName: string, retryStatus: Api.Retry.RetryStatusType) {
   const { error } = await fetchUpdateRetryTaskStatus({ id, groupName, retryStatus });
   if (error) return;
   window.$message?.success($t('common.updateSuccess'));

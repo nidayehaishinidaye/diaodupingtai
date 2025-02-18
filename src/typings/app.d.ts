@@ -457,6 +457,18 @@ declare namespace App {
             skip: string;
           };
         };
+        retryTaskStatus: {
+          label: string;
+          form: string;
+          items: {
+            waiting: string;
+            running: string;
+            success: string;
+            fail: string;
+            stop: string;
+            cancel: string;
+          };
+        };
         taskStatus: {
           label: string;
           form: string;

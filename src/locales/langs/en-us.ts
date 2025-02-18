@@ -176,6 +176,18 @@ const local: App.I18n.Schema = {
         skip: 'Skip'
       }
     },
+    retryTaskStatus: {
+      label: 'Task Batch Status',
+      form: 'Please enter task batch status',
+      items: {
+        waiting: 'Waiting',
+        running: 'Running',
+        success: 'Success',
+        fail: 'Fail',
+        stop: 'Stop',
+        cancel: 'Cancel'
+      }
+    },
     taskStatus: {
       label: 'Task Status',
       form: 'Please enter task status',
@@ -718,7 +730,7 @@ const local: App.I18n.Schema = {
         sceneName2: 'Scene name: 1~64 characters. allowing: digit, letters, underscore or hyphens..',
         cbTriggerType: 'Please select the retry trigger time',
         cbTriggerInterval: 'Please enter trigger interval',
-        cbMaxCount: 'Please enter Maximum number of callback',
+        cbMaxCount: 'Please enter Maximum number of callback'
       },
       addScene: 'Add Scenes',
       editScene: 'Add Scenes',

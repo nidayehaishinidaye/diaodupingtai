@@ -89,7 +89,7 @@ export const groupConfigYesOrNoRecord: Record<Api.GroupConfig.YesOrNoType, App.I
 };
 export const groupConfigYesOrNoOptions = transformRecordToNumberOption(groupConfigYesOrNoRecord, true);
 
-export const retryStatusTypeRecord: Record<Api.RetryTask.RetryStatusType, App.I18n.I18nKey> = {
+export const retryStatusTypeRecord: Record<Api.Retry.RetryStatusType, App.I18n.I18nKey> = {
   0: 'page.retryTask.retryStatusType.retrying',
   1: 'page.retryTask.retryStatusType.finished',
   2: 'page.retryTask.retryStatusType.maxRetry',
@@ -97,17 +97,17 @@ export const retryStatusTypeRecord: Record<Api.RetryTask.RetryStatusType, App.I1
 };
 export const retryStatusTypeOptions = transformRecordToNumberOption(retryStatusTypeRecord);
 
-export const retryTaskStatusTypeRecord: Record<Api.RetryTask.RetryTaskStatusType, App.I18n.I18nKey> = {
-  1: 'page.retryTask.retryStatusType.finished',
-  2: 'page.retryTask.retryStatusType.maxRetry',
-  3: 'page.retryTask.retryStatusType.paused',
-  4: 'page.retryTask.retryStatusType.paused',
-  5: 'page.retryTask.retryStatusType.paused',
-  6: 'page.retryTask.retryStatusType.paused'
+export const retryTaskStatusTypeRecord: Record<Api.Retry.RetryTaskStatusType, App.I18n.I18nKey> = {
+  1: 'common.retryTaskStatus.items.waiting',
+  2: 'common.retryTaskStatus.items.running',
+  3: 'common.retryTaskStatus.items.success',
+  4: 'common.retryTaskStatus.items.fail',
+  5: 'common.retryTaskStatus.items.stop',
+  6: 'common.retryTaskStatus.items.cancel'
 };
 export const retryTaskStatusTypeOptions = transformRecordToNumberOption(retryTaskStatusTypeRecord);
 
-export const retryTaskTypeRecord: Record<Api.RetryTask.TaskType, App.I18n.I18nKey> = {
+export const retryTaskTypeRecord: Record<Api.Retry.TaskType, App.I18n.I18nKey> = {
   1: 'page.retryTask.taskTypeDict.retry',
   2: 'page.retryTask.taskTypeDict.callback'
 };

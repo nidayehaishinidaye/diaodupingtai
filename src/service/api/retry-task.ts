@@ -1,8 +1,8 @@
 import { request } from '../request';
 
 /** get retry log list */
-export function fetchRetryLogPageList(params?: Api.RetryLog.RetryTaskSearchParams) {
-  return request<Api.RetryLog.RetryLogList>({
+export function fetchRetryLogPageList(params?: Api.RetryTask.RetryTaskSearchParams) {
+  return request<Api.RetryTask.RetryTaskList>({
     url: '/retry-task/list',
     method: 'get',
     params
@@ -11,7 +11,7 @@ export function fetchRetryLogPageList(params?: Api.RetryLog.RetryTaskSearchParam
 
 /** get retry log list */
 export function fetchRetryLogById(id: string) {
-  return request<Api.RetryLog.RetryLog>({
+  return request<Api.RetryTask.RetryTask>({
     url: `/retry-task/${id}`,
     method: 'get'
   });

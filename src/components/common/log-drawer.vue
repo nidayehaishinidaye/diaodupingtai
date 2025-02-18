@@ -25,7 +25,7 @@ interface Props {
   title?: string;
   drawer?: boolean;
   type?: 'job' | 'retry';
-  taskData?: Api.Job.JobTask | Api.RetryLog.RetryLog | Api.RetryTask.RetryTask;
+  taskData?: Api.Job.JobTask | Api.RetryTask.RetryTask;
   modelValue?: Api.JobLog.JobMessage[];
 }
 
@@ -90,10 +90,10 @@ async function getLogList() {
   }
 
   if (props.type === 'retry') {
-    const taskData = props.taskData! as Api.RetryLog.RetryLog | Api.RetryTask.RetryTask;
+    const taskData = props.taskData! as Api.RetryTask.RetryTask;
     const { data, error } = await fetchRetryLogList({
       groupName: taskData.groupName,
-      uniqueId: taskData.uniqueId!,
+      retryTaskId: taskData.id!,
       startId,
       fromIndex,
       size: 50
@@ -208,8 +208,8 @@ function openNewTab() {
   if (props.type === 'retry') {
     query = {
       type: props.type,
-      groupName: (props.taskData as Api.RetryLog.RetryLog | Api.RetryTask.RetryTask).groupName,
-      uniqueId: (props.taskData as Api.RetryLog.RetryLog | Api.RetryTask.RetryTask).uniqueId
+      groupName: (props.taskData as Api.RetryTask.RetryTask | Api.Retry.Retry).groupName,
+      retryTaskId: (props.taskData as Api.RetryTask.RetryTask).id
     };
   }
   const url = router.resolve({ path: '/log', query });

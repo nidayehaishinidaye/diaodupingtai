@@ -14,7 +14,7 @@ import RetryLogDetailDrawer from './modules/retry-log-detail-drawer.vue';
 const appStore = useAppStore();
 
 /** 详情页属性数据 */
-const detailData = ref<Api.RetryLog.RetryLog | null>();
+const detailData = ref<Api.RetryTask.RetryTask | null>();
 /** 详情页可见状态 */
 const { bool: detailVisible, setTrue: openDetail } = useBoolean(false);
 const taskStatus = history.state.taskStatus;
@@ -155,9 +155,9 @@ async function handleDelete(id: any) {
   onDeleted();
 }
 
-async function loadRetryInfo(row: Api.RetryLog.RetryLog) {
+async function loadRetryInfo(row: Api.RetryTask.RetryTask) {
   const res = await fetchRetryLogById(row.id!);
-  detailData.value = (res.data as Api.RetryLog.RetryLog) || null;
+  detailData.value = (res.data as Api.RetryTask.RetryTask) || null;
 }
 </script>
 

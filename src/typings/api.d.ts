@@ -742,7 +742,7 @@ declare namespace Api {
    *
    * backend api module: "retryTask"
    */
-  namespace RetryTask {
+  namespace Retry {
     type CommonSearchParams = Pick<Common.PaginatingCommonParams, 'page' | 'size'>;
 
     type RetryStatusType = 0 | 1 | 2 | 3;
@@ -752,9 +752,7 @@ declare namespace Api {
     type TaskType = 1 | 2;
 
     /** RetryTask */
-    type RetryTask = Common.CommonRecord<{
-      /** UniqueId */
-      uniqueId?: string;
+    type Retry = Common.CommonRecord<{
       /** 组名称 */
       groupName: string;
       /** 场景名称 */
@@ -799,7 +797,7 @@ declare namespace Api {
 
     type ManualTriggerTaskRequestVO = {
       groupName: string;
-      uniqueIds: string[];
+      retryIds: number[];
     };
 
     type BatchDeleteRetryTaskVO = {
@@ -819,13 +817,12 @@ declare namespace Api {
     };
 
     /** RetryTask search params */
-    type RetryTaskSearchParams = CommonType.RecordNullable<
-      Pick<Api.RetryTask.RetryTask, 'groupName' | 'sceneName' | 'idempotentId' | 'bizNo' | 'retryStatus'> &
-        CommonSearchParams
+    type RetrySearchParams = CommonType.RecordNullable<
+      Pick<Api.Retry.Retry, 'groupName' | 'sceneName' | 'idempotentId' | 'bizNo' | 'retryStatus'> & CommonSearchParams
     >;
 
     /** RetryTask list */
-    type RetryTaskList = Common.PaginatingQueryRecord<RetryTask>;
+    type RetryList = Common.PaginatingQueryRecord<Retry>;
   }
 
   /**
@@ -1223,13 +1220,13 @@ declare namespace Api {
    *
    * backend api module: "retryLog"
    */
-  namespace RetryLog {
-    import TaskType = Api.RetryTask.TaskType;
-    import RetryTaskStatusType = Api.RetryTask.RetryTaskStatusType;
+  namespace RetryTask {
+    import TaskType = Api.Retry.TaskType;
+    import RetryTaskStatusType = Api.Retry.RetryTaskStatusType;
     type CommonSearchParams = Pick<Common.PaginatingCommonParams, 'page' | 'size'>;
 
     /** retryLog */
-    type RetryLog = Common.CommonRecord<{
+    type RetryTask = Common.CommonRecord<{
       /** UniqueId */
       retryId: string;
       /** 组名称 */
@@ -1250,12 +1247,12 @@ declare namespace Api {
 
     /** retryLog search params */
     type RetryTaskSearchParams = CommonType.RecordNullable<
-      Pick<Api.RetryLog.RetryLog, 'retryId' | 'groupName' | 'sceneName' | 'taskStatus' | 'operationReason'> &
+      Pick<Api.RetryTask.RetryTask, 'retryId' | 'groupName' | 'sceneName' | 'taskStatus' | 'operationReason'> &
         CommonSearchParams & { datetimeRange?: [string, string] }
     >;
 
     /** retryLog list */
-    type RetryLogList = Common.PaginatingQueryRecord<RetryLog>;
+    type RetryTaskList = Common.PaginatingQueryRecord<RetryTask>;
   }
   /**
    * namespace UserManager
@@ -1323,7 +1320,7 @@ declare namespace Api {
 
     type RetryLogSearchParams = {
       groupName: string;
-      uniqueId: string;
+      retryTaskId: string;
     } & LogSearchParams;
 
     type LogSearchParams = {

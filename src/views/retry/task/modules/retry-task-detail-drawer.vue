@@ -11,7 +11,7 @@ defineOptions({
 
 interface Props {
   /** row data */
-  rowData?: Api.RetryTask.RetryTask | null;
+  rowData?: Api.Retry.Retry | null;
 }
 
 const props = defineProps<Props>();
@@ -30,7 +30,7 @@ let fromIndex: number = 0;
 async function getLogList() {
   const { data: logData, error } = await fetchRetryLogList({
     groupName: props.rowData!.groupName,
-    uniqueId: props.rowData!.uniqueId!,
+    retryTaskId: props.rowData!.id! as any,
     startId,
     fromIndex,
     size: 50
@@ -73,9 +73,6 @@ onBeforeUnmount(() => {
     <NTabs type="segment" animated @update:value="handleUpdateTab">
       <NTabPane :name="0" :tab="$t('page.log.info')">
         <NDescriptions label-placement="top" bordered :column="2">
-          <NDescriptionsItem :label="$t('page.retryTask.uniqueId')" :span="2">
-            {{ rowData?.uniqueId }}
-          </NDescriptionsItem>
           <NDescriptionsItem :label="$t('page.retryTask.groupName')" :span="2">
             {{ rowData?.groupName }}
           </NDescriptionsItem>
@@ -107,9 +104,6 @@ onBeforeUnmount(() => {
           <NDescriptionsItem :label="$t('common.createDt')" :span="1">{{ rowData?.createDt }}</NDescriptionsItem>
           <NDescriptionsItem :label="$t('common.updateDt')" :span="1">{{ rowData?.updateDt }}</NDescriptionsItem>
         </NDescriptions>
-      </NTabPane>
-      <NTabPane :name="1" :tab="$t('page.log.title')" display-directive="if">
-        <LogDrawer :drawer="false" type="retry" :task-data="rowData!" />
       </NTabPane>
     </NTabs>
   </OperateDrawer>

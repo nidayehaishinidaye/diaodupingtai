@@ -18,7 +18,7 @@ interface Props {
   /** the type of operation */
   operateType: NaiveUI.TableOperateType;
   /** the edit row data */
-  rowData?: Api.RetryTask.RetryTask | null;
+  rowData?: Api.Retry.Retry | null;
 }
 
 const props = defineProps<Props>();
@@ -46,7 +46,7 @@ const title = computed(() => {
 });
 
 type Model = Pick<
-  Api.RetryTask.RetryTask,
+  Api.Retry.Retry,
   'groupName' | 'sceneName' | 'idempotentId' | 'bizNo' | 'executorName' | 'argsStr' | 'retryStatus'
 >;
 

@@ -176,6 +176,18 @@ const local: App.I18n.Schema = {
         skip: '跳过'
       }
     },
+    retryTaskStatus: {
+      label: '执行状态',
+      form: '请选择执行状态',
+      items: {
+        waiting: '待处理',
+        running: '运行中',
+        success: '处理成功',
+        fail: '处理失败',
+        stop: '任务停止',
+        cancel: '取消'
+      }
+    },
     taskStatus: {
       label: '状态',
       form: '请选择状态',

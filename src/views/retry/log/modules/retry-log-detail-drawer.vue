@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { $t } from '@/locales';
 import { tagColor } from '@/utils/common';
-import { retryStatusTypeRecord, retryTaskTypeRecord } from '@/constants/business';
+import { retryTaskStatusTypeRecord, retryTaskTypeRecord } from '@/constants/business';
 
 defineOptions({
   name: 'SceneDetailDrawer'
@@ -9,7 +9,7 @@ defineOptions({
 
 interface Props {
   /** row data */
-  rowData?: Api.RetryLog.RetryLog | null;
+  rowData?: Api.RetryTask.RetryTask | null;
 }
 
 defineProps<Props>();
@@ -24,9 +24,6 @@ const visible = defineModel<boolean>('visible', {
     <NTabs type="segment" animated>
       <NTabPane :name="0" :tab="$t('page.log.info')">
         <NDescriptions label-placement="top" bordered :column="2">
-          <NDescriptionsItem :label="$t('page.retryLog.UniqueId')" :span="2">
-            {{ rowData?.uniqueId }}
-          </NDescriptionsItem>
           <NDescriptionsItem :label="$t('page.retryLog.groupName')" :span="2">
             {{ rowData?.groupName }}
           </NDescriptionsItem>
@@ -34,21 +31,13 @@ const visible = defineModel<boolean>('visible', {
             {{ rowData?.sceneName }}
           </NDescriptionsItem>
           <NDescriptionsItem :label="$t('page.retryLog.retryStatus')" :span="1">
-            <NTag :type="tagColor(rowData?.retryStatus!)">
-              {{ $t(retryStatusTypeRecord[rowData?.retryStatus!]) }}
+            <NTag :type="tagColor(rowData?.taskStatus!)">
+              {{ $t(retryTaskStatusTypeRecord[rowData?.taskStatus!]) }}
             </NTag>
           </NDescriptionsItem>
           <NDescriptionsItem :label="$t('page.retryLog.taskType')" :span="1">
             <NTag :type="tagColor(rowData?.taskType!)">{{ $t(retryTaskTypeRecord[rowData?.taskType!]) }}</NTag>
           </NDescriptionsItem>
-          <NDescriptionsItem :label="$t('page.retryLog.bizNo')" :span="2">{{ rowData?.bizNo }}</NDescriptionsItem>
-          <NDescriptionsItem :label="$t('page.retryLog.idempotentId')" :span="2">
-            {{ rowData?.idempotentId }}
-          </NDescriptionsItem>
-          <NDescriptionsItem :label="$t('page.retryTask.executorName')" :span="2">
-            {{ rowData?.executorName }}
-          </NDescriptionsItem>
-          <NDescriptionsItem :label="$t('page.retryTask.argsStr')" :span="2">{{ rowData?.argsStr }}</NDescriptionsItem>
           <NDescriptionsItem :label="$t('common.createDt')">{{ rowData?.createDt }}</NDescriptionsItem>
         </NDescriptions>
       </NTabPane>

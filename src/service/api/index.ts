@@ -7,7 +7,7 @@ export * from './notify';
 export * from './group';
 export * from './retry';
 export * from './retry-scene';
-export * from './retry-log';
+export * from './retry-task';
 export * from './retry-dead-letter';
 export * from './workflow';
 export * from './job';

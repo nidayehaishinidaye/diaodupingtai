@@ -25,7 +25,7 @@ const visible = defineModel<boolean>('visible', {
 const { formRef, validate, restoreValidation } = useNaiveForm();
 const { defaultRequiredRule } = useFormRules();
 
-type Model = Pick<Api.RetryTask.RetryTaskBatchAdd, 'groupName' | 'retryStatus' | 'logStr'>;
+type Model = Pick<Api.Retry.RetryTaskBatchAdd, 'groupName' | 'retryStatus' | 'logStr'>;
 
 const model: Model = reactive(createDefaultModel());
 
