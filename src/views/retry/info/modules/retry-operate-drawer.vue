@@ -39,8 +39,8 @@ const { defaultRequiredRule } = useFormRules();
 
 const title = computed(() => {
   const titles: Record<NaiveUI.TableOperateType, string> = {
-    add: $t('page.retryTask.addRetryTask'),
-    edit: $t('page.retryTask.editRetryTask')
+    add: $t('page.retry.addRetry'),
+    edit: $t('page.retry.editRetry')
   };
   return titles[props.operateType];
 });

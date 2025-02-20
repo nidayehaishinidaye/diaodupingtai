@@ -220,6 +220,25 @@ const local: App.I18n.Schema = {
         workflowDecisionFailed: '判定未通过'
       }
     },
+    retryOperationReason: {
+      label: '操作原因',
+      form: '请选择执行状态',
+      items: {
+        none: '无',
+        taskExecutionTimeout: '任务执行超时',
+        notClient: '无客户端节点',
+        closed: '任务已关闭',
+        discard: '任务丢弃',
+        overlay: '任务被覆盖',
+        notExecutionTask: '无可执行任务项',
+        taskExecutionError: '任务执行期间发生非预期异常',
+        mannerStop: '手动停止',
+        noRunningRetry: '当前重试非运行中',
+        sceneClosed: '当前场景已关闭',
+        retryFail: '重试失败',
+        clientTriggerRetryStop: '客户端触发任务停止'
+      }
+    },
     updateDt: '更新时间',
     createDt: '创建时间',
     today: '今天',
@@ -660,10 +679,9 @@ const local: App.I18n.Schema = {
         createDt: '请输入创建时间'
       }
     },
-    retryTask: {
-      title: '重试任务列表',
-      detail: '重试任务详情',
-      uniqueId: 'UniqueId',
+    retry: {
+      title: '重试列表',
+      detail: '重试详情',
       groupName: '组名称',
       sceneName: '场景名称',
       idempotentId: '幂等ID',
@@ -671,9 +689,9 @@ const local: App.I18n.Schema = {
       executorName: '执行器名称',
       argsStr: '方法参数',
       nextTriggerAt: '下次触发时间',
-      retryCount: '重试次数',
-      retryStatus: '重试状态',
-      taskType: '任务类型',
+      retryCount: '次数',
+      retryStatus: '状态',
+      taskType: '类型',
       form: {
         retryStatus: '请输入重试状态',
         bizNo: '请输入业务编号',
@@ -697,9 +715,9 @@ const local: App.I18n.Schema = {
         callback: '回调数据'
       },
       generateIdempotentId: '通过客户端生成',
-      addRetryTask: '新增重试任务',
-      editRetryTask: '编辑重试任务',
-      batchAddRetryTask: '批量新增重试任务'
+      addRetry: '新增重试',
+      editRetry: '编辑重试',
+      batchAddRetry: '批量新增'
     },
     retryScene: {
       title: '场景列表',
@@ -749,26 +767,25 @@ const local: App.I18n.Schema = {
         random: '随机等待'
       }
     },
-    retryLog: {
-      title: '重试日志列表',
-      detail: '重试日志详情',
-      UniqueId: 'UniqueId',
+    retryTask: {
+      title: '重试任务列表',
+      detail: '重试详情',
       groupName: '组名称',
       sceneName: '场景名称',
-      retryStatus: '重试状态',
-      taskType: '任务类型',
-      idempotentId: '幂等id',
+      retryStatus: '状态',
+      taskType: '类型',
+      idempotentId: '幂等ID',
       bizNo: '业务编号',
       createDt: '创建时间',
+      operationReason: '操作原因',
       form: {
         groupName: '请输入组名称',
         idempotentId: '请输入幂等id',
         sceneName: '请输入场景名称',
-        bizNo: '请输入业务编号',
-        UniqueId: '请输入UniqueId'
+        bizNo: '请输入业务编号'
       },
-      addRetryLog: '新增重试日志',
-      editRetryLog: '编辑重试日志'
+      addRetryTask: '新增重试任务',
+      editRetryTask: '编辑重试任务'
     },
     workflow: {
       title: '工作流列表',

@@ -69,7 +69,7 @@ watch(visible, () => {
 </script>
 
 <template>
-  <OperateDrawer v-model="visible" :title="$t('page.retryTask.batchAddRetryTask')" @handle-submit="handleSubmit">
+  <OperateDrawer v-model="visible" :title="$t('page.retryTask.batchAddRetry')" @handle-submit="handleSubmit">
     <NForm ref="formRef" :model="model" :rules="rules">
       <NFormItem :label="$t('page.retryTask.groupName')" path="groupName">
         <SelectGroup v-model:value="model.groupName" />

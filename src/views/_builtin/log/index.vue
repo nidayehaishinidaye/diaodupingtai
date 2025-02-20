@@ -33,7 +33,7 @@ const title = computed(() => {
   }
 
   if (type.value === 'retry') {
-    return `${$t('common.systemTaskType.retry') + $t('page.log.title')} ------ ${$t('page.retryLog.groupName')}: ${groupName}, ${$t('page.retryLog.UniqueId')}: ${uniqueId}`;
+    return `${$t('common.systemTaskType.retry') + $t('page.log.title')} ------ ${$t('page.retryTask.groupName')}: ${groupName}, ${$t('page.retryTask.title')}: ${uniqueId}`;
   }
 
   return $t('page.log.title');

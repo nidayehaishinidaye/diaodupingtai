@@ -501,6 +501,25 @@ declare namespace App {
             workflowDecisionFailed: string;
           };
         };
+        retryOperationReason: {
+          label: string;
+          form: string;
+          items: {
+            none: string;
+            taskExecutionTimeout: string;
+            notClient: string;
+            closed: string;
+            discard: string;
+            overlay: string;
+            notExecutionTask: string;
+            taskExecutionError: string;
+            mannerStop: string;
+            noRunningRetry: string;
+            sceneClosed: string;
+            retryFail: string;
+            clientTriggerRetryStop: string;
+          };
+        };
         updateDt: string;
         createDt: string;
         today: string;
@@ -860,10 +879,9 @@ declare namespace App {
             createDt: string;
           };
         };
-        retryTask: {
+        retry: {
           title: string;
           detail: string;
-          uniqueId: string;
           groupName: string;
           sceneName: string;
           idempotentId: string;
@@ -897,9 +915,9 @@ declare namespace App {
             callback: string;
           };
           generateIdempotentId: string;
-          addRetryTask: string;
-          editRetryTask: string;
-          batchAddRetryTask: string;
+          addRetry: string;
+          editRetry: string;
+          batchAddRetry: string;
         };
         retryScene: {
           title: string;
@@ -949,10 +967,9 @@ declare namespace App {
             random: string;
           };
         };
-        retryLog: {
+        retryTask: {
           title: string;
           detail: string;
-          UniqueId: string;
           groupName: string;
           sceneName: string;
           retryStatus: string;
@@ -960,15 +977,15 @@ declare namespace App {
           idempotentId: string;
           bizNo: string;
           createDt: string;
+          operationReason: string;
           form: {
             groupName: string;
             idempotentId: string;
             sceneName: string;
             bizNo: string;
-            UniqueId: string;
           };
-          addRetryLog: string;
-          editRetryLog: string;
+          addRetryTask: string;
+          editRetryTask: string;
         };
         workflow: {
           title: string;

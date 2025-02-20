@@ -30,22 +30,22 @@ function search() {
 
 <template>
   <SearchForm btn-span="24 xl:3" :model="model" @search="search" @reset="reset">
-    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryLog.groupName')" path="groupName" class="pr-24px">
+    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryTask.groupName')" path="groupName" class="pr-24px">
       <SelectGroup v-model:value="model.groupName" clearable />
     </NFormItemGi>
-    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryLog.sceneName')" path="sceneName" class="pr-24px">
+    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryTask.sceneName')" path="sceneName" class="pr-24px">
       <SelectScene v-model:value="model.sceneName" :group-name="model.groupName as string" clearable />
     </NFormItemGi>
-    <!--    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryLog.UniqueId')" path="UniqueId" class="pr-24px">-->
-    <!--      <NInput v-model:value="model.uniqueId" :placeholder="$t('page.retryLog.form.UniqueId')" clearable />-->
+    <!--    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryTask.UniqueId')" path="UniqueId" class="pr-24px">-->
+    <!--      <NInput v-model:value="model.uniqueId" :placeholder="$t('page.retryTask.form.UniqueId')" clearable />-->
     <!--    </NFormItemGi>-->
-    <!--    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryLog.idempotentId')" path="idempotentId" class="pr-24px">-->
-    <!--      <NInput v-model:value="model.idempotentId" :placeholder="$t('page.retryLog.form.idempotentId')" clearable />-->
+    <!--    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryTask.idempotentId')" path="idempotentId" class="pr-24px">-->
+    <!--      <NInput v-model:value="model.idempotentId" :placeholder="$t('page.retryTask.form.idempotentId')" clearable />-->
     <!--    </NFormItemGi>-->
-    <!--    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryLog.bizNo')" path="bizNo" class="pr-24px">-->
-    <!--      <NInput v-model:value="model.bizNo" :placeholder="$t('page.retryLog.form.bizNo')" clearable />-->
+    <!--    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryTask.bizNo')" path="bizNo" class="pr-24px">-->
+    <!--      <NInput v-model:value="model.bizNo" :placeholder="$t('page.retryTask.form.bizNo')" clearable />-->
     <!--    </NFormItemGi>-->
-    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryLog.retryStatus')" path="taskBatchStatus" class="pr-24px">
+    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryTask.retryStatus')" path="taskBatchStatus" class="pr-24px">
       <NSelect
         v-model:value="model.taskStatus"
         :placeholder="$t('page.retryTask.form.retryStatus')"

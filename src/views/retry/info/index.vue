@@ -51,6 +51,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       title: $t('common.index'),
       align: 'center',
       width: 128,
+      fixed: 'left',
       render: row => {
         async function showDetailDrawer() {
           await loadRetryInfo(row);
@@ -66,36 +67,36 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     },
     {
       key: 'groupName',
-      title: $t('page.retryTask.groupName'),
-      align: 'left',
+      title: $t('page.retry.groupName'),
+      align: 'center',
       resizable: true,
       minWidth: 120,
       maxWidth: 250
     },
     {
       key: 'sceneName',
-      title: $t('page.retryTask.sceneName'),
-      align: 'left',
+      title: $t('page.retry.sceneName'),
+      align: 'center',
       minWidth: 120
     },
     {
       key: 'nextTriggerAt',
-      title: $t('page.retryTask.nextTriggerAt'),
-      align: 'left',
+      title: $t('page.retry.nextTriggerAt'),
+      align: 'center',
       resizable: true,
-      minWidth: 120,
+      minWidth: 80,
       maxWidth: 150
     },
     {
       key: 'retryCount',
-      title: $t('page.retryTask.retryCount'),
+      title: $t('page.retry.retryCount'),
       align: 'center',
       width: 80
     },
     {
       key: 'retryStatus',
-      title: $t('page.retryTask.retryStatus'),
-      align: 'left',
+      title: $t('page.retry.retryStatus'),
+      align: 'center',
       width: 120,
       render: row => {
         if (row.retryStatus === null) {
@@ -108,8 +109,8 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     },
     {
       key: 'taskType',
-      title: $t('page.retryTask.taskType'),
-      align: 'left',
+      title: $t('page.retry.taskType'),
+      align: 'center',
       width: 100,
       render: row => {
         if (row.taskType === null) {
@@ -126,16 +127,15 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     },
     {
       key: 'idempotentId',
-      title: $t('page.retryTask.idempotentId'),
-      align: 'left',
+      title: $t('page.retry.idempotentId'),
+      align: 'center',
       resizable: true,
-      minWidth: 150,
-      maxWidth: 300
+      minWidth: 120
     },
     {
       key: 'bizNo',
-      title: $t('page.retryTask.bizNo'),
-      align: 'left',
+      title: $t('page.retry.bizNo'),
+      align: 'center',
       resizable: true,
       minWidth: 150,
       maxWidth: 300
@@ -317,7 +317,7 @@ onMounted(async () => {
   <div class="min-h-500px flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
     <RetryTaskSearch v-model:model="searchParams" @reset="resetSearchParams" @search="getData" />
     <NCard
-      :title="$t('page.retryTask.title')"
+      :title="$t('page.retry.title')"
       :bordered="false"
       size="small"
       class="sm:flex-1-hidden card-wrapper"

@@ -220,6 +220,25 @@ const local: App.I18n.Schema = {
         workflowDecisionFailed: 'Workflow decision failed'
       }
     },
+    retryOperationReason: {
+      label: 'Job Operation Reason',
+      form: 'Please enter job operation reason',
+      items: {
+        none: 'None',
+        taskExecutionTimeout: 'Task execution timeout',
+        notClient: 'No client',
+        closed: 'Job closed',
+        discard: 'Job discard',
+        overlay: 'Job overlapped',
+        notExecutionTask: 'No execution task',
+        taskExecutionError: 'Execution error',
+        mannerStop: 'Manual stop',
+        noRunningRetry: 'No running retry',
+        sceneClosed: 'Scene closed',
+        retryFail: 'Retry failed',
+        clientTriggerRetryStop: 'Client trigger stop'
+      }
+    },
     updateDt: 'Updated Time',
     createDt: 'Created Time',
     today: 'Today',
@@ -652,10 +671,9 @@ const local: App.I18n.Schema = {
         createDt: 'Please enter createDt'
       }
     },
-    retryTask: {
-      title: 'RetryTask List',
-      detail: 'RetryTask Detail',
-      uniqueId: 'UniqueId',
+    retry: {
+      title: 'Retry List',
+      detail: 'Retry Detail',
       groupName: 'Group name',
       sceneName: 'Scene name',
       idempotentId: 'Idempotent ID',
@@ -689,9 +707,9 @@ const local: App.I18n.Schema = {
         callback: 'Callback data'
       },
       generateIdempotentId: 'Generate by client',
-      addRetryTask: 'Add Retry task',
-      editRetryTask: 'Add Retry task',
-      batchAddRetryTask: 'Batch add retry task'
+      addRetry: 'Add Retry task',
+      editRetry: 'Add Retry task',
+      batchAddRetry: 'Batch add retry task'
     },
     retryScene: {
       title: 'Scene List',
@@ -741,10 +759,9 @@ const local: App.I18n.Schema = {
         random: 'Random delay'
       }
     },
-    retryLog: {
-      title: 'RetryLog List',
-      detail: 'Retry Log Detail',
-      UniqueId: 'UniqueId',
+    retryTask: {
+      title: 'Retry Task List',
+      detail: 'Retry Task Detail',
       groupName: 'Group name',
       sceneName: 'Scene name',
       retryStatus: 'Retry status',
@@ -752,16 +769,15 @@ const local: App.I18n.Schema = {
       idempotentId: 'Idempotent ID',
       bizNo: 'Business Number',
       createDt: 'Creation time',
-
+      operationReason: 'Operation reason',
       form: {
         groupName: 'Please enter Group name',
         idempotentId: 'Please enter Idempotent ID',
         sceneName: 'Please enter Scene name',
-        bizNo: 'Please enter Business Number',
-        UniqueId: 'Please enter UniqueId'
+        bizNo: 'Please enter Business Number'
       },
-      addRetryLog: 'Add Retry log',
-      editRetryLog: 'Add Retry log'
+      addRetryTask: 'Add Retry Task',
+      editRetryTask: 'Add Retry Task'
     },
     workflowBatch: {
       title: 'Workflow Batch List',

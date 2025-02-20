@@ -6,7 +6,7 @@ import { fetchBatchDeleteRetryLog, fetchDeleteRetryLog, fetchRetryLogById, fetch
 import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import { retryTaskStatusTypeRecord, retryTaskTypeRecord } from '@/constants/business';
+import { operationReasonRecord, retryTaskStatusTypeRecord, retryTaskTypeRecord } from '@/constants/business';
 import { monthRangeISO8601, tagColor } from '@/utils/common';
 import RetryLogSearch from './modules/retry-task-search.vue';
 import RetryLogDetailDrawer from './modules/retry-task-detail-drawer.vue';
@@ -61,19 +61,19 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     },
     {
       key: 'groupName',
-      title: $t('page.retryLog.groupName'),
+      title: $t('page.retryTask.groupName'),
       align: 'left',
       minWidth: 120
     },
     {
       key: 'sceneName',
-      title: $t('page.retryLog.sceneName'),
+      title: $t('page.retryTask.sceneName'),
       align: 'left',
       minWidth: 120
     },
     {
       key: 'taskStatus',
-      title: $t('page.retryLog.retryStatus'),
+      title: $t('page.retryTask.retryStatus'),
       align: 'left',
       minWidth: 120,
       render: row => {
@@ -95,8 +95,22 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       }
     },
     {
+      key: 'operationReason',
+      title: $t('page.retryTask.operationReason'),
+      align: 'center',
+      width: 120,
+      render: row => {
+        if (row.operationReason === null) {
+          return null;
+        }
+        const label = $t(operationReasonRecord[row.operationReason!]);
+
+        return <NTag type={tagColor(row.operationReason!)}>{label}</NTag>;
+      }
+    },
+    {
       key: 'taskType',
-      title: $t('page.retryLog.taskType'),
+      title: $t('page.retryTask.taskType'),
       align: 'left',
       minWidth: 120,
       render: row => {
@@ -110,7 +124,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     },
     {
       key: 'createDt',
-      title: $t('page.retryLog.createDt'),
+      title: $t('page.retryTask.createDt'),
       align: 'left',
       minWidth: 120
     },
@@ -165,7 +179,7 @@ async function loadRetryInfo(row: Api.RetryTask.RetryTask) {
   <div class="min-h-500px flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
     <RetryLogSearch v-model:model="searchParams" @reset="resetSearchParams" @search="getData" />
     <NCard
-      :title="$t('page.retryLog.title')"
+      :title="$t('page.retryTask.title')"
       :bordered="false"
       size="small"
       class="sm:flex-1-hidden card-wrapper"

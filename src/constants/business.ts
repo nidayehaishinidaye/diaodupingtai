@@ -90,10 +90,10 @@ export const groupConfigYesOrNoRecord: Record<Api.GroupConfig.YesOrNoType, App.I
 export const groupConfigYesOrNoOptions = transformRecordToNumberOption(groupConfigYesOrNoRecord, true);
 
 export const retryStatusTypeRecord: Record<Api.Retry.RetryStatusType, App.I18n.I18nKey> = {
-  0: 'page.retryTask.retryStatusType.retrying',
-  1: 'page.retryTask.retryStatusType.finished',
-  2: 'page.retryTask.retryStatusType.maxRetry',
-  3: 'page.retryTask.retryStatusType.paused'
+  0: 'page.retry.retryStatusType.retrying',
+  1: 'page.retry.retryStatusType.finished',
+  2: 'page.retry.retryStatusType.maxRetry',
+  3: 'page.retry.retryStatusType.paused'
 };
 export const retryStatusTypeOptions = transformRecordToNumberOption(retryStatusTypeRecord);
 
@@ -108,8 +108,8 @@ export const retryTaskStatusTypeRecord: Record<Api.Retry.RetryTaskStatusType, Ap
 export const retryTaskStatusTypeOptions = transformRecordToNumberOption(retryTaskStatusTypeRecord);
 
 export const retryTaskTypeRecord: Record<Api.Retry.TaskType, App.I18n.I18nKey> = {
-  1: 'page.retryTask.taskTypeDict.retry',
-  2: 'page.retryTask.taskTypeDict.callback'
+  1: 'page.retry.taskTypeDict.retry',
+  2: 'page.retry.taskTypeDict.callback'
 };
 export const retryTaskTypeOptions = transformRecordToNumberOption(retryTaskTypeRecord);
 
@@ -272,6 +272,21 @@ export const operationReasonRecord: Record<Api.Common.OperationReason, App.I18n.
   14: 'common.jobOperationReason.items.workflowDecisionFailed'
 };
 export const operationReasonOptions = transformRecordToNumberOption(operationReasonRecord);
+
+export const retryOperationReasonRecord: Record<Api.Common.RetryOperationReason, App.I18n.I18nKey> = {
+  0: 'common.retryOperationReason.items.none',
+  1: 'common.retryOperationReason.items.taskExecutionTimeout',
+  2: 'common.retryOperationReason.items.notClient',
+  3: 'common.retryOperationReason.items.closed',
+  4: 'common.retryOperationReason.items.discard',
+  5: 'common.retryOperationReason.items.overlay',
+  6: 'common.retryOperationReason.items.taskExecutionError',
+  7: 'common.retryOperationReason.items.mannerStop',
+  8: 'common.retryOperationReason.items.noRunningRetry',
+  9: 'common.retryOperationReason.items.sceneClosed',
+  10: 'common.retryOperationReason.items.retryFail'
+};
+export const retryOperationReasonOptions = transformRecordToNumberOption(retryOperationReasonRecord);
 
 export const jobOperationReasonEnum: Workflow.JobTagType = {
   0: {
