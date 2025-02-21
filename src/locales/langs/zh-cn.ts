@@ -68,6 +68,7 @@ const local: App.I18n.Schema = {
     execute: '执行',
     copy: '复制',
     batchList: '批次',
+    retryTaskList: '任务',
     resume: '恢复',
     pause: '暂停',
     finish: '完成',
@@ -772,17 +773,19 @@ const local: App.I18n.Schema = {
       detail: '重试详情',
       groupName: '组名称',
       sceneName: '场景名称',
-      retryStatus: '状态',
+      taskStatus: '状态',
       taskType: '类型',
       idempotentId: '幂等ID',
       bizNo: '业务编号',
       createDt: '创建时间',
       operationReason: '操作原因',
+      retryId: '重试ID',
       form: {
         groupName: '请输入组名称',
         idempotentId: '请输入幂等id',
         sceneName: '请输入场景名称',
-        bizNo: '请输入业务编号'
+        bizNo: '请输入业务编号',
+        retryId: '请输入重试ID'
       },
       addRetryTask: '新增重试任务',
       editRetryTask: '编辑重试任务'

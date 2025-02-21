@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { NButton, NPopconfirm, NTag } from 'naive-ui';
+import { NButton, NDropdown, NPopconfirm, NTag, NTooltip } from 'naive-ui';
 import { onMounted, ref } from 'vue';
 import { useBoolean } from '~/packages/hooks';
 import {
@@ -16,6 +16,8 @@ import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import { retryStatusTypeRecord, retryTaskTypeRecord } from '@/constants/business';
 import { tagColor } from '@/utils/common';
+import SvgIcon from '@/components/custom/svg-icon.vue';
+import { useRouterPush } from '@/hooks/common/router';
 import RetryTaskOperateDrawer from './modules/retry-operate-drawer.vue';
 import RetryTaskBatchAddDrawer from './modules/retr-batch-add-drawer.vue';
 import RetryTaskSearch from './modules/retry-search.vue';
@@ -25,8 +27,10 @@ import RetryTaskDetailDrawerVue from './modules/retry-detail-drawer.vue';
 const detailData = ref<Api.Retry.Retry | null>();
 /** 详情页可见状态 */
 const { bool: detailVisible, setTrue: openDetail } = useBoolean(false);
+const { routerPushByKey } = useRouterPush();
 
 const appStore = useAppStore();
+const retryStatus = history.state.retryStatus;
 
 const { columns, columnChecks, data, getData, loading, mobilePagination, searchParams, resetSearchParams } = useTable({
   apiFn: fetchGetRetryTaskList,
@@ -39,6 +43,9 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     bizNo: null,
     retryStatus: null
   },
+  searchParams: {
+    retryStatus
+  },
   columns: () => [
     {
       type: 'selection',
@@ -48,10 +55,26 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     },
     {
       key: 'id',
-      title: $t('common.index'),
       align: 'center',
       width: 128,
       fixed: 'left',
+      title: () => {
+        return (
+          <div class="flex-center">
+            <span>{$t('page.jobBatch.jobTask.id')}</span>
+            <NTooltip trigger="hover">
+              {{
+                trigger: () => (
+                  <span class="mb-2px ml-5px text-16px">
+                    <SvgIcon icon="ant-design:info-circle-outlined" />
+                  </span>
+                ),
+                default: () => <span>{$t('common.idDetailTip')}</span>
+              }}
+            </NTooltip>
+          </div>
+        );
+      },
       render: row => {
         async function showDetailDrawer() {
           await loadRetryInfo(row);
@@ -69,29 +92,25 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       key: 'groupName',
       title: $t('page.retry.groupName'),
       align: 'center',
-      resizable: true,
-      minWidth: 120,
-      maxWidth: 250
+      width: 180
     },
     {
       key: 'sceneName',
       title: $t('page.retry.sceneName'),
       align: 'center',
-      minWidth: 120
+      width: 180
     },
     {
       key: 'nextTriggerAt',
       title: $t('page.retry.nextTriggerAt'),
       align: 'center',
-      resizable: true,
-      minWidth: 80,
-      maxWidth: 150
+      width: 120
     },
     {
       key: 'retryCount',
       title: $t('page.retry.retryCount'),
       align: 'center',
-      width: 80
+      width: 100
     },
     {
       key: 'retryStatus',
@@ -111,7 +130,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       key: 'taskType',
       title: $t('page.retry.taskType'),
       align: 'center',
-      width: 100,
+      width: 120,
       render: row => {
         if (row.taskType === null) {
           return null;
@@ -129,114 +148,188 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       key: 'idempotentId',
       title: $t('page.retry.idempotentId'),
       align: 'center',
-      resizable: true,
       minWidth: 120
     },
     {
       key: 'bizNo',
       title: $t('page.retry.bizNo'),
       align: 'center',
-      resizable: true,
-      minWidth: 150,
-      maxWidth: 300
+      minWidth: 120
+    },
+    {
+      key: 'createDt',
+      title: $t('page.retryTask.createDt'),
+      align: 'center',
+      minWidth: 120
+    },
+    {
+      key: 'updateDt',
+      title: $t('page.retryTask.createDt'),
+      align: 'center',
+      minWidth: 120
     },
     {
       key: 'operate',
       title: $t('common.operate'),
       align: 'center',
-      width: 260,
+      width: 120,
       fixed: 'right',
-      render: row => (
-        <div class="flex-center gap-8px">
-          {/* 非[完成,最大次数], 显示[执行]按钮 */}
-          {row.retryStatus !== 1 && row.retryStatus !== 2 ? (
-            <>
-              <NPopconfirm onPositiveClick={() => handleExecute(row.groupName!, row.id! as any, row.taskType!)}>
-                {{
-                  default: () => $t('common.confirmExecute'),
-                  trigger: () => (
-                    <NButton type="info" text ghost size="small">
-                      {$t('common.execute')}
-                    </NButton>
-                  )
-                }}
-              </NPopconfirm>
-              <n-divider vertical />
-            </>
-          ) : (
-            ''
-          )}
-          {/* 非[完成,最大次数], 显示[完成]按钮 */}
-          {row.retryStatus !== 1 && row.retryStatus !== 2 ? (
-            <>
-              <NPopconfirm onPositiveClick={() => handleFinish(Number(row.id!), row.groupName!)}>
-                {{
-                  default: () => $t('common.confirmFinish'),
-                  trigger: () => (
-                    <NButton type="warning" text ghost size="small">
-                      {$t('common.finish')}
-                    </NButton>
-                  )
-                }}
-              </NPopconfirm>
-              <n-divider vertical />
-            </>
-          ) : (
-            ''
-          )}
-          {/* 重试中, 显示[停止]按钮 */}
-          {row.retryStatus === 0 ? (
-            <>
-              <NPopconfirm onPositiveClick={() => handlePause(Number(row.id!), row.groupName!)}>
-                {{
-                  default: () => $t('common.confirmPause'),
-                  trigger: () => (
-                    <NButton type="success" text ghost size="small">
-                      {$t('common.pause')}
-                    </NButton>
-                  )
-                }}
-              </NPopconfirm>
-              <n-divider vertical />
-            </>
-          ) : (
-            ''
-          )}
-          {/* 暂停, 显示[开始]按钮 */}
-          {row.retryStatus === 3 ? (
-            <>
-              <NPopconfirm onPositiveClick={() => handleResume(Number(row.id!), row.groupName!)}>
-                {{
-                  default: () => $t('common.confirmResume'),
-                  trigger: () => (
-                    <NButton type="info" text ghost size="small">
-                      {$t('common.resume')}
-                    </NButton>
-                  )
-                }}
-              </NPopconfirm>
-              <n-divider vertical />
-            </>
-          ) : (
-            ''
-          )}
+      render: row => {
+        const options = [
           {
-            <NPopconfirm onPositiveClick={() => handleDelete(row.groupName!, row.id!)}>
+            type: 'divider',
+            key: 'd2',
+            show: row.retryStatus !== 1 && row.retryStatus !== 2
+          },
+          {
+            label: $t('common.execute'),
+            key: 'execute',
+            type: 'render',
+            show: row.retryStatus !== 1 && row.retryStatus !== 2,
+            render: () => (
+              <div class="flex-center">
+                <NPopconfirm
+                  onPositiveClick={() => handleExecute(row.groupName!, row.id! as any, row.taskType!)}
+                  v-if="row.retryStatus !== 1 && row.retryStatus !== 2"
+                >
+                  {{
+                    default: () => $t('common.confirmExecute'),
+                    trigger: () => (
+                      <NButton type="error" text ghost size="small">
+                        {$t('common.execute')}
+                      </NButton>
+                    )
+                  }}
+                </NPopconfirm>
+              </div>
+            )
+          },
+          {
+            type: 'divider',
+            key: 'd2',
+            show: row.retryStatus === 0
+          },
+          {
+            label: $t('common.pause'),
+            key: 'pause',
+            type: 'render',
+            show: row.retryStatus === 0,
+            render: () => (
+              <div class="flex-center">
+                <NPopconfirm onPositiveClick={() => handlePause(Number(row.id!))}>
+                  {{
+                    default: () => $t('common.confirmPause'),
+                    trigger: () => (
+                      <NButton type="success" text ghost size="small">
+                        {$t('common.pause')}
+                      </NButton>
+                    )
+                  }}
+                </NPopconfirm>
+              </div>
+            )
+          },
+          {
+            type: 'divider',
+            key: 'd2',
+            show: row.retryStatus === 0
+          },
+          {
+            label: $t('common.pause'),
+            key: 'pause',
+            type: 'render',
+            show: row.retryStatus === 3,
+            render: () => (
+              <div class="flex-center">
+                <NPopconfirm onPositiveClick={() => handleResume(Number(row.id!))}>
+                  {{
+                    default: () => $t('common.confirmResume'),
+                    trigger: () => (
+                      <NButton type="info" text ghost size="small">
+                        {$t('common.resume')}
+                      </NButton>
+                    )
+                  }}
+                </NPopconfirm>
+              </div>
+            )
+          },
+          {
+            type: 'divider',
+            key: 'd2',
+            show: row.retryStatus === 0
+          },
+          {
+            label: $t('common.finish'),
+            key: 'finish',
+            show: row.retryStatus !== 1 && row.retryStatus !== 2,
+            render: () => (
+              <div class="flex-center">
+                <NPopconfirm onPositiveClick={() => handleFinish(Number(row.id!))}>
+                  {{
+                    default: () => $t('common.confirmFinish'),
+                    trigger: () => (
+                      <NButton type="warning" text ghost size="small">
+                        {$t('common.finish')}
+                      </NButton>
+                    )
+                  }}
+                </NPopconfirm>
+              </div>
+            )
+          },
+
+          {
+            type: 'divider',
+            key: 'd2'
+          },
+          {
+            type: 'render',
+            key: 'delete',
+            render: () => (
+              <div class="flex-center">
+                <NPopconfirm onPositiveClick={() => handleDelete(row.id!)}>
+                  {{
+                    default: () => $t('common.confirmDelete'),
+                    trigger: () => (
+                      <NButton quaternary size="small">
+                        {$t('common.delete')}
+                      </NButton>
+                    )
+                  }}
+                </NPopconfirm>
+              </div>
+            )
+          }
+        ];
+
+        return (
+          <div class="flex-center gap-8px">
+            <NButton text type="warning" ghost size="small" onClick={() => goToRetryTask(row.id!)}>
+              {$t('common.retryTaskList')}
+            </NButton>
+
+            <n-divider vertical />
+
+            <NDropdown trigger="click" show-arrow={false} options={options} size="small">
               {{
-                default: () => $t('common.confirmDelete'),
-                trigger: () => (
-                  <NButton type="error" text ghost size="small">
-                    {$t('common.delete')}
+                default: () => (
+                  <NButton text type="primary" ghost size="small">
+                    更多
                   </NButton>
                 )
               }}
-            </NPopconfirm>
-          }
-        </div>
-      )
+            </NDropdown>
+          </div>
+        );
+      }
     }
   ]
 });
+
+function goToRetryTask(retryId: string) {
+  routerPushByKey('retry_task', { state: { retryId } });
+}
 
 const {
   drawerVisible,
@@ -250,8 +343,8 @@ const {
 
 const { bool: batchAddDrawerVisible, setTrue: openBatchAddDrawer } = useBoolean();
 
-async function handleDelete(groupName: string, id: string) {
-  const { error } = await fetchBatchDeleteRetryTask({ groupName, ids: [id] });
+async function handleDelete(id: string) {
+  const { error } = await fetchBatchDeleteRetryTask({ ids: [id] });
   if (error) return;
   onDeleted();
 }
@@ -264,8 +357,7 @@ async function loadRetryInfo(row: Api.Retry.Retry) {
 async function handleBatchDelete() {
   const ids: string[] = checkedRowKeys.value as string[];
   if (ids.length === 0) return;
-  const groupName = data.value[0].groupName;
-  const { error } = await fetchBatchDeleteRetryTask({ groupName, ids });
+  const { error } = await fetchBatchDeleteRetryTask({ ids });
   if (error) return;
   onBatchDeleted();
 }
@@ -285,20 +377,20 @@ function handleExecute(groupName: string, retryId: number, type: Api.Retry.TaskT
   }
 }
 
-function handleResume(id: number, groupName: string) {
-  updateRetryTaskStatus(id, groupName, 0);
+function handleResume(id: number) {
+  updateRetryTaskStatus(id, 0);
 }
 
-function handlePause(id: number, groupName: string) {
-  updateRetryTaskStatus(id, groupName, 3);
+function handlePause(id: number) {
+  updateRetryTaskStatus(id, 3);
 }
 
-function handleFinish(id: number, groupName: string) {
-  updateRetryTaskStatus(id, groupName, 1);
+function handleFinish(id: number) {
+  updateRetryTaskStatus(id, 1);
 }
 
-async function updateRetryTaskStatus(id: number, groupName: string, retryStatus: Api.Retry.RetryStatusType) {
-  const { error } = await fetchUpdateRetryTaskStatus({ id, groupName, retryStatus });
+async function updateRetryTaskStatus(id: number, status: Api.Retry.RetryStatusType) {
+  const { error } = await fetchUpdateRetryTaskStatus({ id, retryStatus: status });
   if (error) return;
   window.$message?.success($t('common.updateSuccess'));
   getData();

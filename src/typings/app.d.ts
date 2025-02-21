@@ -348,6 +348,7 @@ declare namespace App {
         confirmStop: string;
         execute: string;
         batchList: string;
+        retryTaskList: string;
         copy: string;
         resume: string;
         pause: string;
@@ -972,17 +973,19 @@ declare namespace App {
           detail: string;
           groupName: string;
           sceneName: string;
-          retryStatus: string;
+          taskStatus: string;
           taskType: string;
           idempotentId: string;
           bizNo: string;
           createDt: string;
           operationReason: string;
+          retryId: string;
           form: {
             groupName: string;
             idempotentId: string;
             sceneName: string;
             bizNo: string;
+            retryId: string;
           };
           addRetryTask: string;
           editRetryTask: string;

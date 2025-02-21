@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { $t } from '@/locales';
 import { translateOptions } from '@/utils/common';
-import { retryStatusTypeOptions } from '@/constants/business';
+import { retryTaskStatusTypeOptions } from '@/constants/business';
 import SelectGroup from '@/components/common/select-group.vue';
 import SelectScene from '@/components/common/select-scene.vue';
 import DatetimeRange from '@/components/common/datetime-range.vue';
@@ -36,20 +36,14 @@ function search() {
     <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryTask.sceneName')" path="sceneName" class="pr-24px">
       <SelectScene v-model:value="model.sceneName" :group-name="model.groupName as string" clearable />
     </NFormItemGi>
-    <!--    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryTask.UniqueId')" path="UniqueId" class="pr-24px">-->
-    <!--      <NInput v-model:value="model.uniqueId" :placeholder="$t('page.retryTask.form.UniqueId')" clearable />-->
-    <!--    </NFormItemGi>-->
-    <!--    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryTask.idempotentId')" path="idempotentId" class="pr-24px">-->
-    <!--      <NInput v-model:value="model.idempotentId" :placeholder="$t('page.retryTask.form.idempotentId')" clearable />-->
-    <!--    </NFormItemGi>-->
-    <!--    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryTask.bizNo')" path="bizNo" class="pr-24px">-->
-    <!--      <NInput v-model:value="model.bizNo" :placeholder="$t('page.retryTask.form.bizNo')" clearable />-->
-    <!--    </NFormItemGi>-->
-    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryTask.retryStatus')" path="taskBatchStatus" class="pr-24px">
+    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryTask.retryId')" path="bizNo" class="pr-24px">
+      <NInput v-model:value="model.retryId" :placeholder="$t('page.retryTask.form.retryId')" clearable />
+    </NFormItemGi>
+    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retry.retryStatus')" path="taskBatchStatus" class="pr-24px">
       <NSelect
         v-model:value="model.taskStatus"
-        :placeholder="$t('page.retryTask.form.retryStatus')"
-        :options="translateOptions(retryStatusTypeOptions)"
+        :placeholder="$t('page.retry.form.retryStatus')"
+        :options="translateOptions(retryTaskStatusTypeOptions)"
         clearable
       />
     </NFormItemGi>

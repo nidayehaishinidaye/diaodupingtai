@@ -67,6 +67,7 @@ const local: App.I18n.Schema = {
     confirmStop: 'Confirm Stop?',
     execute: 'Execute',
     batchList: 'Batch',
+    retryTaskList: 'RetryTaskList',
     copy: 'Copy',
     resume: 'Resume',
     pause: 'Pause',
@@ -764,17 +765,19 @@ const local: App.I18n.Schema = {
       detail: 'Retry Task Detail',
       groupName: 'Group name',
       sceneName: 'Scene name',
-      retryStatus: 'Retry status',
+      taskStatus: 'Task status',
       taskType: 'Task type',
       idempotentId: 'Idempotent ID',
       bizNo: 'Business Number',
       createDt: 'Creation time',
       operationReason: 'Operation reason',
+      retryId: 'Retry id',
       form: {
         groupName: 'Please enter Group name',
         idempotentId: 'Please enter Idempotent ID',
         sceneName: 'Please enter Scene name',
-        bizNo: 'Please enter Business Number'
+        bizNo: 'Please enter Business Number',
+        retryId: 'Please enter retry id'
       },
       addRetryTask: 'Add Retry Task',
       editRetryTask: 'Add Retry Task'

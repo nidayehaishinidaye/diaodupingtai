@@ -792,8 +792,6 @@ declare namespace Api {
     type RetryTaskUpdateStatusRequest = {
       /** id */
       id: number;
-      /** 组名称 */
-      groupName: string;
       /** 重试状态 0、重试中 1、重试完成 2、最大次数 3、暂停 */
       retryStatus: RetryStatusType;
     };
@@ -804,7 +802,6 @@ declare namespace Api {
     };
 
     type BatchDeleteRetryTaskVO = {
-      groupName: string;
       ids: string[];
     };
 

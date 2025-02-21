@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { NButton, NPopconfirm, NTag } from 'naive-ui';
+import { NButton, NPopconfirm, NTag, NTooltip } from 'naive-ui';
 import { ref } from 'vue';
 import { useBoolean } from '~/packages/hooks';
 import { fetchBatchDeleteRetryLog, fetchDeleteRetryLog, fetchRetryLogById, fetchRetryLogPageList } from '@/service/api';
@@ -8,6 +8,7 @@ import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import { operationReasonRecord, retryTaskStatusTypeRecord, retryTaskTypeRecord } from '@/constants/business';
 import { monthRangeISO8601, tagColor } from '@/utils/common';
+import SvgIcon from '@/components/custom/svg-icon.vue';
 import RetryLogSearch from './modules/retry-task-search.vue';
 import RetryLogDetailDrawer from './modules/retry-task-detail-drawer.vue';
 
@@ -17,7 +18,7 @@ const appStore = useAppStore();
 const detailData = ref<Api.RetryTask.RetryTask | null>();
 /** 详情页可见状态 */
 const { bool: detailVisible, setTrue: openDetail } = useBoolean(false);
-const taskStatus = history.state.taskStatus;
+const retryId = history.state.retryId;
 
 const { columns, columnChecks, data, getData, loading, mobilePagination, searchParams, resetSearchParams } = useTable({
   apiFn: fetchRetryLogPageList,
@@ -32,7 +33,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     datetimeRange: monthRangeISO8601()
   },
   searchParams: {
-    taskStatus
+    retryId
   },
   columns: () => [
     {
@@ -43,9 +44,26 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     },
     {
       key: 'id',
-      title: $t('common.index'),
       align: 'center',
-      width: 64,
+      width: 120,
+      fixed: 'left',
+      title: () => {
+        return (
+          <div class="flex-center">
+            <span>{$t('page.jobBatch.jobTask.id')}</span>
+            <NTooltip trigger="hover">
+              {{
+                trigger: () => (
+                  <span class="mb-2px ml-5px text-16px">
+                    <SvgIcon icon="ant-design:info-circle-outlined" />
+                  </span>
+                ),
+                default: () => <span>{$t('common.idDetailTip')}</span>
+              }}
+            </NTooltip>
+          </div>
+        );
+      },
       render: row => {
         async function showDetailDrawer() {
           await loadRetryInfo(row);
@@ -62,20 +80,40 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'groupName',
       title: $t('page.retryTask.groupName'),
-      align: 'left',
+      align: 'center',
       minWidth: 120
     },
     {
       key: 'sceneName',
       title: $t('page.retryTask.sceneName'),
-      align: 'left',
+      align: 'center',
       minWidth: 120
     },
     {
+      key: 'retryId',
+      title: $t('page.retryTask.retryId'),
+      align: 'center',
+      minWidth: 120
+    },
+    {
+      key: 'taskType',
+      title: $t('page.retryTask.taskType'),
+      align: 'center',
+      minWidth: 80,
+      render: row => {
+        if (row.taskType === null) {
+          return null;
+        }
+        const label = $t(retryTaskTypeRecord[row.taskType!]);
+
+        return <NTag type={tagColor(row.taskType!)}>{label}</NTag>;
+      }
+    },
+    {
       key: 'taskStatus',
-      title: $t('page.retryTask.retryStatus'),
-      align: 'left',
-      minWidth: 120,
+      title: $t('page.retryTask.taskStatus'),
+      align: 'center',
+      minWidth: 80,
       render: row => {
         if (row.taskStatus === null) {
           return null;
@@ -109,23 +147,9 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       }
     },
     {
-      key: 'taskType',
-      title: $t('page.retryTask.taskType'),
-      align: 'left',
-      minWidth: 120,
-      render: row => {
-        if (row.taskType === null) {
-          return null;
-        }
-        const label = $t(retryTaskTypeRecord[row.taskType!]);
-
-        return <NTag type={tagColor(row.taskType!)}>{label}</NTag>;
-      }
-    },
-    {
       key: 'createDt',
       title: $t('page.retryTask.createDt'),
-      align: 'left',
+      align: 'center',
       minWidth: 120
     },
     {
