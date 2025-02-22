@@ -30,7 +30,6 @@ const ContextHolder = defineComponent({
         <NMessageProvider>
           <ContextHolder />
           <slot></slot>
-          <AppWatermark />
         </NMessageProvider>
       </NNotificationProvider>
     </NDialogProvider>
