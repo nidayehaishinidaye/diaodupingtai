@@ -1171,8 +1171,8 @@ declare namespace Api {
 
     /** JobBatch search params */
     type JobBatchSearchParams = CommonType.RecordNullable<
-      Pick<Api.JobBatch.JobBatch, 'groupName' | 'jobName' | 'taskBatchStatus' | 'jobId' | 'taskType'> &
-        CommonSearchParams & { datetimeRange?: [string, string] }
+      Pick<Api.JobBatch.JobBatch, 'groupName' | 'jobName' | 'jobId' | 'taskType'> &
+        CommonSearchParams & { datetimeRange?: [string, string]; taskBatchStatus: Common.TaskBatchStatus[] }
     >;
 
     /** JobBatch list */

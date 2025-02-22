@@ -27,7 +27,7 @@ const { bool: detailVisible, setTrue: openDetail } = useBoolean(false);
 const { bool: detailLog, setBool: setDetailLog } = useBoolean(false);
 const jobName = history.state.jobName;
 const jobId = history.state.jobId;
-const taskBatchStatus = history.state.taskBatchStatus;
+const taskBatchStatus = [history.state.taskBatchStatus];
 
 const { columnChecks, columns, data, getData, loading, mobilePagination, searchParams, resetSearchParams } = useTable({
   apiFn: fetchGetJobBatchList,
