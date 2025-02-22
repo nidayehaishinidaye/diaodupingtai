@@ -2,7 +2,13 @@
 import { NButton, NPopconfirm, NTag, NTooltip } from 'naive-ui';
 import { ref } from 'vue';
 import { useBoolean } from '~/packages/hooks';
-import { fetchBatchDeleteRetryLog, fetchDeleteRetryLog, fetchRetryLogById, fetchRetryLogPageList } from '@/service/api';
+import {
+  fetchBatchDeleteRetryTask,
+  fetchDeleteRetryTask,
+  fetchRetryTaskById,
+  fetchRetryTaskPageList,
+  fetchStopRetryTask
+} from '@/service/api';
 import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
@@ -21,7 +27,7 @@ const { bool: detailVisible, setTrue: openDetail } = useBoolean(false);
 const retryId = history.state.retryId;
 
 const { columns, columnChecks, data, getData, loading, mobilePagination, searchParams, resetSearchParams } = useTable({
-  apiFn: fetchRetryLogPageList,
+  apiFn: fetchRetryTaskPageList,
   apiParams: {
     page: 1,
     size: 10,
@@ -157,24 +163,48 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       title: $t('common.operate'),
       align: 'center',
       width: 80,
-      render: row => (
-        <div class="flex-center gap-8px">
-          {row.taskStatus === 1 || row.taskStatus === 2 ? (
-            <NPopconfirm onPositiveClick={() => handleDelete(row.id)}>
-              {{
-                default: () => $t('common.confirmDelete'),
-                trigger: () => (
-                  <NButton type="error" text ghost size="small">
-                    {$t('common.delete')}
-                  </NButton>
-                )
-              }}
-            </NPopconfirm>
-          ) : (
-            ''
-          )}
-        </div>
-      )
+      render: row => {
+        const stopBtn = () => {
+          if (row.taskStatus === 1 || row.taskStatus === 2) {
+            return (
+              <>
+                <n-divider vertical />
+                <NPopconfirm onPositiveClick={() => handleStopRetry(row.id!)}>
+                  {{
+                    default: () => $t('common.confirmStop'),
+                    trigger: () => (
+                      <NButton type="error" text ghost size="small">
+                        {$t('common.stop')}
+                      </NButton>
+                    )
+                  }}
+                </NPopconfirm>
+                <n-divider vertical />
+              </>
+            );
+          }
+          return null;
+        };
+        return (
+          <div class="flex-center gap-8px">
+            {stopBtn()}
+            {row.taskStatus !== 1 && row.taskStatus !== 2 ? (
+              <NPopconfirm onPositiveClick={() => handleDelete(row.id)}>
+                {{
+                  default: () => $t('common.confirmDelete'),
+                  trigger: () => (
+                    <NButton type="error" text ghost size="small">
+                      {$t('common.delete')}
+                    </NButton>
+                  )
+                }}
+              </NPopconfirm>
+            ) : (
+              ''
+            )}
+          </div>
+        );
+      }
     }
   ]
 });
@@ -182,20 +212,28 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
 const { checkedRowKeys, onDeleted, onBatchDeleted } = useTableOperate(data, getData);
 
 async function handleBatchDelete() {
-  const { error } = await fetchBatchDeleteRetryLog(checkedRowKeys.value as any[]);
+  const { error } = await fetchBatchDeleteRetryTask(checkedRowKeys.value as any[]);
   if (error) return;
   onBatchDeleted();
 }
 
 async function handleDelete(id: any) {
-  const { error } = await fetchDeleteRetryLog(id);
+  const { error } = await fetchDeleteRetryTask(id);
   if (error) return;
   onDeleted();
 }
 
 async function loadRetryInfo(row: Api.RetryTask.RetryTask) {
-  const res = await fetchRetryLogById(row.id!);
+  const res = await fetchRetryTaskById(row.id!);
   detailData.value = (res.data as Api.RetryTask.RetryTask) || null;
+}
+
+async function handleStopRetry(id: string) {
+  const { error } = await fetchStopRetryTask(id! as any);
+  if (!error) {
+    window.$message?.success($t('common.operateSuccess'));
+    getData();
+  }
 }
 </script>
 

@@ -780,7 +780,7 @@ declare namespace Api {
       taskType?: TaskType;
     }>;
 
-    type RetryTaskBatchAdd = {
+    type RetryBatchAdd = {
       /** 组名称 */
       groupName: string;
       /** 重试状态 0、重试中 1、重试完成 2、最大次数 3、暂停 */
@@ -789,19 +789,20 @@ declare namespace Api {
       logStr: string;
     };
 
-    type RetryTaskUpdateStatusRequest = {
+    type RetryUpdateStatusRequest = {
       /** id */
       id: number;
       /** 重试状态 0、重试中 1、重试完成 2、最大次数 3、暂停 */
       retryStatus: RetryStatusType;
     };
 
-    type ManualTriggerTaskRequestVO = {
+    type ManualTriggerRequestVO = {
       groupName: string;
       retryIds: number[];
     };
 
-    type BatchDeleteRetryTaskVO = {
+    type BatchDeleteRetryVO = {
+      groupName: string;
       ids: string[];
     };
 

@@ -3,7 +3,7 @@ import { reactive, watch } from 'vue';
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 import OperateDrawer from '@/components/common/operate-drawer.vue';
 import { $t } from '@/locales';
-import { fetchBatchAddRetryTask } from '@/service/api';
+import { fetchBatchAddRetry } from '@/service/api';
 import { translateOptions } from '@/utils/common';
 import { retryStatusTypeOptions } from '@/constants/business';
 import SelectGroup from '@/components/common/select-group.vue';
@@ -25,7 +25,7 @@ const visible = defineModel<boolean>('visible', {
 const { formRef, validate, restoreValidation } = useNaiveForm();
 const { defaultRequiredRule } = useFormRules();
 
-type Model = Pick<Api.Retry.RetryTaskBatchAdd, 'groupName' | 'retryStatus' | 'logStr'>;
+type Model = Pick<Api.Retry.RetryBatchAdd, 'groupName' | 'retryStatus' | 'logStr'>;
 
 const model: Model = reactive(createDefaultModel());
 
@@ -53,7 +53,7 @@ async function handleSubmit() {
   await validate();
 
   const { groupName, retryStatus, logStr } = model;
-  const { error } = await fetchBatchAddRetryTask({ groupName, retryStatus, logStr });
+  const { error } = await fetchBatchAddRetry({ groupName, retryStatus, logStr });
   if (error) return;
   window.$message?.success($t('common.addSuccess'));
 

@@ -3,13 +3,12 @@ import { NButton, NDropdown, NPopconfirm, NTag, NTooltip } from 'naive-ui';
 import { onMounted, ref } from 'vue';
 import { useBoolean } from '~/packages/hooks';
 import {
-  fetchBatchDeleteRetryTask,
-  fetchExecuteCallbackTask,
-  fetchExecuteRetryTask,
+  fetchBatchDeleteRetry,
+  fetchExecuteRetry,
   fetchGetAllGroupNameList,
-  fetchGetRetryTaskById,
-  fetchGetRetryTaskList,
-  fetchUpdateRetryTaskStatus
+  fetchGetRetryById,
+  fetchGetRetryList,
+  fetchUpdateRetryStatus
 } from '@/service/api';
 import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
@@ -33,7 +32,7 @@ const appStore = useAppStore();
 const retryStatus = history.state.retryStatus;
 
 const { columns, columnChecks, data, getData, loading, mobilePagination, searchParams, resetSearchParams } = useTable({
-  apiFn: fetchGetRetryTaskList,
+  apiFn: fetchGetRetryList,
   apiParams: {
     page: 1,
     size: 10,
@@ -189,7 +188,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
             render: () => (
               <div class="flex-center">
                 <NPopconfirm
-                  onPositiveClick={() => handleExecute(row.groupName!, row.id! as any, row.taskType!)}
+                  onPositiveClick={() => handleExecute(row.groupName!, row.id! as any)}
                   v-if="row.retryStatus !== 1 && row.retryStatus !== 2"
                 >
                   {{
@@ -288,7 +287,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
             key: 'delete',
             render: () => (
               <div class="flex-center">
-                <NPopconfirm onPositiveClick={() => handleDelete(row.id!)}>
+                <NPopconfirm onPositiveClick={() => handleDelete(row.groupName!, row.id!)}>
                   {{
                     default: () => $t('common.confirmDelete'),
                     trigger: () => (
@@ -343,21 +342,22 @@ const {
 
 const { bool: batchAddDrawerVisible, setTrue: openBatchAddDrawer } = useBoolean();
 
-async function handleDelete(id: string) {
-  const { error } = await fetchBatchDeleteRetryTask({ ids: [id] });
+async function handleDelete(groupName: string, id: string) {
+  const { error } = await fetchBatchDeleteRetry({ groupName, ids: [id] });
   if (error) return;
   onDeleted();
 }
 
 async function loadRetryInfo(row: Api.Retry.Retry) {
-  const res = await fetchGetRetryTaskById(row.id!, row.groupName!);
+  const res = await fetchGetRetryById(row.id!, row.groupName!);
   detailData.value = (res.data as Api.Retry.Retry) || null;
 }
 
 async function handleBatchDelete() {
   const ids: string[] = checkedRowKeys.value as string[];
   if (ids.length === 0) return;
-  const { error } = await fetchBatchDeleteRetryTask({ ids });
+  const groupName = data.value[0].groupName;
+  const { error } = await fetchBatchDeleteRetry({ groupName, ids });
   if (error) return;
   onBatchDeleted();
 }
@@ -366,15 +366,8 @@ function handleBatchAdd() {
   openBatchAddDrawer();
 }
 
-function handleExecute(groupName: string, retryId: number, type: Api.Retry.TaskType) {
-  if (type === 1) {
-    fetchExecuteRetryTask({ groupName, retryIds: [retryId] });
-    return;
-  }
-
-  if (type === 2) {
-    fetchExecuteCallbackTask({ groupName, retryIds: [retryId] });
-  }
+function handleExecute(groupName: string, retryId: number) {
+  fetchExecuteRetry({ groupName, retryIds: [retryId] });
 }
 
 function handleResume(id: number) {
@@ -390,7 +383,7 @@ function handleFinish(id: number) {
 }
 
 async function updateRetryTaskStatus(id: number, status: Api.Retry.RetryStatusType) {
-  const { error } = await fetchUpdateRetryTaskStatus({ id, retryStatus: status });
+  const { error } = await fetchUpdateRetryStatus({ id, retryStatus: status });
   if (error) return;
   window.$message?.success($t('common.updateSuccess'));
   getData();

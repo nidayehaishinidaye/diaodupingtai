@@ -3,7 +3,7 @@ import { computed, reactive, ref, watch } from 'vue';
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 import OperateDrawer from '@/components/common/operate-drawer.vue';
 import { $t } from '@/locales';
-import { fetchAddRetryTask, fetchIdempotentIdGenerate } from '@/service/api';
+import { fetchAddRetry, fetchIdempotentIdGenerate } from '@/service/api';
 import { translateOptions } from '@/utils/common';
 import { retryStatusTypeOptions } from '@/constants/business';
 import CodeMirror from '@/components/common/code-mirror.vue';
@@ -120,7 +120,7 @@ async function handleSubmit() {
 
   if (props.operateType === 'add') {
     const { groupName, sceneName, idempotentId, bizNo, executorName, retryStatus } = model;
-    const { error } = await fetchAddRetryTask({
+    const { error } = await fetchAddRetry({
       groupName,
       sceneName,
       idempotentId,

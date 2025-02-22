@@ -1,7 +1,7 @@
 import { request } from '../request';
 
 /** get retryTask list */
-export function fetchGetRetryTaskList(params?: Api.Retry.RetrySearchParams) {
+export function fetchGetRetryList(params?: Api.Retry.RetrySearchParams) {
   return request<Api.Retry.RetryList>({
     url: '/retry/list',
     method: 'get',
@@ -10,7 +10,7 @@ export function fetchGetRetryTaskList(params?: Api.Retry.RetrySearchParams) {
 }
 
 /** get retryTask */
-export function fetchGetRetryTaskById(id: string, groupName: string) {
+export function fetchGetRetryById(id: string, groupName: string) {
   return request<Api.Retry.Retry>({
     url: `/retry/${id}?groupName=${groupName}`,
     method: 'get'
@@ -18,7 +18,7 @@ export function fetchGetRetryTaskById(id: string, groupName: string) {
 }
 
 /** add retryTask */
-export function fetchAddRetryTask(data: Api.Retry.Retry) {
+export function fetchAddRetry(data: Api.Retry.Retry) {
   return request<boolean>({
     url: '/retry',
     method: 'post',
@@ -27,7 +27,7 @@ export function fetchAddRetryTask(data: Api.Retry.Retry) {
 }
 
 /** batch add retryTask */
-export function fetchBatchAddRetryTask(data: Api.Retry.RetryTaskBatchAdd) {
+export function fetchBatchAddRetry(data: Api.Retry.RetryBatchAdd) {
   return request<boolean>({
     url: '/retry/batch',
     method: 'post',
@@ -45,7 +45,7 @@ export function fetchEditRetryTask(data: Api.Retry.Retry) {
 }
 
 /** update retryTask status */
-export function fetchUpdateRetryTaskStatus(data: Api.Retry.RetryTaskUpdateStatusRequest) {
+export function fetchUpdateRetryStatus(data: Api.Retry.RetryUpdateStatusRequest) {
   return request<boolean>({
     url: '/retry/status',
     method: 'put',
@@ -54,7 +54,7 @@ export function fetchUpdateRetryTaskStatus(data: Api.Retry.RetryTaskUpdateStatus
 }
 
 /** manual execute retryTask */
-export function fetchExecuteRetryTask(data: Api.Retry.ManualTriggerTaskRequestVO) {
+export function fetchExecuteRetry(data: Api.Retry.ManualTriggerRequestVO) {
   return request<boolean>({
     url: '/retry/manual/trigger/retry/task',
     method: 'post',
@@ -62,17 +62,8 @@ export function fetchExecuteRetryTask(data: Api.Retry.ManualTriggerTaskRequestVO
   });
 }
 
-/** manual execute callbackTask */
-export function fetchExecuteCallbackTask(data: Api.Retry.ManualTriggerTaskRequestVO) {
-  return request<boolean>({
-    url: '/retry/manual/trigger/callback/task',
-    method: 'post',
-    data
-  });
-}
-
 /** batch delete retryTask */
-export function fetchBatchDeleteRetryTask(data: Api.Retry.BatchDeleteRetryTaskVO) {
+export function fetchBatchDeleteRetry(data: Api.Retry.BatchDeleteRetryVO) {
   return request<number>({
     url: '/retry/batch',
     method: 'delete',
