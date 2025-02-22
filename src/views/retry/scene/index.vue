@@ -11,7 +11,13 @@ import {
 import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import { DelayLevel, backOffRecord, routeKeyRecord } from '@/constants/business';
+import {
+  DelayLevel,
+  backOffRecord,
+  blockStrategyRecord,
+  groupConfigStatusRecord,
+  routeKeyRecord
+} from '@/constants/business';
 import StatusSwitch from '@/components/common/status-switch.vue';
 import { downloadFetch } from '@/utils/download';
 import { useAuth } from '@/hooks/business/auth';
@@ -44,12 +50,12 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       align: 'center',
       width: 48
     },
-    {
-      key: 'id',
-      title: $t('common.index'),
-      align: 'center',
-      width: 64
-    },
+    // {
+    //   key: 'id',
+    //   title: $t('common.index'),
+    //   align: 'center',
+    //   width: 64
+    // },
     {
       key: 'sceneName',
       align: 'center',
@@ -72,13 +78,13 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'groupName',
       title: $t('page.retryScene.groupName'),
-      align: 'left',
+      align: 'center',
       width: 180
     },
     {
       key: 'sceneStatus',
       title: $t('page.retryScene.sceneStatus'),
-      align: 'left',
+      align: 'center',
       width: 50,
       render: row => {
         const fetchFn = async (sceneStatus: Api.Common.EnableStatusNumber, callback: (flag: boolean) => void) => {
@@ -96,7 +102,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'backOff',
       title: $t('page.retryScene.backOff'),
-      align: 'left',
+      align: 'center',
       width: 80,
       render: row => {
         const label = $t(backOffRecord[row.backOff!]);
@@ -106,7 +112,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'routeKey',
       title: $t('page.retryScene.routeKey'),
-      align: 'left',
+      align: 'center',
       width: 80,
       render: row => {
         const label = $t(routeKeyRecord[row.routeKey!]);
@@ -114,15 +120,29 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       }
     },
     {
+      key: 'cbStatus',
+      title: $t('page.retryScene.cbStatus'),
+      align: 'center',
+      width: 80,
+      render: row => {
+        const tagMap: Record<Api.Common.EnableStatusNumber, NaiveUI.ThemeColor> = {
+          0: 'error',
+          1: 'primary'
+        };
+        const label = $t(groupConfigStatusRecord[row.cbStatus!]);
+        return <NTag type={tagMap[row.cbStatus!]}>{label}</NTag>;
+      }
+    },
+    {
       key: 'maxRetryCount',
       title: $t('page.retryScene.maxRetryCount'),
-      align: 'left',
+      align: 'center',
       width: 80
     },
     {
       key: 'triggerInterval',
       title: $t('page.retryScene.triggerInterval'),
-      align: 'left',
+      align: 'center',
       width: 130,
       render: row => {
         if (row.backOff === 1) {
@@ -133,33 +153,37 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       }
     },
     {
-      key: 'deadlineRequest',
-      title: $t('page.retryScene.deadlineRequest'),
-      align: 'left',
-      width: 120
+      key: 'blockStrategy',
+      title: $t('page.retryScene.blockStrategy'),
+      align: 'center',
+      width: 80,
+      render: row => {
+        const label = $t(blockStrategyRecord[row.blockStrategy!]);
+        return <NTag type="primary">{label}</NTag>;
+      }
     },
     {
       key: 'executorTimeout',
       title: $t('page.retryScene.executorTimeout'),
-      align: 'left',
+      align: 'center',
       width: 80
     },
     {
       key: 'createDt',
       title: $t('page.retryScene.createDt'),
-      align: 'left',
+      align: 'center',
       width: 120
     },
     {
       key: 'updateDt',
       title: $t('page.retryScene.updateDt'),
-      align: 'left',
+      align: 'center',
       width: 120
     },
     {
       key: 'description',
       title: $t('page.retryScene.description'),
-      align: 'left',
+      align: 'center',
       width: 120
     },
     {

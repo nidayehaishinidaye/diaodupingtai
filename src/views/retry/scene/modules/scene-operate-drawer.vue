@@ -12,6 +12,7 @@ import {
   groupConfigYesOrNoOptions
 } from '@/constants/business';
 import { isNotNull, translateOptions } from '@/utils/common';
+import BlockStrategy from '@/components/common/block-strategy.vue';
 
 defineOptions({
   name: 'SceneOperateDrawer'
@@ -25,6 +26,7 @@ interface Props {
 }
 
 const delayLevelDesc = ref<string>('10s');
+const callbackDelayLevelDesc = ref<string>('10s');
 
 const notifyNameList = ref<CommonType.Option<number>[]>([]);
 const props = defineProps<Props>();
@@ -64,6 +66,7 @@ type Model = Pick<
   | 'executorTimeout'
   | 'description'
   | 'routeKey'
+  | 'blockStrategy'
   | 'cbStatus'
   | 'cbTriggerType'
   | 'cbTriggerInterval'
@@ -96,9 +99,10 @@ function createDefaultModel(): Model {
     executorTimeout: 60,
     description: '',
     routeKey: 4,
+    blockStrategy: 1,
     cbStatus: 0,
-    cbTriggerType: 2,
-    cbTriggerInterval: '60',
+    cbTriggerType: 1,
+    cbTriggerInterval: '',
     cbMaxCount: 16
   };
 }
@@ -114,6 +118,7 @@ type RuleKey = Extract<
   | 'deadlineRequest'
   | 'executorTimeout'
   | 'routeKey'
+  | 'blockStrategy'
   | 'cbStatus'
   | 'cbTriggerType'
   | 'cbTriggerInterval'
@@ -140,6 +145,7 @@ const rules = {
   deadlineRequest: [defaultRequiredRule],
   executorTimeout: [defaultRequiredRule],
   routeKey: [defaultRequiredRule],
+  blockStrategy: [defaultRequiredRule],
   cbStatus: [defaultRequiredRule],
   cbTriggerType: [defaultRequiredRule],
   cbMaxCount: [defaultRequiredRule],
@@ -178,6 +184,7 @@ async function handleSubmit() {
       deadlineRequest,
       executorTimeout,
       routeKey,
+      blockStrategy,
       description,
       cbStatus,
       cbTriggerType,
@@ -195,6 +202,7 @@ async function handleSubmit() {
       deadlineRequest,
       executorTimeout,
       routeKey,
+      blockStrategy,
       description,
       cbStatus,
       cbTriggerType,
@@ -218,6 +226,7 @@ async function handleSubmit() {
       deadlineRequest,
       executorTimeout,
       routeKey,
+      blockStrategy,
       description,
       cbStatus,
       cbTriggerType,
@@ -236,6 +245,7 @@ async function handleSubmit() {
       deadlineRequest,
       executorTimeout,
       routeKey,
+      blockStrategy,
       description,
       cbStatus,
       cbTriggerType,
@@ -269,6 +279,14 @@ watch(
   () => model.maxRetryCount,
   () => {
     delayLevelDesc.value = Object.values(DelayLevel).slice(0, model.maxRetryCount).join(',');
+  },
+  { immediate: true }
+);
+
+watch(
+  () => model.cbMaxCount,
+  () => {
+    callbackDelayLevelDesc.value = Object.values(DelayLevel).slice(0, model.cbMaxCount).join(',');
   },
   { immediate: true }
 );
@@ -310,14 +328,8 @@ watch(
               </NFormItem>
             </NGi>
             <NGi>
-              <NFormItem :label="$t('page.retryScene.maxRetryCount')" path="maxRetryCount">
-                <NInputNumber
-                  v-model:value="model.maxRetryCount"
-                  :min="1"
-                  :max="model.backOff === 1 ? 26 : 9999999"
-                  :placeholder="$t('page.retryScene.form.maxRetryCount')"
-                  clearable
-                />
+              <NFormItem :label="$t('page.retryScene.blockStrategy')" path="blockStrategy">
+                <BlockStrategy v-model:value="model.blockStrategy" />
               </NFormItem>
             </NGi>
           </NGrid>
@@ -333,44 +345,53 @@ watch(
               </NFormItem>
             </NGi>
             <NGi>
-              <NFormItem path="triggerInterval">
-                <SceneTriggerInterval
-                  v-if="model.backOff !== 1"
-                  v-model="model.triggerInterval"
-                  :back-off="model.backOff"
+              <NFormItem :label="$t('page.retryScene.maxRetryCount')" path="maxRetryCount">
+                <NInputNumber
+                  v-model:value="model.maxRetryCount"
+                  :min="1"
+                  :max="model.backOff === 1 ? 26 : 9999999"
+                  :placeholder="$t('page.retryScene.form.maxRetryCount')"
+                  clearable
                 />
-                <NInput
-                  v-else
-                  v-model:value="delayLevelDesc"
-                  type="textarea"
-                  :autosize="{ minRows: 1, maxRows: 3 }"
-                  readonly
-                />
-                <template #label>
-                  <div class="flex-center">
-                    {{ $t('page.retryScene.triggerInterval') }}
-                    <NTooltip v-if="model.backOff === 1" trigger="hover">
-                      <template #trigger>
-                        <NButton text class="ml-6px">
-                          <SvgIcon icon="ant-design:info-circle-outlined" class="mb-1px text-16px" />
-                        </NButton>
-                      </template>
-                      延迟等级是参考RocketMQ的messageDelayLevel设计实现，具体延迟时间如下:
-                      【10s,15s,30s,35s,40s,50s,1m,2m,4m,6m,8m,10m,20m,40m,1h,2h,3h,4h,5h,6h,7h,8h,9h,10h,11h,12h】
-                      <br />
-                      <NText strong>执行逻辑:</NText>
-                      <NUl align-text>
-                        <NLi>第一次执行间隔10s</NLi>
-                        <NLi>第二次执行间隔15s</NLi>
-                        <NLi>l第二次执行间隔30s</NLi>
-                        <NLi>........... 依次类推</NLi>
-                      </NUl>
-                    </NTooltip>
-                  </div>
-                </template>
               </NFormItem>
             </NGi>
           </NGrid>
+          <NFormItem path="triggerInterval">
+            <SceneTriggerInterval
+              v-if="model.backOff !== 1"
+              v-model="model.triggerInterval"
+              :back-off="model.backOff"
+            />
+            <NInput
+              v-else
+              v-model:value="delayLevelDesc"
+              type="textarea"
+              :autosize="{ minRows: 1, maxRows: 3 }"
+              readonly
+            />
+            <template #label>
+              <div class="flex-center">
+                {{ $t('page.retryScene.triggerInterval') }}
+                <NTooltip v-if="model.backOff === 1" trigger="hover">
+                  <template #trigger>
+                    <NButton text class="ml-6px">
+                      <SvgIcon icon="ant-design:info-circle-outlined" class="mb-1px text-16px" />
+                    </NButton>
+                  </template>
+                  延迟等级是参考RocketMQ的messageDelayLevel设计实现，具体延迟时间如下:
+                  【10s,15s,30s,35s,40s,50s,1m,2m,4m,6m,8m,10m,20m,40m,1h,2h,3h,4h,5h,6h,7h,8h,9h,10h,11h,12h】
+                  <br />
+                  <NText strong>执行逻辑:</NText>
+                  <NUl align-text>
+                    <NLi>第一次执行间隔10s</NLi>
+                    <NLi>第二次执行间隔15s</NLi>
+                    <NLi>l第二次执行间隔30s</NLi>
+                    <NLi>........... 依次类推</NLi>
+                  </NUl>
+                </NTooltip>
+              </div>
+            </template>
+          </NFormItem>
           <NGrid cols="2 s:1 m:2" responsive="screen" x-gap="20">
             <NGi>
               <NFormItem :label="$t('page.retryScene.executorTimeout')" path="executorTimeout">
@@ -448,52 +469,52 @@ watch(
               </NFormItem>
             </NGi>
             <NGi>
-              <NFormItem path="cbTriggerInterval">
-                <SceneTriggerInterval
-                  v-if="model.cbTriggerType !== 1"
-                  v-model="model.cbTriggerInterval"
-                  :back-off="model.cbTriggerType"
+              <NFormItem :label="$t('page.retryScene.cbMaxCount')" path="cbMaxCount">
+                <NInputNumber
+                  v-model:value="model.cbMaxCount"
+                  :min="1"
+                  :max="model.backOff === 1 ? 26 : 9999999"
+                  :placeholder="$t('page.retryScene.form.cbMaxCount')"
+                  clearable
                 />
-                <NInput
-                  v-else
-                  v-model:value="delayLevelDesc"
-                  type="textarea"
-                  :autosize="{ minRows: 1, maxRows: 3 }"
-                  readonly
-                />
-                <template #label>
-                  <div class="flex-center">
-                    {{ $t('page.retryScene.cbTriggerInterval') }}
-                    <NTooltip v-if="model.cbTriggerType === 1" trigger="hover">
-                      <template #trigger>
-                        <NButton text class="ml-6px">
-                          <SvgIcon icon="ant-design:info-circle-outlined" class="mb-1px text-16px" />
-                        </NButton>
-                      </template>
-                      延迟等级是参考RocketMQ的messageDelayLevel设计实现，具体延迟时间如下:
-                      【10s,15s,30s,35s,40s,50s,1m,2m,4m,6m,8m,10m,20m,40m,1h,2h,3h,4h,5h,6h,7h,8h,9h,10h,11h,12h】
-                      <br />
-                      <NText strong>执行逻辑:</NText>
-                      <NUl align-text>
-                        <NLi>第一次执行间隔10s</NLi>
-                        <NLi>第二次执行间隔15s</NLi>
-                        <NLi>l第二次执行间隔30s</NLi>
-                        <NLi>........... 依次类推</NLi>
-                      </NUl>
-                    </NTooltip>
-                  </div>
-                </template>
               </NFormItem>
             </NGi>
           </NGrid>
-          <NFormItem :label="$t('page.retryScene.cbMaxCount')" path="cbMaxCount">
-            <NInputNumber
-              v-model:value="model.cbMaxCount"
-              :min="1"
-              :max="model.backOff === 1 ? 26 : 9999999"
-              :placeholder="$t('page.retryScene.form.cbMaxCount')"
-              clearable
+          <NFormItem path="cbTriggerInterval">
+            <SceneTriggerInterval
+              v-if="model.cbTriggerType !== 1"
+              v-model="model.cbTriggerInterval"
+              :back-off="model.cbTriggerType"
             />
+            <NInput
+              v-else
+              v-model:value="callbackDelayLevelDesc"
+              type="textarea"
+              :autosize="{ minRows: 1, maxRows: 3 }"
+              readonly
+            />
+            <template #label>
+              <div class="flex-center">
+                {{ $t('page.retryScene.cbTriggerInterval') }}
+                <NTooltip v-if="model.cbTriggerType === 1" trigger="hover">
+                  <template #trigger>
+                    <NButton text class="ml-6px">
+                      <SvgIcon icon="ant-design:info-circle-outlined" class="mb-1px text-16px" />
+                    </NButton>
+                  </template>
+                  延迟等级是参考RocketMQ的messageDelayLevel设计实现，具体延迟时间如下:
+                  【10s,15s,30s,35s,40s,50s,1m,2m,4m,6m,8m,10m,20m,40m,1h,2h,3h,4h,5h,6h,7h,8h,9h,10h,11h,12h】
+                  <br />
+                  <NText strong>执行逻辑:</NText>
+                  <NUl align-text>
+                    <NLi>第一次执行间隔10s</NLi>
+                    <NLi>第二次执行间隔15s</NLi>
+                    <NLi>l第二次执行间隔30s</NLi>
+                    <NLi>........... 依次类推</NLi>
+                  </NUl>
+                </NTooltip>
+              </div>
+            </template>
           </NFormItem>
         </NCollapseItem>
       </NCollapse>

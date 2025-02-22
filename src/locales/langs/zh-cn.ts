@@ -738,6 +738,7 @@ const local: App.I18n.Schema = {
       updateDt: '更新时间',
       description: '描述',
       routeKey: '路由策略',
+      blockStrategy: '阻塞策略',
       cbStatus: '回调开关',
       cbTriggerType: '回调触发类型',
       cbTriggerInterval: '回调触发间隔',

@@ -730,6 +730,7 @@ const local: App.I18n.Schema = {
       updateDt: 'Update time',
       description: 'Describe',
       routeKey: 'Routing strategy',
+      blockStrategy: 'Block strategy',
       cbStatus: 'Callback status',
       cbTriggerType: 'Callback TriggerType',
       cbTriggerInterval: 'Callback Trigger Interval',

@@ -27,12 +27,18 @@ function search() {
 </script>
 
 <template>
-  <SearchForm btn-span="24 m:9 xl:3" :model="model" @search="search" @reset="reset">
-    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryLog.groupName')" path="groupName" class="pr-24px">
+  <SearchForm btn-span="12 s:24 m:10 l:12 xl:16" :model="model" @search="search" @reset="reset">
+    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryTask.groupName')" path="groupName" class="pr-24px">
       <SelectGroup v-model:value="model.groupName" clearable />
     </NFormItemGi>
-    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryLog.sceneName')" path="sceneName" class="pr-24px">
+    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryTask.sceneName')" path="sceneName" class="pr-24px">
       <SelectScene v-model:value="model.sceneName" :group-name="model.groupName as string" clearable />
+    </NFormItemGi>
+    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retry.bizNo')" path="bizNo" class="pr-24px">
+      <NInput v-model:value="model.bizNo" :placeholder="$t('page.retry.form.bizNo')" clearable />
+    </NFormItemGi>
+    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retry.idempotentId')" path="idempotentId" class="pr-24px">
+      <NInput v-model:value="model.idempotentId" :placeholder="$t('page.retry.form.idempotentId')" clearable />
     </NFormItemGi>
     <NFormItemGi span="24 s:12 m:15 l:12 xl:9" :label="$t('page.common.createTime')" path="datetimeRange">
       <DatetimeRange v-model:value="model.datetimeRange!" />

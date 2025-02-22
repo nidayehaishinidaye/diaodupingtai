@@ -79,6 +79,9 @@ declare namespace Api {
     /** 阻塞策略 1:丢弃 2:覆盖 3:并行 4:恢复 */
     type BlockStrategy = 1 | 2 | 3 | 4;
 
+    /** 阻塞策略 1:丢弃 2:覆盖 3:并行 */
+    type RetryBlockStrategy = 1 | 2 | 3 | 4;
+
     /** 失败策略 1:跳过 2:阻塞 */
     type FailStrategy = 1 | 2;
 
@@ -833,6 +836,7 @@ declare namespace Api {
    */
   namespace RetryScene {
     import EnableStatusNumber = Api.Common.EnableStatusNumber;
+    import RetryBlockStrategy = Api.Common.RetryBlockStrategy;
     type CommonSearchParams = Pick<Common.PaginatingCommonParams, 'page' | 'size'>;
 
     /** scene */
@@ -843,6 +847,8 @@ declare namespace Api {
       sceneName: string;
       /** 通知场景ids */
       notifyIds: number[];
+      /** 阻塞策略 */
+      blockStrategy: RetryBlockStrategy;
       /** 状态 */
       sceneStatus: EnableStatusNumber;
       /** 退避策略 */

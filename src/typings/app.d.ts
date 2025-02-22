@@ -938,6 +938,7 @@ declare namespace App {
           updateDt: string;
           description: string;
           routeKey: string;
+          blockStrategy: string;
           cbStatus: string;
           cbTriggerType: string;
           cbTriggerInterval: string;
