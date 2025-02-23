@@ -191,7 +191,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
                   {{
                     default: () => $t('common.confirmExecute'),
                     trigger: () => (
-                      <NButton type="error" quaternary size="small">
+                      <NButton type="info" quaternary size="small">
                         {$t('common.execute')}
                       </NButton>
                     )
@@ -241,7 +241,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
                   {{
                     default: () => $t('common.confirmResume'),
                     trigger: () => (
-                      <NButton type="info" quaternary size="small">
+                      <NButton type="warning" quaternary size="small">
                         {$t('common.resume')}
                       </NButton>
                     )
@@ -258,6 +258,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
           {
             label: $t('common.finish'),
             key: 'finish',
+            type: 'render',
             show: row.retryStatus !== 1 && row.retryStatus !== 2,
             render: () => (
               <div class="flex-center">
@@ -265,7 +266,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
                   {{
                     default: () => $t('common.confirmFinish'),
                     trigger: () => (
-                      <NButton type="warning" quaternary size="small">
+                      <NButton type="primary" quaternary size="small">
                         {$t('common.finish')}
                       </NButton>
                     )
@@ -287,7 +288,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
                   {{
                     default: () => $t('common.confirmDelete'),
                     trigger: () => (
-                      <NButton quaternary size="small">
+                      <NButton quaternary type="error" size="small">
                         {$t('common.delete')}
                       </NButton>
                     )
@@ -388,7 +389,6 @@ async function updateRetryTaskStatus(id: number, status: Api.Retry.RetryStatusTy
 onMounted(async () => {
   const { error, data: groupList } = await fetchGetAllGroupNameList();
   if (!error && groupList.length > 0) {
-    searchParams.groupName = groupList[0];
     getData();
   }
 });

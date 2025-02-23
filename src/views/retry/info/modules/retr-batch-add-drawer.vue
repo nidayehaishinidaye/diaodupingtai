@@ -69,20 +69,20 @@ watch(visible, () => {
 </script>
 
 <template>
-  <OperateDrawer v-model="visible" :title="$t('page.retryTask.batchAddRetry')" @handle-submit="handleSubmit">
+  <OperateDrawer v-model="visible" :title="$t('page.retry.batchAddRetry')" @handle-submit="handleSubmit">
     <NForm ref="formRef" :model="model" :rules="rules">
-      <NFormItem :label="$t('page.retryTask.groupName')" path="groupName">
+      <NFormItem :label="$t('page.retry.groupName')" path="groupName">
         <SelectGroup v-model:value="model.groupName" />
       </NFormItem>
-      <NFormItem :label="$t('page.retryTask.retryStatus')" path="retryStatus">
+      <NFormItem :label="$t('page.retry.retryStatus')" path="retryStatus">
         <NSelect
           v-model:value="model.retryStatus"
-          :placeholder="$t('page.retryTask.form.retryStatus')"
+          :placeholder="$t('page.retry.form.retryStatus')"
           :options="translateOptions(retryStatusTypeOptions)"
         />
       </NFormItem>
-      <NFormItem :label="$t('page.retryTask.form.logStr')" path="logStr">
-        <NInput v-model:value="model.logStr" type="textarea" :placeholder="$t('page.retryTask.form.logStr')" />
+      <NFormItem :label="$t('page.retry.form.logStr')" path="logStr">
+        <NInput v-model:value="model.logStr" type="textarea" :placeholder="$t('page.retry.form.logStr')" />
       </NFormItem>
     </NForm>
     <template #footer>
