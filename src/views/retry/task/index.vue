@@ -12,7 +12,7 @@ import {
 import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import { operationReasonRecord, retryTaskStatusTypeRecord, retryTaskTypeRecord } from '@/constants/business';
+import { retryOperationReasonRecord, retryTaskStatusTypeRecord, retryTaskTypeRecord } from '@/constants/business';
 import { monthRangeISO8601, tagColor } from '@/utils/common';
 import SvgIcon from '@/components/custom/svg-icon.vue';
 import RetryLogSearch from './modules/retry-task-search.vue';
@@ -142,12 +142,12 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       key: 'operationReason',
       title: $t('page.retryTask.operationReason'),
       align: 'center',
-      width: 120,
+      width: 240,
       render: row => {
         if (row.operationReason === null) {
           return null;
         }
-        const label = $t(operationReasonRecord[row.operationReason!]);
+        const label = $t(retryOperationReasonRecord[row.operationReason!]);
 
         return <NTag type={tagColor(row.operationReason!)}>{label}</NTag>;
       }

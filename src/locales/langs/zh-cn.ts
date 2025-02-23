@@ -236,7 +236,7 @@ const local: App.I18n.Schema = {
         mannerStop: '手动停止',
         noRunningRetry: '当前重试非运行中',
         sceneClosed: '当前场景已关闭',
-        retryFail: '重试失败',
+        retryFail: '客户端执行重试失败',
         clientTriggerRetryStop: '客户端触发任务停止'
       }
     },

@@ -284,7 +284,8 @@ export const retryOperationReasonRecord: Record<Api.Common.RetryOperationReason,
   7: 'common.retryOperationReason.items.mannerStop',
   8: 'common.retryOperationReason.items.noRunningRetry',
   9: 'common.retryOperationReason.items.sceneClosed',
-  10: 'common.retryOperationReason.items.retryFail'
+  10: 'common.retryOperationReason.items.retryFail',
+  11: 'common.retryOperationReason.items.clientTriggerRetryStop'
 };
 export const retryOperationReasonOptions = transformRecordToNumberOption(retryOperationReasonRecord);
 

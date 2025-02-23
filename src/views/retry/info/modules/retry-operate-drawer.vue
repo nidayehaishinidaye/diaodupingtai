@@ -148,7 +148,7 @@ async function setIdempotentId() {
   const groupName = model.groupName;
   const sceneName = model.sceneName;
   const executorName = model.executorName;
-  const argsStr = model.argsStr;
+  const argsStr = JSON.stringify(argsList.value);
   const { data: idempotentId, error } = await fetchIdempotentIdGenerate({
     groupName,
     sceneName,
@@ -174,6 +174,35 @@ async function setIdempotentId() {
           :disabled="props.operateType === 'edit'"
         />
       </NFormItem>
+      <NFormItem :label="$t('page.retryTask.bizNo')" path="bizNo">
+        <NInput
+          v-model:value="model.bizNo"
+          :placeholder="$t('page.retryTask.form.bizNo')"
+          :disabled="props.operateType === 'edit'"
+        />
+      </NFormItem>
+      <NFormItem :label="$t('page.retry.executorName')" path="executorName">
+        <NInput
+          v-model:value="model.executorName"
+          :placeholder="$t('page.retry.form.executorName')"
+          :disabled="props.operateType === 'edit'"
+        />
+      </NFormItem>
+      <NFormItem :label="$t('page.retry.argsStr')" path="argsStr">
+        <NDynamicInput v-model:value="argsList" :on-create="() => ''">
+          <template #default="{ index }">
+            <NFormItem
+              class="w-full"
+              ignore-path-change
+              :show-label="false"
+              :show-feedback="false"
+              :path="`argsStr[${index}]`"
+            >
+              <CodeMirror v-model="argsList[index]" lang="json" :placeholder="$t('page.retry.argsStr')" />
+            </NFormItem>
+          </template>
+        </NDynamicInput>
+      </NFormItem>
       <NFormItem :label="$t('page.retryTask.idempotentId')" path="idempotentId">
         <NInputGroup>
           <NInput
@@ -187,43 +216,14 @@ async function setIdempotentId() {
                 <icon-clarity:thin-client-solid class="text-icon" />
               </NButton>
             </template>
-            {{ $t('page.retryTask.generateIdempotentId') }}
+            {{ $t('page.retry.generateIdempotentId') }}
           </NTooltip>
         </NInputGroup>
       </NFormItem>
-      <NFormItem :label="$t('page.retryTask.bizNo')" path="bizNo">
-        <NInput
-          v-model:value="model.bizNo"
-          :placeholder="$t('page.retryTask.form.bizNo')"
-          :disabled="props.operateType === 'edit'"
-        />
-      </NFormItem>
-      <NFormItem :label="$t('page.retryTask.executorName')" path="executorName">
-        <NInput
-          v-model:value="model.executorName"
-          :placeholder="$t('page.retryTask.form.executorName')"
-          :disabled="props.operateType === 'edit'"
-        />
-      </NFormItem>
-      <NFormItem :label="$t('page.retryTask.argsStr')" path="argsStr">
-        <NDynamicInput v-model:value="argsList" :on-create="() => ''">
-          <template #default="{ index }">
-            <NFormItem
-              class="w-full"
-              ignore-path-change
-              :show-label="false"
-              :show-feedback="false"
-              :path="`argsStr[${index}]`"
-            >
-              <CodeMirror v-model="argsList[index]" lang="json" :placeholder="$t('page.jobTask.form.argsStr')" />
-            </NFormItem>
-          </template>
-        </NDynamicInput>
-      </NFormItem>
-      <NFormItem :label="$t('page.retryTask.retryStatus')" path="retryStatus">
+      <NFormItem :label="$t('page.retry.retryStatus')" path="retryStatus">
         <NSelect
           v-model:value="model.retryStatus"
-          :placeholder="$t('page.retryTask.form.retryStatus')"
+          :placeholder="$t('page.retry.form.retryStatus')"
           :options="translateOptions(retryStatusTypeOptions)"
         />
       </NFormItem>

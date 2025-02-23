@@ -118,8 +118,11 @@ declare namespace Api {
      */
     type OperationReason = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14;
 
-    /** 1、任务执行超时 2、无客户端节点 3、JOB已关闭 4、任务丢弃 5、任务被覆盖 6、无可执行任务项 7、任务执行期间发生非预期异常 8、手动停止 8、当前重试非运行中 9、当前场景已关闭 10、重试失败 */
-    type RetryOperationReason = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+    /**
+     * 1、任务执行超时 2、无客户端节点 3、JOB已关闭 4、任务丢弃 5、任务被覆盖 6、无可执行任务项 7、任务执行期间发生非预期异常 8、手动停止 8、当前重试非运行中 9、当前场景已关闭 10、重试失败
+     * 11、客户端触发任务停止
+     */
+    type RetryOperationReason = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
   }
 
   /**
@@ -1249,7 +1252,7 @@ declare namespace Api {
       /** 客户端信息 */
       clientInfo: string;
       /** 失败原因 */
-      operationReason: Common.OperationReason;
+      operationReason: Common.RetryOperationReason;
     }>;
 
     /** retryLog search params */

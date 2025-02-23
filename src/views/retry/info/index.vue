@@ -187,14 +187,11 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
             show: row.retryStatus !== 1 && row.retryStatus !== 2,
             render: () => (
               <div class="flex-center">
-                <NPopconfirm
-                  onPositiveClick={() => handleExecute(row.groupName!, row.id! as any)}
-                  v-if="row.retryStatus !== 1 && row.retryStatus !== 2"
-                >
+                <NPopconfirm onPositiveClick={() => handleExecute(row.groupName!, row.id! as any)}>
                   {{
                     default: () => $t('common.confirmExecute'),
                     trigger: () => (
-                      <NButton type="error" text ghost size="small">
+                      <NButton type="error" quaternary size="small">
                         {$t('common.execute')}
                       </NButton>
                     )
@@ -219,7 +216,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
                   {{
                     default: () => $t('common.confirmPause'),
                     trigger: () => (
-                      <NButton type="success" text ghost size="small">
+                      <NButton type="success" quaternary size="small">
                         {$t('common.pause')}
                       </NButton>
                     )
@@ -231,7 +228,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
           {
             type: 'divider',
             key: 'd2',
-            show: row.retryStatus === 0
+            show: row.retryStatus === 3
           },
           {
             label: $t('common.pause'),
@@ -244,7 +241,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
                   {{
                     default: () => $t('common.confirmResume'),
                     trigger: () => (
-                      <NButton type="info" text ghost size="small">
+                      <NButton type="info" quaternary size="small">
                         {$t('common.resume')}
                       </NButton>
                     )
@@ -256,7 +253,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
           {
             type: 'divider',
             key: 'd2',
-            show: row.retryStatus === 0
+            show: row.retryStatus !== 1 && row.retryStatus !== 2
           },
           {
             label: $t('common.finish'),
@@ -268,7 +265,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
                   {{
                     default: () => $t('common.confirmFinish'),
                     trigger: () => (
-                      <NButton type="warning" text ghost size="small">
+                      <NButton type="warning" quaternary size="small">
                         {$t('common.finish')}
                       </NButton>
                     )
@@ -277,7 +274,6 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
               </div>
             )
           },
-
           {
             type: 'divider',
             key: 'd2'
