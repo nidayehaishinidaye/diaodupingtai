@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { NButton, NPopconfirm, NTag } from 'naive-ui';
+import { NButton, NPopconfirm } from 'naive-ui';
 import { onMounted, ref } from 'vue';
 import { useBoolean } from '@sa/hooks';
 import {
@@ -12,8 +12,7 @@ import {
 import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import { retryTaskTypeRecord } from '@/constants/business';
-import { monthRangeISO8601, tagColor } from '@/utils/common';
+import { monthRangeISO8601 } from '@/utils/common';
 import RetryDeadLetterSearch from './modules/dead-letter-search.vue';
 import RetryDeadLetterDetailDrawer from './modules/retry-letter-detail-drawer.vue';
 
@@ -45,13 +44,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       key: 'id',
       title: $t('common.index'),
       align: 'center',
-      width: 64
-    },
-    {
-      key: 'uniqueId',
-      title: $t('page.retryDeadLetter.uniqueId'),
-      align: 'left',
-      minWidth: 120,
+      width: 120,
       render: row => {
         async function showDetailDrawer() {
           await loadRetryInfo(row);
@@ -60,7 +53,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
 
         return (
           <n-button text tag="a" type="primary" onClick={showDetailDrawer} class="ws-normal">
-            {row.uniqueId}
+            {row.id}
           </n-button>
         );
       }
@@ -68,45 +61,31 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'groupName',
       title: $t('page.retryDeadLetter.groupName'),
-      align: 'left',
+      align: 'center',
       minWidth: 120
     },
     {
       key: 'sceneName',
       title: $t('page.retryDeadLetter.sceneName'),
-      align: 'left',
+      align: 'center',
       minWidth: 120
     },
     {
       key: 'idempotentId',
       title: $t('page.retryDeadLetter.idempotentId'),
-      align: 'left',
+      align: 'center',
       minWidth: 120
     },
     {
       key: 'bizNo',
       title: $t('page.retryDeadLetter.bizNo'),
-      align: 'left',
+      align: 'center',
       minWidth: 120
-    },
-    {
-      key: 'taskType',
-      title: $t('page.retryDeadLetter.taskType'),
-      align: 'left',
-      minWidth: 120,
-      render: row => {
-        if (row.taskType === null) {
-          return null;
-        }
-        const label = $t(retryTaskTypeRecord[row.taskType!]);
-
-        return <NTag type={tagColor(row.taskType!)}>{label}</NTag>;
-      }
     },
     {
       key: 'createDt',
       title: $t('page.retryDeadLetter.createDt'),
-      align: 'left',
+      align: 'center',
       minWidth: 120
     },
     {
@@ -116,9 +95,16 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       width: 130,
       render: row => (
         <div class="flex-center gap-8px">
-          <NButton type="primary" text ghost size="small" onClick={() => rollback(row)}>
-            {$t('common.rollback')}
-          </NButton>
+          <NPopconfirm onPositiveClick={() => rollback(row)}>
+            {{
+              default: () => $t('common.confirmRollback'),
+              trigger: () => (
+                <NButton type="info" text ghost size="small">
+                  {$t('common.rollback')}
+                </NButton>
+              )
+            }}
+          </NPopconfirm>
           <n-divider vertical />
           <NPopconfirm onPositiveClick={() => handleDelete(row)}>
             {{
@@ -152,8 +138,7 @@ async function handleBatchDelete() {
 async function handleBatchRollback() {
   // request
   const { error } = await fetchRollbackRetryDeadLetter({
-    ids: checkedRowKeys.value as any[],
-    groupName: searchParams.groupName!
+    ids: checkedRowKeys.value as any[]
   });
   if (error) return;
   window.$message?.success($t('common.rollbackSuccess'));
@@ -181,7 +166,6 @@ async function rollback(row: Api.RetryDeadLetter.DeadLetter) {
 onMounted(async () => {
   const { error, data: groupList } = await fetchGetAllGroupNameList();
   if (!error && groupList.length > 0) {
-    searchParams.groupName = groupList[0];
     getData();
   }
 });
@@ -208,12 +192,17 @@ onMounted(async () => {
           @refresh="getData"
         >
           <template #addAfter>
-            <NButton size="small" ghost type="primary" @click="handleBatchRollback">
-              <template #icon>
-                <IconTdesignRollback class="text-icon" />
+            <NPopconfirm @positive-click="handleBatchRollback">
+              <template #trigger>
+                <NButton size="small" ghost type="primary" :disabled="checkedRowKeys.length === 0">
+                  <template #icon>
+                    <IconTdesignRollback class="text-icon" />
+                  </template>
+                  {{ $t('common.batchRollback') }}
+                </NButton>
               </template>
-              {{ $t('common.batchRollback') }}
-            </NButton>
+              {{ $t('common.confirmRollback') }}
+            </NPopconfirm>
           </template>
         </TableHeaderOperation>
       </template>

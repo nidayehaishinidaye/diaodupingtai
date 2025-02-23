@@ -28,6 +28,7 @@ const local: App.I18n.Schema = {
     rollbackSuccess: 'Rollback Success',
     deleteSuccess: 'Delete Success',
     confirmDelete: 'Are you sure you want to delete?',
+    confirmRollback: 'Are you sure you want to rollback?',
     checkUploadType: 'Only JSON format files can be uploaded, please re-upload',
     second: 's',
     millisecond: 'ms',

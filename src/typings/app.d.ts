@@ -308,6 +308,7 @@ declare namespace App {
         batchRollback: string;
         rollbackSuccess: string;
         deleteSuccess: string;
+        confirmRollback: string;
         confirmDelete: string;
         checkUploadType: string;
         second: string;
