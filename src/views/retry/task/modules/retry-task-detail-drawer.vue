@@ -24,18 +24,18 @@ const visible = defineModel<boolean>('visible', {
     <NTabs type="segment" animated>
       <NTabPane :name="0" :tab="$t('page.log.info')">
         <NDescriptions label-placement="top" bordered :column="2">
-          <NDescriptionsItem :label="$t('page.retryLog.groupName')" :span="2">
+          <NDescriptionsItem :label="$t('page.retryTask.groupName')" :span="2">
             {{ rowData?.groupName }}
           </NDescriptionsItem>
-          <NDescriptionsItem :label="$t('page.retryLog.sceneName')" :span="2">
+          <NDescriptionsItem :label="$t('page.retryTask.sceneName')" :span="2">
             {{ rowData?.sceneName }}
           </NDescriptionsItem>
-          <NDescriptionsItem :label="$t('page.retryLog.retryStatus')" :span="1">
+          <NDescriptionsItem :label="$t('page.retryTask.taskStatus')" :span="1">
             <NTag :type="tagColor(rowData?.taskStatus!)">
               {{ $t(retryTaskStatusTypeRecord[rowData?.taskStatus!]) }}
             </NTag>
           </NDescriptionsItem>
-          <NDescriptionsItem :label="$t('page.retryLog.taskType')" :span="1">
+          <NDescriptionsItem :label="$t('page.retryTask.taskType')" :span="1">
             <NTag :type="tagColor(rowData?.taskType!)">{{ $t(retryTaskTypeRecord[rowData?.taskType!]) }}</NTag>
           </NDescriptionsItem>
           <NDescriptionsItem :label="$t('common.createDt')">{{ rowData?.createDt }}</NDescriptionsItem>

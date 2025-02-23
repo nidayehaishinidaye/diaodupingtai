@@ -38,6 +38,19 @@ async function getRetrySceneList(groupName: string) {
   }
 }
 
+// const renderOption = ({ node, option }: { node: VNode; option: SelectOption }) => {
+//   h(
+//     NTooltip,
+//     {
+//       trigger: 'hover'
+//     },
+//     {
+//       trigger: () => node,
+//       default: () => option.label
+//     }
+//   );
+// };
+
 watch(
   () => props.groupName,
   () => {

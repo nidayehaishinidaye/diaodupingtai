@@ -39,7 +39,7 @@ function search() {
     <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryTask.retryId')" path="bizNo" class="pr-24px">
       <NInput v-model:value="model.retryId" :placeholder="$t('page.retryTask.form.retryId')" clearable />
     </NFormItemGi>
-    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retry.retryStatus')" path="taskBatchStatus" class="pr-24px">
+    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retry.retryStatus')" path="retryStatus" class="pr-24px">
       <NSelect
         v-model:value="model.taskStatus"
         :placeholder="$t('page.retry.form.retryStatus')"
