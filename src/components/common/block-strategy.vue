@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { $t } from '@/locales';
 import { translateOptions } from '@/utils/common';
 import { blockStrategyRecordOptions } from '@/constants/business';
@@ -7,6 +7,12 @@ import { blockStrategyRecordOptions } from '@/constants/business';
 defineOptions({
   name: 'BlockStrategy'
 });
+
+interface Props {
+  ignore?: Api.Common.BlockStrategy[];
+}
+
+const props = defineProps<Props>();
 
 const valueRef = ref<Api.Common.BlockStrategy>();
 const emit = defineEmits<Emits>();
@@ -18,13 +24,21 @@ interface Emits {
 const handleUpdate = (value: Api.Common.BlockStrategy) => {
   emit('update:value', value);
 };
+
+const options = computed(() => {
+  const list = translateOptions(blockStrategyRecordOptions);
+  if (!props.ignore) {
+    return list;
+  }
+  return list.filter(opt => opt.value !== 4);
+});
 </script>
 
 <template>
   <NSelect
     v-model:value="valueRef"
     :placeholder="$t('common.blockStrategy.form')"
-    :options="translateOptions(blockStrategyRecordOptions)"
+    :options="options"
     @update:value="handleUpdate"
   />
 </template>
