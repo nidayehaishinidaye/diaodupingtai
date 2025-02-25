@@ -25,6 +25,8 @@ interface Props {
   rowData?: Api.RetryScene.Scene | null;
 }
 
+const ignoreRecovery = ref<Api.Common.BlockStrategy[]>([4]);
+
 const delayLevelDesc = ref<string>('10s');
 const callbackDelayLevelDesc = ref<string>('10s');
 
@@ -329,7 +331,7 @@ watch(
             </NGi>
             <NGi>
               <NFormItem :label="$t('page.retryScene.blockStrategy')" path="blockStrategy">
-                <BlockStrategy v-model:value="model.blockStrategy" />
+                <BlockStrategy v-model:value="model.blockStrategy" :ignore="ignoreRecovery" />
               </NFormItem>
             </NGi>
           </NGrid>

@@ -1253,6 +1253,8 @@ declare namespace Api {
       clientInfo: string;
       /** 失败原因 */
       operationReason: Common.RetryOperationReason;
+      /** 重试信息 */
+      responseVO: Api.Retry.Retry;
     }>;
 
     /** retryLog search params */

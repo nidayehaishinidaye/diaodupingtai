@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { $t } from '@/locales';
 import { tagColor } from '@/utils/common';
-import { retryTaskStatusTypeRecord, retryTaskTypeRecord } from '@/constants/business';
+import { retryStatusTypeRecord, retryTaskStatusTypeRecord, retryTaskTypeRecord } from '@/constants/business';
 
 defineOptions({
   name: 'SceneDetailDrawer'
@@ -37,6 +37,26 @@ const visible = defineModel<boolean>('visible', {
           </NDescriptionsItem>
           <NDescriptionsItem :label="$t('page.retryTask.taskType')" :span="1">
             <NTag :type="tagColor(rowData?.taskType!)">{{ $t(retryTaskTypeRecord[rowData?.taskType!]) }}</NTag>
+          </NDescriptionsItem>
+          <NDescriptionsItem :label="$t('page.retry.retryCount')" :span="1">
+            {{ rowData?.responseVO?.retryCount }}
+          </NDescriptionsItem>
+          <NDescriptionsItem :label="$t('page.retry.retryStatus')" :span="1">
+            <NTag :type="tagColor(rowData?.responseVO?.retryStatus!)">
+              {{ $t(retryStatusTypeRecord[rowData?.responseVO?.retryStatus!]) }}
+            </NTag>
+          </NDescriptionsItem>
+          <NDescriptionsItem :label="$t('page.retry.bizNo')" :span="2">
+            {{ rowData?.responseVO?.bizNo }}
+          </NDescriptionsItem>
+          <NDescriptionsItem :label="$t('page.retry.idempotentId')" :span="2">
+            {{ rowData?.responseVO?.idempotentId }}
+          </NDescriptionsItem>
+          <NDescriptionsItem :label="$t('page.retry.executorName')" :span="2">
+            {{ rowData?.responseVO?.executorName }}
+          </NDescriptionsItem>
+          <NDescriptionsItem :label="$t('page.retry.argsStr')" :span="2">
+            {{ rowData?.responseVO?.argsStr }}
           </NDescriptionsItem>
           <NDescriptionsItem :label="$t('common.createDt')">{{ rowData?.createDt }}</NDescriptionsItem>
         </NDescriptions>
