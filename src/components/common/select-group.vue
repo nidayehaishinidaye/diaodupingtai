@@ -1,5 +1,7 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import { ref } from 'vue';
+import type { SelectOption } from 'naive-ui';
+import { NEllipsis } from 'naive-ui';
 import { $t } from '@/locales';
 import { translateOptions2 } from '@/utils/common';
 import { fetchGetAllGroupNameList } from '@/service/api';
@@ -39,6 +41,8 @@ const handleUpdate = (value: string) => {
 };
 
 getGroupNameList();
+
+const renderLabel = (option: SelectOption) => <NEllipsis>{option.label}</NEllipsis>;
 </script>
 
 <template>
@@ -49,6 +53,7 @@ getGroupNameList();
     :disabled="props.disabled"
     :clearable="props.clearable"
     filterable
+    :render-label="renderLabel"
     @update:value="handleUpdate"
   />
 </template>

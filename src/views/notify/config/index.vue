@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { NButton, NPopconfirm, NTag } from 'naive-ui';
+import { NButton, NEllipsis, NPopconfirm, NTag } from 'naive-ui';
 import { ref } from 'vue';
 import { useBoolean } from '@sa/hooks';
 import { fetchBatchDeleteNotify, fetchGetNotifyConfigList, fetchUpdateNotifyStatus } from '@/service/api';
@@ -122,17 +122,29 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
 
         if (row.systemTaskType === 1) {
           const label = $t(retryNotifyScene[row.notifyScene! as Api.NotifyConfig.RetryNotifyScene]);
-          return <NTag type={tagColor(row.notifyScene)}>{label}</NTag>;
+          return (
+            <NTag type={tagColor(row.notifyScene)}>
+              <NEllipsis class="w-136px">{label}</NEllipsis>
+            </NTag>
+          );
         }
 
         if (row.systemTaskType === 3) {
           const label = $t(jobNotifyScene[row.notifyScene! as Api.NotifyConfig.JobNotifyScene]);
-          return <NTag type={tagColor(row.notifyScene)}>{label}</NTag>;
+          return (
+            <NTag type={tagColor(row.notifyScene)}>
+              <NEllipsis class="w-136px">{label}</NEllipsis>
+            </NTag>
+          );
         }
 
         if (row.systemTaskType === 4) {
           const label = $t(workflowNotifyScene[row.notifyScene! as Api.NotifyConfig.WorkflowNotifyScene]);
-          return <NTag type={tagColor(row.notifyScene)}>{label}</NTag>;
+          return (
+            <NTag type={tagColor(row.notifyScene)}>
+              <NEllipsis class="w-136px">{label}</NEllipsis>
+            </NTag>
+          );
         }
 
         return null;

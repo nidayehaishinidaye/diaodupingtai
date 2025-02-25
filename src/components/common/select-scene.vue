@@ -1,5 +1,7 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import { ref, watch } from 'vue';
+import type { SelectOption } from 'naive-ui';
+import { NEllipsis } from 'naive-ui';
 import { $t } from '@/locales';
 import { translateOptions2 } from '@/utils/common';
 import { fetchGetRetrySceneList } from '@/service/api';
@@ -64,6 +66,8 @@ watch(
     emit('update:value', sceneNameRef.value);
   }
 );
+
+const renderLabel = (option: SelectOption) => <NEllipsis>{option.label}</NEllipsis>;
 </script>
 
 <template>
@@ -72,6 +76,7 @@ watch(
     :placeholder="$t('page.retryTask.form.sceneName')"
     :options="translateOptions2(sceneNameList)"
     :clearable="props.clearable"
+    :render-label="renderLabel"
   />
 </template>
 
