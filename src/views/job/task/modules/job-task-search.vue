@@ -27,7 +27,7 @@ function search() {
 </script>
 
 <template>
-  <SearchForm btn-span="12 s:24 m:24 l:24 xl:24" :model="model" @search="search" @reset="reset">
+  <SearchForm btn-span="24 s:12 m:18 l:18 xl:18" :model="model" @search="search" @reset="reset">
     <NFormItemGi span="24 s:12 m:6" :label="$t('page.jobTask.groupName')" path="groupName" class="pr-24px">
       <SelectGroup v-model:value="model.groupName" clearable />
     </NFormItemGi>
