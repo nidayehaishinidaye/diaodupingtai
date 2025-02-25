@@ -106,14 +106,16 @@ const theme = computed(() => {
 
 watch(
   () => nodeExpression.value,
-  val => {
-    let value = val;
+  () => {
     if (props.lang === 'json') {
       try {
-        value = JSON.stringify(JSON.parse(val));
+        const obj = JSON.parse(nodeExpression.value);
+        if (typeof obj === 'object') {
+          nodeExpression.value = JSON.stringify(obj);
+        }
       } catch {}
     }
-    emit('update:modelValue', value);
+    emit('update:modelValue', nodeExpression.value);
   }
 );
 </script>
