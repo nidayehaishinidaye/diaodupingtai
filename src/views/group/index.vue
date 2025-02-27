@@ -6,7 +6,7 @@ import { fetchDeleteGroup, fetchGetGroupConfigList, fetchUpdateGroupStatus } fro
 import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import { groupConfigIdModeRecord, yesOrNoRecord } from '@/constants/business';
+import { yesOrNoRecord } from '@/constants/business';
 import { tagColor } from '@/utils/common';
 import StatusSwitch from '@/components/common/status-switch.vue';
 import { useAuth } from '@/hooks/business/auth';
@@ -40,8 +40,8 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'groupName',
       title: $t('page.groupConfig.groupName'),
-      align: 'left',
-      minWidth: 260,
+      align: 'center',
+      minWidth: 100,
       render: row => {
         function showDetailDrawer() {
           detailData.value = row || null;
@@ -59,7 +59,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       key: 'groupStatus',
       title: $t('page.groupConfig.groupStatus'),
       align: 'center',
-      width: 80,
+      width: 120,
       render: row => {
         const fetchFn = async (groupStatus: Api.Common.EnableStatusNumber, callback: (flag: boolean) => void) => {
           const status = row.groupStatus === 1 ? 0 : 1;
@@ -76,31 +76,10 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       }
     },
     {
-      key: 'idGeneratorMode',
-      title: $t('page.groupConfig.idGeneratorMode'),
-      align: 'center',
-      width: 120,
-      render: row => {
-        if (row.idGeneratorMode === null) {
-          return null;
-        }
-
-        const label = $t(groupConfigIdModeRecord[row.idGeneratorMode!]);
-
-        return <NTag type="primary">{label}</NTag>;
-      }
-    },
-    {
-      key: 'groupPartition',
-      title: $t('page.groupConfig.groupPartition'),
-      align: 'center',
-      minWidth: 60
-    },
-    {
       key: 'initScene',
       title: $t('page.groupConfig.initScene'),
       align: 'center',
-      minWidth: 80,
+      minWidth: 120,
       render: row => {
         if (row.groupStatus === null) {
           return null;
@@ -114,20 +93,20 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'updateDt',
       title: $t('page.groupConfig.updateDt'),
-      align: 'left',
-      width: 130
+      align: 'center',
+      width: 120
     },
     {
       key: 'description',
       title: $t('page.groupConfig.description'),
-      align: 'left',
-      width: 130
+      align: 'center',
+      width: 250
     },
     {
       key: 'operate',
       title: $t('common.operate'),
       align: 'center',
-      width: 130,
+      width: 120,
       render: row => {
         if (hasAuth('R_USER')) {
           return <></>;
