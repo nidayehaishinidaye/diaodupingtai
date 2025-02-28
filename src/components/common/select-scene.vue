@@ -77,6 +77,7 @@ const renderLabel = (option: SelectOption) => <NEllipsis>{option.label}</NEllips
     :options="translateOptions2(sceneNameList)"
     :clearable="props.clearable"
     :render-label="renderLabel"
+    filterable
   />
 </template>
 
