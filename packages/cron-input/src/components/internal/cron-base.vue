@@ -38,7 +38,7 @@ const step = ref([min, 1]);
 const well = ref([min, 1]);
 const specify = ref<number[]>([]);
 const weekday = ref(1);
-const lastDayOfWeek = ref(0);
+const lastDayOfWeek = ref(1);
 const rangeStart = ref<[number, number]>([min, max - 1]);
 const stepLeft = ref<[number, number]>([min, max]);
 const stepRight = ref<[number, number]>([1, max]);
@@ -222,7 +222,7 @@ const onCheckboxGroupChange = () => {
     <div v-if="isLastDayOfWeek" class="cron-radio flex items-center justify-start gap-5px">
       <NRadio v-if="isLastDayOfWeek" :value="TYPE.LAST_DAY" />
       {{ label.lastDayOfWeek }}
-      <InputNumber v-model="lastDayOfWeek" :range="[0, 6]" :field-value="field.value" :locale="locale" />
+      <InputNumber v-model="lastDayOfWeek" :range="[1, 7]" :field-value="field.value" :locale="locale" />
     </div>
     <div class="cron-radio flex flex-wrap items-center justify-start gap-5px">
       <NRadio class="cron-radio" :value="TYPE.SPECIFY">{{ label.specify }}</NRadio>

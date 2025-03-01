@@ -13,8 +13,8 @@ export const MAX_DATE = 31;
 export const MIN_MONTH = 1;
 export const MAX_MONTH = 12;
 
-export const MIN_WEEK = 0;
-export const MAX_WEEK = 6;
+export const MIN_WEEK = 1;
+export const MAX_WEEK = 7;
 
 export const MIN_YEAR = new Date().getFullYear();
 export const MAX_YEAR = 2099;
@@ -28,13 +28,13 @@ export const FRIDAY = 'friday';
 export const SATURDAY = 'saturday';
 
 export const WEEKS = [
-  { value: SUNDAY, abbr: 'SUN', index: '0' },
-  { value: MONDAY, abbr: 'MON', index: '1' },
-  { value: TUESDAY, abbr: 'TUE', index: '2' },
-  { value: WEDNESDAY, abbr: 'WED', index: '3' },
-  { value: THURSDAY, abbr: 'THU', index: '4' },
-  { value: FRIDAY, abbr: 'FRI', index: '5' },
-  { value: SATURDAY, abbr: 'SAT', index: '6' }
+  { value: SUNDAY, abbr: 'SUN', index: '1' },
+  { value: MONDAY, abbr: 'MON', index: '2' },
+  { value: TUESDAY, abbr: 'TUE', index: '3' },
+  { value: WEDNESDAY, abbr: 'WED', index: '4' },
+  { value: THURSDAY, abbr: 'THU', index: '5' },
+  { value: FRIDAY, abbr: 'FRI', index: '6' },
+  { value: SATURDAY, abbr: 'SAT', index: '7' }
 ];
 
 export const WEEK_INDEX_REGEXP = new RegExp(WEEKS.map(({ index }) => `(?<!#)${index}`).join('|'), 'g');
