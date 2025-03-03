@@ -83,6 +83,7 @@ const href = (url: string) => {
               @switch="themeStore.toggleThemeScheme"
             />
             <LangSwitch
+              v-if="themeStore.header.multilingual.visible"
               :lang="appStore.locale"
               :lang-options="appStore.localeOptions"
               :show-tooltip="false"

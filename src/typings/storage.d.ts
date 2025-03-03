@@ -29,6 +29,8 @@ declare namespace StorageType {
     userInfo: Api.Auth.UserInfo;
     /** The theme color */
     themeColor: string;
+    /** The dark mode */
+    darkMode: boolean;
     /** The theme settings */
     themeSettings: App.Theme.ThemeSetting;
     /**

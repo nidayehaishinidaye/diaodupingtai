@@ -3,13 +3,19 @@ import { getRgb } from '@sa/color';
 import { $t } from '@/locales';
 import { localStg } from '@/utils/storage';
 import systemLogo from '@/assets/svg-icon/logo.svg?raw';
+import { DARK_CLASS } from '@/constants/app';
+import { toggleHtmlClass } from '@/utils/common';
 
 export function setupLoading() {
   const themeColor = localStg.get('themeColor') || '#1366FF';
-
+  const darkMode = localStg.get('darkMode') || false;
   const { r, g, b } = getRgb(themeColor);
 
   const primaryColor = `--primary-color: ${r} ${g} ${b}`;
+
+  if (darkMode) {
+    toggleHtmlClass(DARK_CLASS).add();
+  }
 
   const loadingClasses = [
     'left-0 top-0',
@@ -27,7 +33,7 @@ export function setupLoading() {
     .join('\n');
 
   const loading = `
-<div class="fixed-center flex-col dark:bg-#121212" style="${primaryColor}">
+<div class="fixed-center flex-col bg-layout" style="${primaryColor}">
   ${logoWithClass}
   <div class="w-56px h-56px my-36px">
     <div class="relative h-full animate-spin">

@@ -196,10 +196,7 @@ const onUpdatePage = (page: number) => {
             </NSpin>
             <slot></slot>
           </NTabPane>
-          <NTabPane name="task" :disabled="jobData.taskBatchStatus === 99">
-            <template #tab>
-              <span>任务项列表</span>
-            </template>
+          <NTabPane name="task" tab="任务项列表" :disabled="jobData.taskBatchStatus === 99">
             <JobTaskListTable :row-data="jobData as any" @show-log="getLogRows" @retry="retry" />
           </NTabPane>
         </NTabs>

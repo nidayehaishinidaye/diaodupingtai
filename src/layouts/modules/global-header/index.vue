@@ -67,7 +67,12 @@ const href = (url: string) => {
         @click="href('https://snailjob.opensnail.com/')"
       />
       <FullScreen v-if="!appStore.isMobile" class="xl:block sm:hidden" :full="isFullscreen" @click="toggle" />
-      <LangSwitch :lang="appStore.locale" :lang-options="appStore.localeOptions" @change-lang="appStore.changeLocale" />
+      <LangSwitch
+        v-if="themeStore.header.multilingual.visible"
+        :lang="appStore.locale"
+        :lang-options="appStore.localeOptions"
+        @change-lang="appStore.changeLocale"
+      />
       <ThemeSchemaSwitch
         :theme-schema="themeStore.themeScheme"
         :is-dark="themeStore.darkMode"
