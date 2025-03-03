@@ -60,28 +60,36 @@ onMounted(() => {
 
 <template>
   <NCard :title="title" :bordered="false" size="small" class="card-wrapper">
-    <NForm ref="formRef" :model="model" label-placement="left" :label-width="80" :show-feedback="appStore.isMobile">
-      <NGrid responsive="screen" cols="24" item-responsive :y-gap="12">
-        <slot></slot>
-        <NFormItemGi :y-gap="8" :span="btnSpan" class="pr-24px lg:p-t-0 md:p-t-16px">
-          <NSpace class="min-w-172px w-full" justify="end">
-            <NButton @click="reset">
-              <template #icon>
-                <icon-ic-round-refresh class="text-icon" />
-              </template>
-              {{ $t('common.reset') }}
-            </NButton>
-            <NButton type="primary" ghost @click="search">
-              <template #icon>
-                <icon-ic-round-search class="text-icon" />
-              </template>
-              {{ $t('common.search') }}
-            </NButton>
-          </NSpace>
-        </NFormItemGi>
-      </NGrid>
-    </NForm>
+    <NCollapse :default-expanded-names="String(route.name)">
+      <NCollapseItem :title="$t('common.search')" :name="String(route.name)">
+        <NForm ref="formRef" :model="model" label-placement="left" :label-width="80" :show-feedback="appStore.isMobile">
+          <NGrid responsive="screen" cols="24" item-responsive :y-gap="12">
+            <slot></slot>
+            <NFormItemGi :y-gap="8" :span="btnSpan" class="pr-24px lg:p-t-0 md:p-t-16px">
+              <NSpace class="min-w-172px w-full" justify="end">
+                <NButton @click="reset">
+                  <template #icon>
+                    <icon-ic-round-refresh class="text-icon" />
+                  </template>
+                  {{ $t('common.reset') }}
+                </NButton>
+                <NButton type="primary" ghost @click="search">
+                  <template #icon>
+                    <icon-ic-round-search class="text-icon" />
+                  </template>
+                  {{ $t('common.search') }}
+                </NButton>
+              </NSpace>
+            </NFormItemGi>
+          </NGrid>
+        </NForm>
+      </NCollapseItem>
+    </NCollapse>
   </NCard>
 </template>
 
-<style scoped></style>
+<style scoped>
+:deep(.n-collapse-item__content-inner) {
+  padding-top: 12px !important;
+}
+</style>
