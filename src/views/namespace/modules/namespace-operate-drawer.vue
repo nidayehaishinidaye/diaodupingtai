@@ -124,7 +124,16 @@ async function handleCopy(source: string) {
     return;
   }
 
-  await copy(source);
+  if (navigator.clipboard && window.isSecureContext) {
+    await copy(source);
+  } else {
+    const range = document.createRange();
+    range.selectNode(document.getElementById('uniqueIdInput')!);
+    const selection = window.getSelection();
+    if (selection?.rangeCount) selection.removeAllRanges();
+    selection?.addRange(range);
+    document.execCommand('copy');
+  }
   window.$message?.success('复制成功');
 }
 </script>
@@ -135,6 +144,7 @@ async function handleCopy(source: string) {
       <NFormItem :label="$t('page.namespace.uniqueId')" path="uniqueId">
         <NInputGroup>
           <NInput
+            id="uniqueIdInput"
             v-model:value="model.uniqueId"
             :disabled="props.operateType === 'edit'"
             :placeholder="$t('page.namespace.form.uniqueId')"

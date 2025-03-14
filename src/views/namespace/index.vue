@@ -32,7 +32,16 @@ async function handleCopy(source: string) {
     return;
   }
 
-  await copy(source);
+  if (navigator.clipboard && window.isSecureContext) {
+    await copy(source);
+  } else {
+    const input = document.createElement('input');
+    input.value = source;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand('copy');
+    document.body.removeChild(input);
+  }
   window.$message?.success('复制成功');
 }
 

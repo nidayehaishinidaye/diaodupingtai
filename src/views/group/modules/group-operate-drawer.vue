@@ -3,8 +3,7 @@ import { computed, reactive, ref, watch } from 'vue';
 import { useClipboard } from '@vueuse/core';
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 import { $t } from '@/locales';
-import { translateOptions, translateOptions2 } from '@/utils/common';
-import { groupConfigIdModeOptions, groupConfigStatusOptions, groupConfigYesOrNoOptions } from '@/constants/business';
+import { groupConfigStatusOptions, groupConfigYesOrNoOptions } from '@/constants/business';
 import { fetchAddGroupConfig, fetchEditGroupConfig, fetchGetPartitionTableList } from '@/service/api/group';
 
 defineOptions({
@@ -173,7 +172,16 @@ async function handleCopy(source: string) {
     return;
   }
 
-  await copy(source);
+  if (navigator.clipboard && window.isSecureContext) {
+    await copy(source);
+  } else {
+    const range = document.createRange();
+    range.selectNode(document.getElementById('tokenOperateInput')!);
+    const selection = window.getSelection();
+    if (selection?.rangeCount) selection.removeAllRanges();
+    selection?.addRange(range);
+    document.execCommand('copy');
+  }
   window.$message?.success('复制成功');
 }
 </script>
@@ -207,6 +215,7 @@ async function handleCopy(source: string) {
           <NFormItem :label="$t('page.groupConfig.token')" path="token">
             <NInputGroup>
               <NInput
+                id="tokenOperateInput"
                 v-model:value="model.token"
                 :maxlength="64"
                 :placeholder="$t('page.groupConfig.form.token')"
