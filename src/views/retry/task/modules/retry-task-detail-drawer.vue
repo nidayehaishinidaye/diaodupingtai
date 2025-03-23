@@ -20,7 +20,7 @@ const visible = defineModel<boolean>('visible', {
 </script>
 
 <template>
-  <DetailDrawer v-model="visible" :title="$t('page.retryLog.detail')" :width="['50%', '90%']">
+  <DetailDrawer v-model="visible" :title="$t('page.retryTask.detail')" :width="['50%', '90%']">
     <NTabs type="segment" animated>
       <NTabPane :name="0" :tab="$t('page.log.info')">
         <NDescriptions label-placement="top" bordered :column="2">
