@@ -176,15 +176,10 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       render: row => {
         const options = [
           {
-            type: 'divider',
-            key: 'd2',
-            show: row.retryStatus !== 1 && row.retryStatus !== 2
-          },
-          {
             label: $t('common.execute'),
             key: 'execute',
             type: 'render',
-            show: row.retryStatus !== 1 && row.retryStatus !== 2,
+            show: row.retryStatus !== 1,
             render: () => (
               <div class="flex-center">
                 <NPopconfirm onPositiveClick={() => handleExecute(row.groupName!, row.id! as any)}>
@@ -280,8 +275,8 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
             key: 'd2'
           },
           {
-            type: 'render',
             key: 'delete',
+            type: 'render',
             render: () => (
               <div class="flex-center">
                 <NPopconfirm onPositiveClick={() => handleDelete(row.groupName!, row.id!)}>
