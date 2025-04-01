@@ -42,7 +42,7 @@ const title = computed(() => {
 
 <template>
   <div class="h-full">
-    <LogDrawer :drawer="false" :title="title" :type="type" :task-data="taskData" />
+    <LogDrawerWs :drawer="false" :title="title" :type="type" :task-data="taskData" />
   </div>
 </template>
 

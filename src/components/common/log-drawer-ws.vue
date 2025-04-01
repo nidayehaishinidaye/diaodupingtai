@@ -1,11 +1,9 @@
 <script setup lang="tsx">
 import {
-  NButton,
   NCard,
   NCollapse,
   NCollapseItem,
   NDivider,
-  NDropdown,
   NEmpty,
   NScrollbar,
   NSpin,
@@ -42,14 +40,11 @@ const visible = defineModel<boolean>('show', {
   default: false
 });
 
-const isAutoScroll = ref(false);
 const isFullscreen = ref(true);
 const expandedNames = ref<string[]>([]);
 const virtualListInst = ref<VirtualListInst>();
-const syncTime = ref(1);
 const logList = ref<Api.JobLog.JobMessage[]>([]);
 const interval = ref<NodeJS.Timeout>();
-const controller = new AbortController();
 const finished = ref<boolean>(true);
 
 const pauseLog = () => {
@@ -59,13 +54,18 @@ const pauseLog = () => {
 };
 
 const stopLog = () => {
-  if (!finished.value) controller.abort();
   pauseLog();
   logList.value = [];
 };
 
 async function getLogList() {
+  if (terminalSocket.value) {
+    terminalSocket.value.close();
+  }
+
   if (props.type === 'job') {
+    const newSocket = initWebSocket('JOB_LOG_SCENE');
+    terminalSocket.value = newSocket ?? undefined;
     terminalSocket!.value!.onopen = () => {
       const taskData = props.taskData! as Api.Job.JobTask;
       const msg = {
@@ -86,73 +86,8 @@ async function getLogList() {
         virtualListInst.value?.scrollTo({ position: 'bottom', debounce: false });
       });
     }
-    // logList.value
-    //   .sort((a, b) => Number.parseInt(a.time_stamp, 10) - Number.parseInt(b.time_stamp, 10))
-    //   .forEach((item, index) => (item.index = index));
-    // logData.value.push(`${event.data}\n`);
   };
-
-  // if (props.type === 'retry') {
-  //   const taskData = props.taskData! as Api.RetryTask.RetryTask;
-  //   const { data, error } = await fetchRetryLogList({
-  //     groupName: taskData.groupName,
-  //     retryTaskId: taskData.id!,
-  //     startId,
-  //     fromIndex,
-  //     size: 50
-  //   });
-  //   logData = data;
-  //   logError = error;
-  // }
-
-  // if (!logError && logData) {
-  //   // 这里需要判断是否完成
-  //   finished.value = syncTime.value === 0;
-  //   logList.value.push(logData);
-  //   logList.value
-  //     .sort((a, b) => Number.parseInt(a.time_stamp, 10) - Number.parseInt(b.time_stamp, 10))
-  //     .forEach((item, index) => (item.index = index));
-  //   nextTick(() => {
-  //     if (isAutoScroll.value) virtualListInst.value?.scrollTo({ position: 'bottom', debounce: true });
-  //   });
-  //   if (!finished.value && syncTime.value !== 0) {
-  //     interval.value = setTimeout(getLogList, syncTime.value * 1000);
-  //   }
-  //
-  //   if (finished.value && syncTime.value !== 0) {
-  //     setTimeout(() => {
-  //       watchFinished();
-  //     }, 5 * 1000);
-  //   }
-  // } else if (logError?.code !== 'ERR_CANCELED') {
-  //   stopLog();
-  // }
 }
-
-// async function watchFinished() {
-//   clearTimeout(interval.value);
-//   if (props.type === 'job' && syncTime.value !== 0) {
-//     const taskData = props.taskData! as Api.Job.JobTask;
-//     const { data, error } = await fetchJobLogList(
-//       {
-//         taskBatchId: taskData.taskBatchId,
-//         jobId: taskData.jobId,
-//         taskId: taskData.id,
-//         startId,
-//         fromIndex,
-//         size: 50
-//       },
-//       controller
-//     );
-//     if (!error && data) {
-//       if (data.finished) {
-//         interval.value = setTimeout(watchFinished, 5 * 1000);
-//         return;
-//       }
-//       await getLogList();
-//     }
-//   }
-// }
 
 onBeforeUnmount(() => {
   stopLog();
@@ -164,11 +99,6 @@ watch(
     if (val) {
       if (props.modelValue) {
         logList.value = [...props.modelValue];
-        if (terminalSocket.value) {
-          terminalSocket.value.close();
-        }
-        const newSocket = initWebSocket('JOB_LOG_SCENE');
-        terminalSocket.value = newSocket ?? undefined;
       }
     } else {
       terminalSocket?.value?.close();
@@ -176,7 +106,6 @@ watch(
 
     if ((val || !props.drawer) && props.type && props.taskData) {
       finished.value = false;
-      // controller = new AbortController();
       await getLogList();
     }
 
@@ -222,57 +151,6 @@ function openNewTab() {
   const url = router.resolve({ path: '/log', query });
   window.open(url.href);
 }
-
-const handleSyncSelect = async (time: number) => {
-  if (time === -1) {
-    if (finished.value) {
-      finished.value = false;
-      await getLogList();
-    }
-    return;
-  }
-
-  syncTime.value = time;
-
-  if (time === 0) {
-    pauseLog();
-    return;
-  }
-
-  finished.value = false;
-  await getLogList();
-};
-
-const syncOptions = ref([
-  {
-    label: 'Off',
-    key: 0
-  },
-  {
-    label: 'Auto(1s)',
-    key: 1
-  },
-  {
-    label: '5s',
-    key: 5
-  },
-  {
-    label: '10s',
-    key: 10
-  },
-  {
-    label: '30s',
-    key: 30
-  },
-  {
-    label: '1m',
-    key: 60
-  },
-  {
-    label: '5m',
-    key: 300
-  }
-]);
 
 const SnailLogComponent = defineComponent({
   setup() {
@@ -336,7 +214,6 @@ const SnailLogComponent = defineComponent({
             ref={virtualListInst}
             class="virtual-list"
             itemSize={85}
-            itemResizable
             paddingBottom={16}
             items={logList.value}
             scrollbarProps={{ xScrollable: true }}
@@ -397,32 +274,8 @@ const SnailLogComponent = defineComponent({
               日志正在加载
             </NTooltip>
             <span class="ml-6px">{{ title }}</span>
-            <NDropdown trigger="hover" :options="syncOptions" width="trigger" @select="handleSyncSelect">
-              <NTooltip placement="right">
-                <template #trigger>
-                  <NButton dashed class="ml-16px w-136px" @click="handleSyncSelect(-1)">
-                    <template #icon>
-                      <div class="flex-center gap-8px">
-                        <icon-solar:refresh-outline class="text-18px" />
-                        {{ syncOptions.filter(item => item.key === syncTime)[0].label }}
-                        <SvgIcon icon="material-symbols:expand-more-rounded" />
-                      </div>
-                    </template>
-                  </NButton>
-                </template>
-                自动刷新频率
-              </NTooltip>
-            </NDropdown>
           </div>
           <div class="flex-center">
-            <ButtonIcon
-              size="tiny"
-              :tooltip-content="isAutoScroll ? '关闭自动滚动' : '开启自动滚动'"
-              @click="() => (isAutoScroll = !isAutoScroll)"
-            >
-              <icon-streamline:synchronize-disable v-if="isAutoScroll" />
-              <icon-streamline:interface-arrows-vertical-scroll-point-move-scroll-vertical v-else />
-            </ButtonIcon>
             <ButtonIcon
               size="tiny"
               icon="hugeicons:share-01"
@@ -451,31 +304,6 @@ const SnailLogComponent = defineComponent({
   <NCard v-else :bordered="false" :title="title" size="small" class="h-full sm:flex-1-hidden card-wrapper">
     <template #header-extra>
       <div class="flex items-center">
-        <NDropdown trigger="hover" :options="syncOptions" width="trigger" @select="handleSyncSelect">
-          <NTooltip placement="right">
-            <template #trigger>
-              <NButton dashed class="mx-12px w-136px" @click="handleSyncSelect(-1)">
-                <template #icon>
-                  <div class="flex-center gap-8px">
-                    <icon-solar:refresh-outline class="text-18px" />
-                    {{ syncOptions.filter(item => item.key === syncTime)[0].label }}
-                    <SvgIcon icon="material-symbols:expand-more-rounded" />
-                  </div>
-                </template>
-              </NButton>
-            </template>
-            自动刷新频率
-          </NTooltip>
-        </NDropdown>
-        <ButtonIcon
-          size="tiny"
-          class="mr-12px"
-          :tooltip-content="isAutoScroll ? '关闭自动滚动' : '开启自动滚动'"
-          @click="() => (isAutoScroll = !isAutoScroll)"
-        >
-          <icon-streamline:synchronize-disable v-if="isAutoScroll" />
-          <icon-streamline:interface-arrows-vertical-scroll-point-move-scroll-vertical v-else />
-        </ButtonIcon>
         <NTooltip v-if="finished">
           <template #trigger>
             <icon-material-symbols:check-circle class="text-20px color-success" />
