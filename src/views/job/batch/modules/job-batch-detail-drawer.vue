@@ -75,7 +75,7 @@ async function retry() {
     </NTabs>
   </DetailDrawer>
   <!--  <LogDrawer v-model:show="logShow" :title="$t('page.log.title')" :task-data="taskData" />-->
-  <LogDrawerWs v-model:show="logShow" :title="$t('page.log.title')" :task-data="taskData" />
+  <LogDrawer v-model:show="logShow" :title="$t('page.log.title')" :task-data="taskData" />
 </template>
 
 <style scoped>

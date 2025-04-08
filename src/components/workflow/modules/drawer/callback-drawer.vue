@@ -98,8 +98,8 @@ const rules: FormRules = {
         </NFormItem>
         <NFormItem
           name="workflowNodeStatus"
-          label="工作流状态"
-          :rules="[{ required: true, message: '请选择工作流状态', trigger: 'change' }]"
+          label="回调通知状态"
+          :rules="[{ required: true, message: '请选择回调通知状态', trigger: 'change' }]"
         >
           <NRadioGroup v-model:value="form.workflowNodeStatus">
             <NSpace>

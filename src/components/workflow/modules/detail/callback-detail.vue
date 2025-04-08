@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { contentTypeRecord } from '@/constants/business';
+import { contentTypeRecord, workFlowNodeStatusRecord } from '@/constants/business';
 
 defineOptions({
   name: 'CallbackDetail'
@@ -47,6 +47,9 @@ const onClose = () => {
       </NDescriptionsItem>
       <NDescriptionsItem label="密钥">
         {{ modelValue.callback?.secret }}
+      </NDescriptionsItem>
+      <NDescriptionsItem label="回调通知状态">
+        {{ $t(workFlowNodeStatusRecord[modelValue.workflowNodeStatus!]) }}
       </NDescriptionsItem>
     </NDescriptions>
   </DetailDrawer>

@@ -141,7 +141,7 @@ const jobTaskChange = (_: string, option: { label: string; value: number }) => {
             </NSpace>
           </NRadioGroup>
         </NFormItem>
-        <NFormItem path="workflowNodeStatus" label="节点状态">
+        <NFormItem path="workflowNodeStatus" label="任务状态">
           <NRadioGroup v-model:value="form.workflowNodeStatus">
             <NSpace>
               <NRadio

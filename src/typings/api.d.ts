@@ -1350,6 +1350,7 @@ declare namespace Api {
 
     type JobMessage = {
       index: number;
+      key: string;
       level: JobLevel;
       host: string;
       port: string;

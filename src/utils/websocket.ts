@@ -1,28 +1,24 @@
 /** socket 通信 */
 import { getServiceBaseURL } from '@/utils/service';
 import { localStg } from './storage';
-const { baseURL } = getServiceBaseURL(import.meta.env, false);
-const url = baseURL.replace('http://', 'ws://');
+import { generateRandomString } from './common';
 
-/** 生成 token */
-function generateToken(length: number) {
-  const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-  let token = 'SID_';
-  for (let i = 0; i < length; i += 1) {
-    const randomNumber = Math.floor(Math.random() * chars.length);
-    token += chars.substring(randomNumber, randomNumber + 1);
-  }
-  return token;
-}
-
-// 初始化socket
-export function initWebSocket(scene: string) {
+/**
+ * 初始化 websocket
+ *
+ * @param scene - 场景
+ * @param sid - 会话 id
+ * @returns
+ */
+export function initWebSocketUrl(scene: string, sid?: string) {
+  const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+  const isHttpProxy = import.meta.env.DEV && import.meta.env.VITE_HTTP_PROXY === 'Y';
+  const { baseURL } = getServiceBaseURL(import.meta.env, isHttpProxy);
+  const url =
+    import.meta.env.MODE === 'test' ? import.meta.env.VITE_SERVICE_BASE_URL : protocol + window.location.host + baseURL;
   const token = localStg.get('token');
-  if (import.meta.env.VITE_APP_WEBSOCKET === 'N' || !token) {
+  if (!token) {
     return null;
   }
-
-  const sid = generateToken(32);
-  // 初始化 websocket
-  return new WebSocket(`${url}/websocket?Snail-Job-Auth=${token}&sid=${sid}&scene=${scene}`);
+  return `${url}/websocket?Snail-Job-Auth=${token}&sid=${sid ?? generateRandomString(32)}&scene=${scene}`;
 }

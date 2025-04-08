@@ -14,8 +14,12 @@ import {
 } from 'naive-ui';
 import { defineComponent, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import type { UseWebSocketReturn } from '@vueuse/core';
+import { useWebSocket } from '@vueuse/core';
 import { fetchJobLogList, fetchRetryLogList } from '@/service/api/log';
 import ButtonIcon from '@/components/custom/button-icon.vue';
+import { initWebSocketUrl } from '@/utils/websocket';
+import { generateRandomString } from '@/utils/common';
 
 defineOptions({
   name: 'LogDrawer'
@@ -25,6 +29,7 @@ interface Props {
   title?: string;
   drawer?: boolean;
   type?: 'job' | 'retry';
+  fetchType?: 'ws' | 'http';
   taskData?: Api.Job.JobTask | Api.RetryTask.RetryTask;
   modelValue?: Api.JobLog.JobMessage[];
 }
@@ -33,6 +38,7 @@ const props = withDefaults(defineProps<Props>(), {
   title: undefined,
   drawer: true,
   type: 'job',
+  fetchType: 'ws',
   taskData: undefined,
   modelValue: () => []
 });
@@ -47,6 +53,7 @@ const expandedNames = ref<string[]>([]);
 const virtualListInst = ref<VirtualListInst>();
 const syncTime = ref(1);
 const logList = ref<Api.JobLog.JobMessage[]>([]);
+const websocket = ref<UseWebSocketReturn<any>>();
 const interval = ref<NodeJS.Timeout>();
 let controller = new AbortController();
 const finished = ref<boolean>(true);
@@ -59,7 +66,11 @@ const pauseLog = () => {
   interval.value = undefined;
 };
 
-const stopLog = () => {
+const stopLogByWs = () => {
+  websocket.value?.close();
+};
+
+const stopLogByHttp = async () => {
   if (!finished.value) controller.abort();
   pauseLog();
   startId = '0';
@@ -67,7 +78,46 @@ const stopLog = () => {
   logList.value = [];
 };
 
+const stopLog = () => {
+  if (props.fetchType === 'http') {
+    stopLogByHttp();
+    return;
+  }
+  stopLogByWs();
+};
+
 async function getLogList() {
+  if (props.fetchType === 'http') {
+    await getLogListByHttp();
+    return;
+  }
+  getLogListByWs();
+}
+
+function getLogListByWs() {
+  finished.value = false;
+  logList.value = [];
+  websocket.value?.open();
+  if (props.type === 'job') {
+    const taskData = props.taskData! as Api.Job.JobTask;
+    const msg = {
+      taskBatchId: taskData.taskBatchId,
+      taskId: taskData.id
+    };
+    websocket.value?.send(JSON.stringify(msg));
+  }
+
+  if (props.type === 'retry') {
+    const taskData = props.taskData! as Api.RetryTask.RetryTask;
+    const msg = {
+      groupName: taskData.groupName,
+      retryTaskId: taskData.id
+    };
+    websocket.value?.send(JSON.stringify(msg));
+  }
+}
+
+async function getLogListByHttp() {
   clearTimeout(interval.value);
   let logData = null;
   let logError;
@@ -110,7 +160,12 @@ async function getLogList() {
       logList.value.push(...logData.message);
       logList.value
         .sort((a, b) => Number.parseInt(a.time_stamp, 10) - Number.parseInt(b.time_stamp, 10))
-        .forEach((item, index) => (item.index = index));
+        .forEach((item, index) => {
+          item.index = index;
+          if (!item.key) {
+            item.key = `${item.time_stamp}-${generateRandomString(16)}`;
+          }
+        });
     }
     nextTick(() => {
       if (isAutoScroll.value) virtualListInst.value?.scrollTo({ position: 'bottom', debounce: true });
@@ -162,22 +217,58 @@ watch(
   () => visible.value,
   async val => {
     if (val) {
+      logList.value = [];
       if (props.modelValue) {
         logList.value = [...props.modelValue];
       }
     }
 
-    if ((val || !props.drawer) && props.type && props.taskData) {
-      finished.value = false;
-      controller = new AbortController();
-      await getLogList();
-    }
-
     if (!val && props.drawer) {
       stopLog();
+      return;
     }
-  },
-  { immediate: true }
+
+    if (((val && props.drawer) || !props.drawer) && props.type && props.taskData) {
+      finished.value = false;
+      controller = new AbortController();
+      if (props.fetchType === 'ws') {
+        const url = initWebSocketUrl('JOB_LOG_SCENE', props.taskData.id);
+        if (!url) {
+          window.$message?.error('Token 失效');
+          visible.value = false;
+          return;
+        }
+        websocket.value = useWebSocket(url, {
+          immediate: false,
+          autoConnect: false,
+          autoReconnect: {
+            // 重连最大次数
+            retries: 3,
+            // 重连间隔
+            delay: 1000,
+            onFailed() {
+              window.$message?.error('websocket 连接失败');
+              visible.value = false;
+            }
+          },
+          onMessage: (_, e) => {
+            if (e.data !== 'END') {
+              const data = JSON.parse(e.data) as Api.JobLog.JobMessage;
+              data.key = `${data.time_stamp}-${generateRandomString(16)}`;
+              logList.value.push(data);
+            } else {
+              finished.value = true;
+              stopLogByWs();
+            }
+          }
+        });
+        getLogListByWs();
+        return;
+      }
+
+      await getLogList();
+    }
+  }
 );
 
 function timestampToDate(timestamp: string): string {
@@ -284,7 +375,7 @@ const SnailLogComponent = defineComponent({
       }
       const restOfText = throwable.replace(/^.+(\n|$)/m, '');
       return (
-        <NCollapseItem title={firstLine[0]} name={`throwable-${message.index}`}>
+        <NCollapseItem title={firstLine[0]} name={`throwable-${message.key}`}>
           <NScrollbar content-class="p-8px" class="message-scroll-body">{`${restOfText}`}</NScrollbar>
         </NCollapseItem>
       );
@@ -302,7 +393,7 @@ const SnailLogComponent = defineComponent({
       const restOfText = msg.replace(/^.+(\n|$)/m, '').replaceAll('\n', '\n - ');
       if (restOfText) {
         return (
-          <NCollapseItem title={firstLine[0]} name={`message-${message.index}`}>
+          <NCollapseItem title={firstLine[0]} name={`message-${message.key}`}>
             <NScrollbar content-class="p-8px" class="message-scroll-body">{` - ${restOfText}`}</NScrollbar>
           </NCollapseItem>
         );
@@ -336,8 +427,8 @@ const SnailLogComponent = defineComponent({
             onResize={handleResize}
           >
             {{
-              default: ({ item: message }: { item: Api.JobLog.JobMessage }) => (
-                <pre key={message.index} class="min-h-85px min-w-full">
+              default: ({ item: message }: { item: Api.JobLog.JobMessage; index: number }) => (
+                <pre key={message.key} class="min-h-85px min-w-full">
                   <div>
                     <span class="log-hljs-time inline-block">{timestampToDate(message.time_stamp)}</span>
                     <span

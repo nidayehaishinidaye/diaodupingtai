@@ -274,3 +274,19 @@ export function debounce(func: () => any, wait: number, immediate?: boolean) {
     }
   };
 }
+
+/**
+ * 生成 随机数
+ *
+ * @param length - 长度
+ * @returns 随机数
+ */
+export function generateRandomString(length: number) {
+  const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  let randomString = '';
+  for (let i = 0; i < length; i += 1) {
+    const randomNumber = Math.floor(Math.random() * chars.length);
+    randomString += chars.substring(randomNumber, randomNumber + 1);
+  }
+  return randomString;
+}

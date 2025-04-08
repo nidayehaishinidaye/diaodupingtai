@@ -54,7 +54,7 @@ const getTaskName = (id: string) => {
       <NDescriptionsItem label="失败策略">
         {{ $t(failStrategyRecord[modelValue.failStrategy!]) }}
       </NDescriptionsItem>
-      <NDescriptionsItem label="工作流状态">
+      <NDescriptionsItem label="任务状态">
         {{ $t(workFlowNodeStatusRecord[modelValue.workflowNodeStatus!]) }}
       </NDescriptionsItem>
     </NDescriptions>
