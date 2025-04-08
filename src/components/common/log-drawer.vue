@@ -376,7 +376,11 @@ const SnailLogComponent = defineComponent({
       const restOfText = throwable.replace(/^.+(\n|$)/m, '');
       return (
         <NCollapseItem title={firstLine[0]} name={`throwable-${message.key}`}>
-          <NScrollbar content-class="p-8px" class="message-scroll-body">{`${restOfText}`}</NScrollbar>
+          <NScrollbar
+            content-class="p-8px"
+            class="message-scroll-body"
+            y-placement="left"
+          >{`${restOfText}`}</NScrollbar>
         </NCollapseItem>
       );
     };
@@ -394,7 +398,11 @@ const SnailLogComponent = defineComponent({
       if (restOfText) {
         return (
           <NCollapseItem title={firstLine[0]} name={`message-${message.key}`}>
-            <NScrollbar content-class="p-8px" class="message-scroll-body">{` - ${restOfText}`}</NScrollbar>
+            <NScrollbar
+              content-class="p-8px"
+              class="message-scroll-body"
+              y-placement="left"
+            >{` - ${restOfText}`}</NScrollbar>
           </NCollapseItem>
         );
       }
@@ -418,9 +426,9 @@ const SnailLogComponent = defineComponent({
         >
           <NVirtualList
             ref={virtualListInst}
+            style={{ height: '100%' }}
             class="virtual-list"
             itemSize={85}
-            itemResizable
             paddingBottom={16}
             items={logList.value}
             scrollbarProps={{ xScrollable: true }}
