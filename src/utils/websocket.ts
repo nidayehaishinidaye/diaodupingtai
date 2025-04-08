@@ -14,8 +14,7 @@ export function initWebSocketUrl(scene: string, sid?: string) {
   const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
   const isHttpProxy = import.meta.env.DEV && import.meta.env.VITE_HTTP_PROXY === 'Y';
   const { baseURL } = getServiceBaseURL(import.meta.env, isHttpProxy);
-  const url =
-    import.meta.env.MODE === 'test' ? import.meta.env.VITE_SERVICE_BASE_URL : protocol + window.location.host + baseURL;
+  const url = isHttpProxy ? import.meta.env.VITE_SERVICE_BASE_URL : protocol + window.location.host + baseURL;
   const token = localStg.get('token');
   if (!token) {
     return null;
