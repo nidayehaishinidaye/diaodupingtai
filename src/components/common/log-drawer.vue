@@ -256,6 +256,9 @@ watch(
               const data = JSON.parse(e.data) as Api.JobLog.JobMessage;
               data.key = `${data.time_stamp}-${generateRandomString(16)}`;
               logList.value.push(data);
+              nextTick(() => {
+                if (isAutoScroll.value) virtualListInst.value?.scrollTo({ position: 'bottom', debounce: true });
+              });
             } else {
               finished.value = true;
               stopLogByWs();
@@ -268,7 +271,8 @@ watch(
 
       await getLogList();
     }
-  }
+  },
+  { immediate: true }
 );
 
 function timestampToDate(timestamp: string): string {
@@ -489,7 +493,13 @@ const SnailLogComponent = defineComponent({
               日志正在加载
             </NTooltip>
             <span class="ml-6px">{{ title }}</span>
-            <NDropdown trigger="hover" :options="syncOptions" width="trigger" @select="handleSyncSelect">
+            <NDropdown
+              v-if="fetchType === 'http'"
+              trigger="hover"
+              :options="syncOptions"
+              width="trigger"
+              @select="handleSyncSelect"
+            >
               <NTooltip placement="right">
                 <template #trigger>
                   <NButton dashed class="ml-16px w-136px" @click="handleSyncSelect(-1)">
@@ -507,6 +517,14 @@ const SnailLogComponent = defineComponent({
             </NDropdown>
           </div>
           <div class="flex-center">
+            <ButtonIcon
+              v-if="fetchType === 'ws'"
+              size="tiny"
+              class="mr-6px"
+              icon="solar:refresh-outline"
+              tooltip-content="刷新"
+              @click="handleSyncSelect(-1)"
+            />
             <ButtonIcon
               size="tiny"
               :tooltip-content="isAutoScroll ? '关闭自动滚动' : '开启自动滚动'"
