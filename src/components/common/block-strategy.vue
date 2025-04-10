@@ -30,7 +30,7 @@ const options = computed(() => {
   if (!props.ignore) {
     return list;
   }
-  return list.filter(opt => props.ignore?.includes(opt.value as Api.Common.BlockStrategy));
+  return list.filter(opt => !props.ignore?.includes(opt.value as Api.Common.BlockStrategy));
 });
 </script>
 
