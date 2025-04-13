@@ -159,6 +159,12 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       minWidth: 120
     },
     {
+      key: 'updateDt',
+      title: $t('page.retryTask.updateDt'),
+      align: 'center',
+      minWidth: 120
+    },
+    {
       key: 'operate',
       title: $t('common.operate'),
       align: 'center',

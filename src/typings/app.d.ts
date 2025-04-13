@@ -991,6 +991,7 @@ declare namespace App {
           idempotentId: string;
           bizNo: string;
           createDt: string;
+          updateDt: string;
           operationReason: string;
           retryId: string;
           form: {

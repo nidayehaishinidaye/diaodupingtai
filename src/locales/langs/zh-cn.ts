@@ -788,6 +788,7 @@ const local: App.I18n.Schema = {
       idempotentId: '幂等ID',
       bizNo: '业务编号',
       createDt: '创建时间',
+      updateDt: '更新时间',
       operationReason: '操作原因',
       retryId: '重试ID',
       form: {

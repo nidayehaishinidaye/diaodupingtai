@@ -163,7 +163,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     },
     {
       key: 'updateDt',
-      title: $t('page.retryTask.createDt'),
+      title: $t('page.retryTask.updateDt'),
       align: 'center',
       minWidth: 120
     },

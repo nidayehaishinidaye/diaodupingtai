@@ -780,6 +780,7 @@ const local: App.I18n.Schema = {
       idempotentId: 'Idempotent ID',
       bizNo: 'Business Number',
       createDt: 'Creation time',
+      updateDt: 'Update time',
       operationReason: 'Operation reason',
       retryId: 'Retry id',
       form: {
