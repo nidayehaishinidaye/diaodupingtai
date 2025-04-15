@@ -232,7 +232,14 @@ watch(
       finished.value = false;
       controller = new AbortController();
       if (props.fetchType === 'ws') {
-        const url = initWebSocketUrl('JOB_LOG_SCENE', props.taskData.id);
+        let url: string | null = '';
+        if (props.type === 'job') {
+          url = initWebSocketUrl('JOB_LOG_SCENE', props.taskData.id);
+        }
+        if (props.type === 'retry') {
+          url = initWebSocketUrl('RETRY_LOG_SCENE', props.taskData.id);
+        }
+
         if (!url) {
           window.$message?.error('Token 失效');
           visible.value = false;

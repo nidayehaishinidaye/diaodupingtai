@@ -59,6 +59,7 @@ const visible = defineModel<boolean>('visible', {
             {{ rowData?.responseVO?.argsStr }}
           </NDescriptionsItem>
           <NDescriptionsItem :label="$t('common.createDt')">{{ rowData?.createDt }}</NDescriptionsItem>
+          <NDescriptionsItem :label="$t('common.updateDt')">{{ rowData?.updateDt }}</NDescriptionsItem>
         </NDescriptions>
       </NTabPane>
       <NTabPane :name="1" :tab="$t('page.log.title')" display-directive="if">
