@@ -16,7 +16,6 @@ import { defineComponent, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import type { UseWebSocketReturn } from '@vueuse/core';
 import { useWebSocket } from '@vueuse/core';
-import { fetchJobLogList, fetchRetryLogList } from '@/service/api/log';
 import ButtonIcon from '@/components/custom/button-icon.vue';
 import { initWebSocketUrl } from '@/utils/websocket';
 import { generateRandomString } from '@/utils/common';
@@ -29,7 +28,7 @@ interface Props {
   title?: string;
   drawer?: boolean;
   type?: 'job' | 'retry';
-  fetchType?: 'ws' | 'http';
+  fetchType?: 'ws';
   taskData?: Api.Job.JobTask | Api.RetryTask.RetryTask;
   modelValue?: Api.JobLog.JobMessage[];
 }
@@ -55,10 +54,7 @@ const syncTime = ref(1);
 const logList = ref<Api.JobLog.JobMessage[]>([]);
 const websocket = ref<UseWebSocketReturn<any>>();
 const interval = ref<NodeJS.Timeout>();
-let controller = new AbortController();
 const finished = ref<boolean>(true);
-let startId = '0';
-let fromIndex: number = 0;
 
 const pauseLog = () => {
   finished.value = true;
@@ -70,27 +66,11 @@ const stopLogByWs = () => {
   websocket.value?.close();
 };
 
-const stopLogByHttp = async () => {
-  if (!finished.value) controller.abort();
-  pauseLog();
-  startId = '0';
-  fromIndex = 0;
-  logList.value = [];
-};
-
 const stopLog = () => {
-  if (props.fetchType === 'http') {
-    stopLogByHttp();
-    return;
-  }
   stopLogByWs();
 };
 
 async function getLogList() {
-  if (props.fetchType === 'http') {
-    await getLogListByHttp();
-    return;
-  }
   getLogListByWs();
 }
 
@@ -117,98 +97,6 @@ function getLogListByWs() {
   }
 }
 
-async function getLogListByHttp() {
-  clearTimeout(interval.value);
-  let logData = null;
-  let logError;
-
-  if (props.type === 'job') {
-    const taskData = props.taskData! as Api.Job.JobTask;
-    const { data, error } = await fetchJobLogList(
-      {
-        taskBatchId: taskData.taskBatchId,
-        jobId: taskData.jobId,
-        taskId: taskData.id,
-        startId,
-        fromIndex,
-        size: 50
-      },
-      controller
-    );
-    logData = data;
-    logError = error;
-  }
-
-  if (props.type === 'retry') {
-    const taskData = props.taskData! as Api.RetryTask.RetryTask;
-    const { data, error } = await fetchRetryLogList({
-      groupName: taskData.groupName,
-      retryTaskId: taskData.id!,
-      startId,
-      fromIndex,
-      size: 50
-    });
-    logData = data;
-    logError = error;
-  }
-
-  if (!logError && logData) {
-    finished.value = logData.finished || syncTime.value === 0;
-    startId = logData.nextStartId;
-    fromIndex = logData.fromIndex;
-    if (logData.message) {
-      logList.value.push(...logData.message);
-      logList.value
-        .sort((a, b) => Number.parseInt(a.time_stamp, 10) - Number.parseInt(b.time_stamp, 10))
-        .forEach((item, index) => {
-          item.index = index;
-          if (!item.key) {
-            item.key = `${item.time_stamp}-${generateRandomString(16)}`;
-          }
-        });
-    }
-    nextTick(() => {
-      if (isAutoScroll.value) virtualListInst.value?.scrollTo({ position: 'bottom', debounce: true });
-    });
-    if (!finished.value && syncTime.value !== 0) {
-      interval.value = setTimeout(getLogList, syncTime.value * 1000);
-    }
-
-    if (finished.value && syncTime.value !== 0) {
-      setTimeout(() => {
-        watchFinished();
-      }, 5 * 1000);
-    }
-  } else if (logError?.code !== 'ERR_CANCELED') {
-    stopLog();
-  }
-}
-
-async function watchFinished() {
-  clearTimeout(interval.value);
-  if (props.type === 'job' && syncTime.value !== 0) {
-    const taskData = props.taskData! as Api.Job.JobTask;
-    const { data, error } = await fetchJobLogList(
-      {
-        taskBatchId: taskData.taskBatchId,
-        jobId: taskData.jobId,
-        taskId: taskData.id,
-        startId,
-        fromIndex,
-        size: 50
-      },
-      controller
-    );
-    if (!error && data) {
-      if (data.finished) {
-        interval.value = setTimeout(watchFinished, 5 * 1000);
-        return;
-      }
-      await getLogList();
-    }
-  }
-}
-
 onBeforeUnmount(() => {
   stopLog();
 });
@@ -230,7 +118,6 @@ watch(
 
     if (((val && props.drawer) || !props.drawer) && props.type && props.taskData) {
       finished.value = false;
-      controller = new AbortController();
       if (props.fetchType === 'ws') {
         let url: string | null = '';
         if (props.type === 'job') {
@@ -500,28 +387,6 @@ const SnailLogComponent = defineComponent({
               日志正在加载
             </NTooltip>
             <span class="ml-6px">{{ title }}</span>
-            <NDropdown
-              v-if="fetchType === 'http'"
-              trigger="hover"
-              :options="syncOptions"
-              width="trigger"
-              @select="handleSyncSelect"
-            >
-              <NTooltip placement="right">
-                <template #trigger>
-                  <NButton dashed class="ml-16px w-136px" @click="handleSyncSelect(-1)">
-                    <template #icon>
-                      <div class="flex-center gap-8px">
-                        <icon-solar:refresh-outline class="text-18px" />
-                        {{ syncOptions.filter(item => item.key === syncTime)[0].label }}
-                        <SvgIcon icon="material-symbols:expand-more-rounded" />
-                      </div>
-                    </template>
-                  </NButton>
-                </template>
-                自动刷新频率
-              </NTooltip>
-            </NDropdown>
           </div>
           <div class="flex-center">
             <ButtonIcon
