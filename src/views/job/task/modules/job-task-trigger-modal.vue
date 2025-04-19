@@ -109,11 +109,11 @@ function createDefaultScriptParams() {
 }
 
 function handleUpdateModelWhenEdit() {
+  httpHeaders.value = [];
+  Object.assign(httpParams, createDefaultHttpParams());
+  Object.assign(scriptParams, createDefaultScriptParams());
+  Object.assign(model, createDefaultModel());
   if (!props.rowData) {
-    Object.assign(model, createDefaultModel());
-    httpHeaders.value = [];
-    Object.assign(httpParams, createDefaultHttpParams());
-    Object.assign(scriptParams, createDefaultScriptParams());
     return;
   }
 

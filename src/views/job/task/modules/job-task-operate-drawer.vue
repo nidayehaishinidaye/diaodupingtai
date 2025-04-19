@@ -216,12 +216,12 @@ function createDefaultScriptParams() {
 }
 
 function handleUpdateModelWhenEdit() {
+  Object.assign(model, createDefaultModel());
+  executorCustomType.value = 0;
+  httpHeaders.value = [];
+  Object.assign(httpParams, createDefaultHttpParams());
+  Object.assign(scriptParams, createDefaultScriptParams());
   if (props.operateType === 'add' && !props.rowData) {
-    Object.assign(model, createDefaultModel());
-    executorCustomType.value = 0;
-    httpHeaders.value = [];
-    Object.assign(httpParams, createDefaultHttpParams());
-    Object.assign(scriptParams, createDefaultScriptParams());
     return;
   }
 
