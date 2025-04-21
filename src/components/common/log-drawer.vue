@@ -1,11 +1,9 @@
 <script setup lang="tsx">
 import {
-  NButton,
   NCard,
   NCollapse,
   NCollapseItem,
   NDivider,
-  NDropdown,
   NEmpty,
   NScrollbar,
   NSpin,
@@ -118,52 +116,44 @@ watch(
 
     if (((val && props.drawer) || !props.drawer) && props.type && props.taskData) {
       finished.value = false;
-      if (props.fetchType === 'ws') {
-        let url: string | null = '';
-        if (props.type === 'job') {
-          url = initWebSocketUrl('JOB_LOG_SCENE', props.taskData.id);
-        }
-        if (props.type === 'retry') {
-          url = initWebSocketUrl('RETRY_LOG_SCENE', props.taskData.id);
-        }
+      let url: string | null = '';
 
-        if (!url) {
-          window.$message?.error('Token 失效');
-          visible.value = false;
-          return;
-        }
-        websocket.value = useWebSocket(url, {
-          immediate: false,
-          autoConnect: false,
-          autoReconnect: {
-            // 重连最大次数
-            retries: 3,
-            // 重连间隔
-            delay: 1000,
-            onFailed() {
-              window.$message?.error('websocket 连接失败');
-              visible.value = false;
-            }
-          },
-          onMessage: (_, e) => {
-            if (e.data !== 'END') {
-              const data = JSON.parse(e.data) as Api.JobLog.JobMessage;
-              data.key = `${data.time_stamp}-${generateRandomString(16)}`;
-              logList.value.push(data);
-              nextTick(() => {
-                if (isAutoScroll.value) virtualListInst.value?.scrollTo({ position: 'bottom', debounce: true });
-              });
-            } else {
-              finished.value = true;
-              stopLogByWs();
-            }
-          }
-        });
-        getLogListByWs();
+      const scene = props.type === 'job' ? 'JOB_LOG_SCENE' : 'RETRY_LOG_SCENE';
+      url = initWebSocketUrl(scene, props.taskData.id);
+
+      if (!url) {
+        window.$message?.error('Token 失效');
+        visible.value = false;
         return;
       }
-
-      await getLogList();
+      websocket.value = useWebSocket(url, {
+        immediate: false,
+        autoConnect: false,
+        autoReconnect: {
+          // 重连最大次数
+          retries: 3,
+          // 重连间隔
+          delay: 1000,
+          onFailed() {
+            window.$message?.error('websocket 连接失败');
+            visible.value = false;
+          }
+        },
+        onMessage: (_, e) => {
+          if (e.data !== 'END') {
+            const data = JSON.parse(e.data) as Api.JobLog.JobMessage;
+            data.key = `${data.time_stamp}-${generateRandomString(16)}`;
+            logList.value.push(data);
+            nextTick(() => {
+              if (isAutoScroll.value) virtualListInst.value?.scrollTo({ position: 'bottom', debounce: true });
+            });
+          } else {
+            finished.value = true;
+            stopLogByWs();
+          }
+        }
+      });
+      getLogListByWs();
     }
   },
   { immediate: true }
@@ -224,37 +214,6 @@ const handleSyncSelect = async (time: number) => {
   finished.value = false;
   await getLogList();
 };
-
-const syncOptions = ref([
-  {
-    label: 'Off',
-    key: 0
-  },
-  {
-    label: 'Auto(1s)',
-    key: 1
-  },
-  {
-    label: '5s',
-    key: 5
-  },
-  {
-    label: '10s',
-    key: 10
-  },
-  {
-    label: '30s',
-    key: 30
-  },
-  {
-    label: '1m',
-    key: 60
-  },
-  {
-    label: '5m',
-    key: 300
-  }
-]);
 
 const SnailLogComponent = defineComponent({
   setup() {
@@ -433,22 +392,6 @@ const SnailLogComponent = defineComponent({
   <NCard v-else :bordered="false" :title="title" size="small" class="h-full sm:flex-1-hidden card-wrapper">
     <template #header-extra>
       <div class="flex items-center">
-        <NDropdown trigger="hover" :options="syncOptions" width="trigger" @select="handleSyncSelect">
-          <NTooltip placement="right">
-            <template #trigger>
-              <NButton dashed class="mx-12px w-136px" @click="handleSyncSelect(-1)">
-                <template #icon>
-                  <div class="flex-center gap-8px">
-                    <icon-solar:refresh-outline class="text-18px" />
-                    {{ syncOptions.filter(item => item.key === syncTime)[0].label }}
-                    <SvgIcon icon="material-symbols:expand-more-rounded" />
-                  </div>
-                </template>
-              </NButton>
-            </template>
-            自动刷新频率
-          </NTooltip>
-        </NDropdown>
         <ButtonIcon
           size="tiny"
           class="mr-12px"
