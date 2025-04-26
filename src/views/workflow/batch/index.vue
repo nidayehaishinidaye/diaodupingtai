@@ -11,7 +11,7 @@ import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import { operationReasonRecord, taskBatchStatusRecord } from '@/constants/business';
-import { monthRangeISO8601 } from '@/utils/common';
+import { monthRangeISO8601, tagColor } from '@/utils/common';
 import WorkflowBatchSearch from './modules/workflow-batch-search.vue';
 
 const router = useRouter();
@@ -63,25 +63,25 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'workflowName',
       title: $t('page.workflowBatch.workflowName'),
-      align: 'left',
+      align: 'center',
       minWidth: 120
     },
     {
       key: 'groupName',
       title: $t('page.workflowBatch.groupName'),
-      align: 'left',
+      align: 'center',
       minWidth: 120
     },
     {
       key: 'executionAt',
       title: $t('page.workflowBatch.executionAt'),
-      align: 'left',
+      align: 'center',
       minWidth: 120
     },
     {
       key: 'taskBatchStatus',
       title: $t('page.workflowBatch.taskBatchStatus'),
-      align: 'left',
+      align: 'center',
       minWidth: 120,
       render: row => {
         if (!row.taskBatchStatus) {
@@ -90,11 +90,11 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
 
         const tagMap: Record<number, NaiveUI.ThemeColor> = {
           1: 'info',
-          2: 'success',
-          3: 'success',
+          2: 'info',
+          3: 'info',
           4: 'error',
-          5: 'warning',
-          6: 'warning'
+          5: 'error',
+          6: 'error'
         };
 
         const label = $t(taskBatchStatusRecord[row.taskBatchStatus!]);
@@ -104,21 +104,21 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'operationReason',
       title: $t('page.workflowBatch.operationReason'),
-      align: 'left',
+      align: 'center',
       minWidth: 120,
       render: row => {
-        if (!row.operationReason) {
+        if (row.operationReason === null) {
           return null;
         }
 
         const label = $t(operationReasonRecord[row.operationReason!]);
-        return <NTag type="warning">{label}</NTag>;
+        return <NTag type={tagColor(row.operationReason!)}>{label}</NTag>;
       }
     },
     {
       key: 'createDt',
       title: $t('page.workflowBatch.createDt'),
-      align: 'left',
+      align: 'center',
       minWidth: 120
     },
     {
