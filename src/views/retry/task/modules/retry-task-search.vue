@@ -29,17 +29,17 @@ function search() {
 </script>
 
 <template>
-  <SearchForm btn-span="24 s:1 m:1 l:1 xl:1" :model="model" @search="search" @reset="reset">
-    <NFormItemGi span="24 s:12 m:8" :label="$t('page.retryTask.groupName')" path="groupName" class="pr-24px">
+  <SearchForm btn-span="24 s:12 m:9 l:12 xl:18" :model="model" @search="search" @reset="reset">
+    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryTask.groupName')" path="groupName" class="pr-24px">
       <SelectGroup v-model:value="model.groupName" clearable />
     </NFormItemGi>
-    <NFormItemGi span="24 s:12 m:8" :label="$t('page.retryTask.sceneName')" path="sceneName" class="pr-24px">
+    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryTask.sceneName')" path="sceneName" class="pr-24px">
       <SelectScene v-model:value="model.sceneName" :group-name="model.groupName as string" clearable />
     </NFormItemGi>
-    <NFormItemGi span="24 s:12 m:8" :label="$t('page.retryTask.retryId')" path="bizNo" class="pr-24px">
+    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retryTask.retryId')" path="bizNo" class="pr-24px">
       <NInput v-model:value="model.retryId" :placeholder="$t('page.retryTask.form.retryId')" clearable />
     </NFormItemGi>
-    <NFormItemGi span="24 s:12 m:8" :label="$t('page.retry.retryStatus')" path="retryStatus" class="pr-24px">
+    <NFormItemGi span="24 s:12 m:6" :label="$t('page.retry.retryStatus')" path="retryStatus" class="pr-24px">
       <NSelect
         v-model:value="model.taskStatus"
         :placeholder="$t('page.retry.form.retryStatus')"
@@ -48,7 +48,7 @@ function search() {
       />
     </NFormItemGi>
     <NFormItemGi
-      span="24 s:24 m:14 l:12 xl:8"
+      span="24 s:24 m:14 l:12 xl:6"
       :label="$t('page.common.createTime')"
       path="datetimeRange"
       class="pr-24px"
