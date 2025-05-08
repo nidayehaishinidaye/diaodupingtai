@@ -65,7 +65,7 @@ const onUpdateTab = (value: string) => {
   }
 };
 
-const onUpdateDate = (value: [string, string] | null) => {
+const onUpdateDate = (value?: [string, string] | null) => {
   if (value) {
     tabParams.value.type = 'OTHERS';
   }

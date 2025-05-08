@@ -80,7 +80,7 @@ const previews = computed(() => {
 
   try {
     previewList = parserCron(expression.value);
-  } catch (error) {
+  } catch {
     previewList = [Locales[props.lang].previewError];
   }
 
@@ -127,7 +127,7 @@ defineExpose({
     try {
       cronParser.parseExpression(expression.value);
       return true;
-    } catch (error) {
+    } catch {
       return false;
     }
   }

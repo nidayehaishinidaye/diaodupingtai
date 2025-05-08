@@ -49,7 +49,7 @@ watch(
           v-for="(item, index) in (notifyAttribute as DingDingNotify)?.ats"
           :key="index"
           :type="tagColor(index)"
-          style="margin-right: 10px"
+          class="!mr-10px"
         >
           {{ item }}
         </NTag>
@@ -59,7 +59,7 @@ watch(
           v-for="(item, index) in (notifyAttribute as EmailNotify)?.tos"
           :key="index"
           :type="tagColor(index)"
-          style="margin-right: 10px"
+          class="!mr-10px"
         >
           {{ item }}
         </NTag>

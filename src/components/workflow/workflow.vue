@@ -185,7 +185,7 @@ const onDragstop = () => {
 </template>
 
 <style lang="scss">
-@import './styles/index';
+@use './styles/index';
 
 .workflow {
   padding: 0 !important;
