@@ -373,15 +373,15 @@ const local: App.I18n.Schema = {
     notify_recipient: '通知人',
     notify_config: '通知配置',
     retry: '重试任务',
-    retry_task: '重试任务',
-    retry_info: '任务管理',
+    retry_task: '重试列表',
+    retry_info: '重试记录',
     'retry_dead-letter': '死信任务',
     user: '用户管理',
     user_manager: '用户信息',
     retry_scene: '重试场景',
     workflow: '工作流',
-    workflow_task: '任务管理',
-    workflow_batch: '执行批次',
+    workflow_task: '流程管理',
+    workflow_batch: '流程监控',
     workflow_form: '工作流',
     workflow_form_copy: '复制工作流',
     workflow_form_batch: '工作流批次详情',
@@ -389,8 +389,8 @@ const local: App.I18n.Schema = {
     workflow_form_edit: '编辑工作流',
     workflow_form_add: '新增工作流',
     job: '定时任务',
-    job_task: '任务管理',
-    job_batch: '执行批次'
+    job_task: '定时配置',
+    job_batch: '定时队列'
   },
   page: {
     common: {
