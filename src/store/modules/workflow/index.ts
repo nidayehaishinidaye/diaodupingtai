@@ -7,7 +7,7 @@ export const useWorkflowStore = defineStore(SetupStoreId.Workflow, () => {
   const id = ref<string>();
   const type = ref<number>();
   const groupName = ref<string>();
-  const jobList = ref<Pick<Api.Job.Job, 'id' | 'jobName'>[]>([]);
+  const jobList = ref<Pick<Api.Job.Job, 'id' | 'jobName' | 'executorInfo' | 'taskType'>[]>([]);
 
   function setId(value: string) {
     id.value = value;
@@ -21,12 +21,7 @@ export const useWorkflowStore = defineStore(SetupStoreId.Workflow, () => {
     groupName.value = value;
     const { data, error } = await fetchGetJobList({ groupName: value });
     if (!error) {
-      jobList.value = data.map(item => {
-        return {
-          id: item.id!,
-          jobName: item.jobName
-        };
-      });
+      jobList.value = data;
     }
   }
 

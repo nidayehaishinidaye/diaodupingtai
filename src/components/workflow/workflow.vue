@@ -13,11 +13,13 @@ interface Props {
   modelValue?: Workflow.NodeDataType;
   spinning?: boolean;
   disabled?: boolean;
+  updated?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   spinning: false,
+  updated: false,
   modelValue: () => ({})
 });
 
@@ -143,7 +145,11 @@ const onDragstop = () => {
               放大
             </NTooltip>
           </div>
-          <div v-if="!disabled" class="buttons">
+          <div v-if="!disabled" class="buttons flex-y-center">
+            <div v-if="updated" class="flex-y-center gap-6px">
+              <NBadge dot processing />
+              <span class="mr-16px text-12px text-error">修改未保存</span>
+            </div>
             <NButton type="info" @click="save">保存</NButton>
             <NButton class="ml-16px" @click="cancel">取消</NButton>
           </div>

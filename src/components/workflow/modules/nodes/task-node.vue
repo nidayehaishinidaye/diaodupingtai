@@ -228,8 +228,8 @@ const isShow = (taskBatchStatus: number) => {
                     <div v-if="!item.jobTask?.jobId" class="placeholder">请选择任务</div>
                     <template v-if="item.jobTask?.jobId">
                       <div>
-                        <span class="content_label">任务名称:&nbsp;</span>
                         <NEllipsis class="max-w-123px">
+                          <span class="content_label">任务名称:&nbsp;</span>
                           {{ `${item.jobTask?.jobName}(${item.jobTask?.jobId})` }}
                         </NEllipsis>
                       </div>

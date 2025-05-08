@@ -1,9 +1,9 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import { ref, watch } from 'vue';
-import { type FormInst } from 'naive-ui';
+import { type FormInst, NTag, NTooltip } from 'naive-ui';
 import { useWorkflowStore } from '@/store/modules/workflow';
 import { $t } from '@/locales';
-import { failStrategyOptions, workFlowNodeStatusOptions } from '@/constants/business';
+import { failStrategyOptions, taskTypeRecord, workFlowNodeStatusOptions } from '@/constants/business';
 import EditableInput from '@/components/common/editable-input.vue';
 
 defineOptions({
@@ -32,7 +32,7 @@ const emit = defineEmits<Emits>();
 const store = useWorkflowStore();
 const drawer = ref<boolean>(false);
 const form = ref<Workflow.ConditionNodeType>({});
-const jobList = ref<Pick<Api.Job.Job, 'id' | 'jobName'>[]>([]);
+const jobList = ref<Pick<Api.Job.Job, 'id' | 'jobName' | 'executorInfo' | 'taskType'>[]>([]);
 
 watch(
   () => store.jobList,
@@ -87,6 +87,28 @@ const rules = {
 const jobTaskChange = (_: string, option: { label: string; value: number }) => {
   form.value.jobTask!.jobName = option.label;
 };
+
+const renderTaskLabel = (option: Api.Job.Job) => {
+  return (
+    <NTooltip trigger="hover" placement="left">
+      {{
+        trigger: () => (
+          <div class="flex-y-center gap-6px">
+            <NTag type="info" size="small">
+              {$t(taskTypeRecord[option.taskType])}
+            </NTag>
+            <span>{option.jobName}</span>
+          </div>
+        ),
+        default: () => (
+          <div>
+            {option.jobName} ( {option.executorInfo} )
+          </div>
+        )
+      }}
+    </NTooltip>
+  );
+};
 </script>
 
 <template>
@@ -118,14 +140,10 @@ const jobTaskChange = (_: string, option: { label: string; value: number }) => {
           <NSelect
             v-model:value="form.jobTask!.jobId"
             filterable
-            :options="
-              jobList.map(job => {
-                return {
-                  label: job.jobName,
-                  value: job.id
-                };
-              })
-            "
+            :render-label="renderTaskLabel"
+            label-field="jobName"
+            value-field="id"
+            :options="jobList"
             @update:value="jobTaskChange"
           />
         </NFormItem>

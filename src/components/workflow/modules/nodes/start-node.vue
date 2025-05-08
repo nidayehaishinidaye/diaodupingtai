@@ -92,8 +92,8 @@ const show = () => {
       </div>
       <div v-if="nodeData.groupName" class="content">
         <div>
-          <span class="content_label">组名称:&nbsp;</span>
           <NEllipsis class="max-w-132px">
+            <span class="content_label">组名称:&nbsp;</span>
             {{ nodeData.groupName }}
           </NEllipsis>
         </div>

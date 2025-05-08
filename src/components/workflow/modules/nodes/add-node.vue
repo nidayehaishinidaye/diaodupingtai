@@ -112,12 +112,6 @@ const addType = (type: number) => {
               </NButton>
               <p>{{ $t('workflow.node.condition.nodeName') }}</p>
             </li>
-            <li>
-              <NButton circle size="large" @click="addType(3)">
-                <icon-ant-design:swap-outlined class="text-20px color-#935af6" />
-              </NButton>
-              <p>{{ $t('workflow.node.callback.nodeName') }}</p>
-            </li>
           </ul>
         </div>
       </NPopover>

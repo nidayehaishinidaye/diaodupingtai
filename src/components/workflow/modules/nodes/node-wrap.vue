@@ -45,20 +45,20 @@ watch(
 
 <template>
   <TaskNode v-if="nodeConfig.nodeType == 1" v-model="nodeConfig" :disabled="disabled" @refresh="() => emit('refresh')">
-    <template #default="slot">
-      <NodeWrap v-if="slot.node" v-model="slot.node.childNode" :disabled="disabled" />
+    <template #default="{ node }">
+      <NodeWrap v-if="node" v-model="node.childNode" :disabled="disabled" />
     </template>
   </TaskNode>
 
   <BranchNode v-if="nodeConfig.nodeType == 2" v-model="nodeConfig" :disabled="disabled">
-    <template #default="slot">
-      <NodeWrap v-if="slot.node" v-model="slot.node.childNode" :disabled="disabled"></NodeWrap>
+    <template #default="{ node }">
+      <NodeWrap v-if="node" v-model="node.childNode" :disabled="disabled"></NodeWrap>
     </template>
   </BranchNode>
 
   <CallbackNode v-if="nodeConfig.nodeType == 3" v-model="nodeConfig" :disabled="disabled">
-    <template #default="slot">
-      <NodeWrap v-if="slot.node" v-model="slot.node.childNode" :disabled="disabled"></NodeWrap>
+    <template #default="{ node }">
+      <NodeWrap v-if="node" v-model="node.childNode" :disabled="disabled"></NodeWrap>
     </template>
   </CallbackNode>
 
