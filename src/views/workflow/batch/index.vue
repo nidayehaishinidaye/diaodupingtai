@@ -49,12 +49,8 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       align: 'center',
       width: 120,
       render: row => {
-        function showDetailDrawer() {
-          detail(row.id!);
-        }
-
         return (
-          <NButton text tag="a" type="primary" onClick={showDetailDrawer} class="ws-normal">
+          <NButton text tag="a" type="primary" onClick={() => handleDetail(row.id!)} class="ws-normal">
             {row.id}
           </NButton>
         );
@@ -125,9 +121,13 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       key: 'operate',
       title: $t('common.operate'),
       align: 'center',
-      width: 130,
+      minWidth: 130,
       render: row => (
         <div class="flex-center gap-8px">
+          <NButton type="primary" text ghost size="small" onClick={() => handleDetail(row.id!)}>
+            {$t('common.log')}
+          </NButton>
+          <n-divider vertical />
           {row?.taskBatchStatus === 1 || row?.taskBatchStatus === 2 ? (
             <>
               <NPopconfirm onPositiveClick={() => handleStop(row.id!)}>
@@ -142,9 +142,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
               </NPopconfirm>
               <n-divider vertical />
             </>
-          ) : (
-            ''
-          )}
+          ) : null}
           <NPopconfirm onPositiveClick={() => handleDelete(row.id!)}>
             {{
               default: () => $t('common.confirmDelete'),
@@ -188,7 +186,7 @@ async function handleStop(id: string) {
   }
 }
 
-function detail(id: string) {
+function handleDetail(id: string) {
   router.push({ path: '/workflow/form/batch', query: { id } });
 }
 </script>
