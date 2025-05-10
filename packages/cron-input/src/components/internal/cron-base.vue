@@ -121,7 +121,7 @@ watch(
     let data = val;
 
     if (props.field.value === WEEK) {
-      data = weekLetterToNumber(val).replaceAll('7', '0');
+      data = weekLetterToNumber(val).replaceAll('8', '1');
     }
 
     if ([TYPE.EMPTY, TYPE.UNSPECIFIC, TYPE.LAST_DAY, TYPE.LAST_WEEKDAY, TYPE.EVERY].includes(data)) {
