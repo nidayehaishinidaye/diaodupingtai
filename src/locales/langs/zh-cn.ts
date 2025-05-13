@@ -141,7 +141,8 @@ const local: App.I18n.Schema = {
       form: '请选择执行器类型',
       items: {
         java: 'Java',
-        python: 'Python'
+        python: 'Python',
+        go: 'Go'
       }
     },
     taskType: {

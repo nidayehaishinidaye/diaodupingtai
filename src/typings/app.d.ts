@@ -430,6 +430,7 @@ declare namespace App {
           items: {
             java: string;
             python: string;
+            go: string;
           };
         };
         taskType: {

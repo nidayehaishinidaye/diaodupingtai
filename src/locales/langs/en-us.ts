@@ -141,7 +141,8 @@ const local: App.I18n.Schema = {
       form: 'Please enter executor type',
       items: {
         java: 'Java',
-        python: 'Python'
+        python: 'Python',
+        go: 'Go'
       }
     },
     taskType: {

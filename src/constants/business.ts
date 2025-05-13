@@ -176,7 +176,8 @@ export const contentTypeOptions = transformRecordToNumberOption(contentTypeRecor
 /** 执行器类型 */
 export const executorTypeRecord: Record<Api.Common.ExecutorType, App.I18n.I18nKey> = {
   1: 'common.executorType.items.java',
-  2: 'common.executorType.items.python'
+  2: 'common.executorType.items.python',
+  3: 'common.executorType.items.go'
 };
 export const executorTypeRecordOptions = transformRecordToNumberOption(executorTypeRecord);
 
