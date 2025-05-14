@@ -49,6 +49,8 @@ const update = async () => {
   const { error } = await fetchUpdateWorkflow(node.value);
   if (!error) {
     window.$message?.info($t('common.updateSuccess'));
+    Object.assign(workflowInfo, node.value);
+    updated.value = false;
     router.push({ path: '/workflow/task' });
   }
 };

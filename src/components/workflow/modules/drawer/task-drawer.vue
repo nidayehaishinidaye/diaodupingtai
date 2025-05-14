@@ -94,9 +94,11 @@ const renderTaskLabel = (option: Api.Job.Job) => {
       {{
         trigger: () => (
           <div class="flex-y-center gap-6px">
-            <NTag type="info" size="small">
-              {$t(taskTypeRecord[option.taskType])}
-            </NTag>
+            {option.taskType ? (
+              <NTag type="info" size="small">
+                {$t(taskTypeRecord[option.taskType])}
+              </NTag>
+            ) : null}
             <span>{option.jobName}</span>
           </div>
         ),
