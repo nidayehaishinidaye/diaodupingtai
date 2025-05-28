@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { NButton, NPopconfirm, NTag } from 'naive-ui';
+import { NButton, NDivider, NPopconfirm, NTag } from 'naive-ui';
 import { ref } from 'vue';
 import { useBoolean } from '@sa/hooks';
 import { fetchDeleteNotifyRecipient, fetchGetNotifyRecipientPageList } from '@/service/api';
@@ -47,7 +47,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'recipientName',
       title: $t('page.notifyRecipient.recipientName'),
-      align: 'left',
+      align: 'center',
       minWidth: 120,
       render: row => {
         function showDetailDrawer() {
@@ -65,7 +65,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'notifyType',
       title: $t('page.notifyRecipient.notifyType'),
-      align: 'left',
+      align: 'center',
       minWidth: 120,
       render: row => {
         const label = $t(alarmTypeRecord[row.notifyType!]);
@@ -76,12 +76,14 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       key: 'description',
       title: $t('page.notifyRecipient.description'),
       align: 'left',
+      titleAlign: 'center',
       minWidth: 120
     },
     {
       key: 'operate',
       title: $t('common.operate'),
       align: 'center',
+      fixed: 'right',
       width: 130,
       render: row => (
         <div class="flex-center gap-8px">
@@ -89,16 +91,19 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
             {$t('common.edit')}
           </NButton>
           {hasAuth('R_ADMIN') ? (
-            <NPopconfirm onPositiveClick={() => handleDelete(row.id!)}>
-              {{
-                default: () => $t('common.confirmDelete'),
-                trigger: () => (
-                  <NButton type="error" text ghost size="small">
-                    {$t('common.delete')}
-                  </NButton>
-                )
-              }}
-            </NPopconfirm>
+            <>
+              <NDivider vertical />
+              <NPopconfirm onPositiveClick={() => handleDelete(row.id!)}>
+                {{
+                  default: () => $t('common.confirmDelete'),
+                  trigger: () => (
+                    <NButton type="error" text ghost size="small">
+                      {$t('common.delete')}
+                    </NButton>
+                  )
+                }}
+              </NPopconfirm>
+            </>
           ) : (
             ''
           )}

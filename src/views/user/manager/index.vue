@@ -118,6 +118,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       key: 'operate',
       title: $t('common.operate'),
       align: 'center',
+      fixed: 'right',
       width: 130,
       render: row => (
         <div class="flex-center gap-8px">

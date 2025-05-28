@@ -156,7 +156,11 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
       key: 'triggerInterval',
       title: $t('page.jobTask.triggerInterval'),
       align: 'center',
-      width: 80
+      width: 120,
+      ellipsis: true,
+      ellipsisTooltip: {
+        row: 2
+      }
     },
     {
       key: 'blockStrategy',
@@ -194,7 +198,7 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
       key: 'operate',
       title: $t('common.operate'),
       align: 'center',
-      width: 120,
+      width: 150,
       fixed: 'right',
       render: row => {
         const options = [

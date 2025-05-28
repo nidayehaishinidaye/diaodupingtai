@@ -53,7 +53,8 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
     {
       key: 'id',
       align: 'center',
-      width: 60,
+      width: 100,
+      fixed: 'left',
       title: () => {
         return (
           <div class="flex-center">
@@ -89,7 +90,7 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
       key: 'groupName',
       title: $t('page.jobBatch.groupName'),
       align: 'left',
-      width: 120
+      width: 150
     },
     {
       key: 'taskType',
@@ -116,7 +117,7 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
       key: 'jobName',
       title: $t('page.jobBatch.jobName'),
       align: 'center',
-      width: 120
+      width: 150
     },
     {
       key: 'executionAt',
@@ -181,7 +182,8 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
       key: 'operate',
       title: $t('common.operate'),
       align: 'center',
-      width: 160,
+      width: 180,
+      fixed: 'right',
       render: row => {
         const stopBtn = () => {
           if (row.taskBatchStatus === 1 || row.taskBatchStatus === 2) {

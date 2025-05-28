@@ -50,7 +50,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'notifyName',
       title: $t('page.notifyConfig.notifyName'),
-      align: 'left',
+      align: 'center',
       width: 120,
       render: row => {
         function showDetailDrawer() {
@@ -68,13 +68,13 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'groupName',
       title: $t('page.notifyConfig.groupName'),
-      align: 'left',
+      align: 'center',
       width: 120
     },
     {
       key: 'systemTaskType',
       title: $t('page.notifyConfig.systemTaskType'),
-      align: 'left',
+      align: 'center',
       width: 120,
       render: row => {
         if (row.systemTaskType === null) {
@@ -89,7 +89,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'notifyStatus',
       title: $t('page.notifyConfig.notifyStatus'),
-      align: 'left',
+      align: 'center',
       width: 120,
       render: row => {
         const fetchFn = async (notifyStatus: Api.Common.EnableStatusNumber, callback: (flag: boolean) => void) => {
@@ -107,14 +107,14 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'notifyName',
       title: $t('page.notifyConfig.notifyName'),
-      align: 'left',
+      align: 'center',
       width: 120
     },
     {
       key: 'notifyScene',
       title: $t('page.notifyConfig.notifyScene'),
-      align: 'left',
-      width: 160,
+      align: 'center',
+      width: 180,
       render: row => {
         if (row.notifyScene === null) {
           return null;
@@ -124,7 +124,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
           const label = $t(retryNotifyScene[row.notifyScene! as Api.NotifyConfig.RetryNotifyScene]);
           return (
             <NTag type={tagColor(row.notifyScene)}>
-              <NEllipsis class="w-136px">{label}</NEllipsis>
+              <NEllipsis class="max-w-136px">{label}</NEllipsis>
             </NTag>
           );
         }
@@ -133,7 +133,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
           const label = $t(jobNotifyScene[row.notifyScene! as Api.NotifyConfig.JobNotifyScene]);
           return (
             <NTag type={tagColor(row.notifyScene)}>
-              <NEllipsis class="w-136px">{label}</NEllipsis>
+              <NEllipsis class="max-w-136px">{label}</NEllipsis>
             </NTag>
           );
         }
@@ -142,7 +142,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
           const label = $t(workflowNotifyScene[row.notifyScene! as Api.NotifyConfig.WorkflowNotifyScene]);
           return (
             <NTag type={tagColor(row.notifyScene)}>
-              <NEllipsis class="w-136px">{label}</NEllipsis>
+              <NEllipsis class="max-w-136px">{label}</NEllipsis>
             </NTag>
           );
         }
@@ -153,19 +153,19 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'notifyThreshold',
       title: $t('page.notifyConfig.notifyThreshold'),
-      align: 'left',
+      align: 'center',
       width: 120
     },
     {
       key: 'createDt',
       title: $t('common.createDt'),
-      align: 'left',
+      align: 'center',
       width: 120
     },
     {
       key: 'description',
       title: $t('page.notifyConfig.description'),
-      align: 'left',
+      align: 'center',
       width: 120
     },
     {
