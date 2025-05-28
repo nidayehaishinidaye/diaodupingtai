@@ -84,6 +84,8 @@ declare namespace Workflow {
     jobId?: string;
     /** 任务名称 */
     jobName?: string;
+    /** 标签 */
+    labels?: string;
   };
 
   /** 条件节点 */

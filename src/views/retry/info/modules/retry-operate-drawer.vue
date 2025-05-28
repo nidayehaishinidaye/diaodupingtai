@@ -47,7 +47,15 @@ const title = computed(() => {
 
 type Model = Pick<
   Api.Retry.Retry,
-  'groupName' | 'sceneName' | 'idempotentId' | 'bizNo' | 'executorName' | 'argsStr' | 'retryStatus'
+  | 'groupName'
+  | 'sceneName'
+  | 'idempotentId'
+  | 'bizNo'
+  | 'executorName'
+  | 'argsStr'
+  | 'retryStatus'
+  | 'labels'
+  | 'labelMap'
 >;
 
 const model: Model = reactive(createDefaultModel());
@@ -60,7 +68,9 @@ function createDefaultModel(): Model {
     bizNo: '',
     executorName: '',
     argsStr: '',
-    retryStatus: 0
+    retryStatus: 0,
+    labels: '{}',
+    labelMap: []
   };
 }
 
@@ -99,6 +109,7 @@ const rules: Record<RuleKey, App.Global.FormRule> = {
 
 function handleUpdateModelWhenEdit() {
   argsList.value = [];
+  model.labelMap = [];
 
   if (props.operateType === 'add') {
     Object.assign(model, createDefaultModel());
@@ -108,6 +119,11 @@ function handleUpdateModelWhenEdit() {
   if (props.operateType === 'edit' && props.rowData) {
     Object.assign(model, props.rowData);
     argsList.value = JSON.parse(props.rowData.argsStr || '[]');
+    if (props.rowData.labels) {
+      model.labelMap = JSON.parse(props.rowData.labels).map((item: { key: string; value: string }) => {
+        return { key: item.key, value: item.value };
+      });
+    }
   }
 }
 
@@ -118,6 +134,8 @@ function closeDrawer() {
 async function handleSubmit() {
   await validate();
 
+  const labels = model.labelMap?.length ? JSON.stringify(model.labelMap) : '{}';
+
   if (props.operateType === 'add') {
     const { groupName, sceneName, idempotentId, bizNo, executorName, retryStatus } = model;
     const { error } = await fetchAddRetry({
@@ -127,7 +145,8 @@ async function handleSubmit() {
       bizNo,
       executorName,
       argsStr: JSON.stringify(argsList.value),
-      retryStatus
+      retryStatus,
+      labels
     });
     if (error) return;
     window.$message?.success($t('common.addSuccess'));
@@ -187,6 +206,13 @@ async function setIdempotentId() {
           :placeholder="$t('page.retry.form.executorName')"
           :disabled="props.operateType === 'edit'"
         />
+      </NFormItem>
+      <NFormItem
+        :label="$t('page.retry.labels')"
+        path="labelMap"
+        :show-feedback="model.labelMap?.length ? false : true"
+      >
+        <LabelsInput v-model:value="model.labelMap" path="labelMap" />
       </NFormItem>
       <NFormItem :label="$t('page.retry.argsStr')" path="argsStr">
         <NDynamicInput v-model:value="argsList" :on-create="() => ''">

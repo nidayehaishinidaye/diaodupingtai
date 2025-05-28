@@ -718,6 +718,7 @@ declare namespace App {
           title: string;
           nodeType: string;
           groupName: string;
+          labels: string;
           hostId: string;
           hostIp: string;
           hostPort: string;
@@ -898,6 +899,7 @@ declare namespace App {
           detail: string;
           groupName: string;
           sceneName: string;
+          labels: string;
           idempotentId: string;
           bizNo: string;
           executorName: string;
@@ -913,6 +915,7 @@ declare namespace App {
             groupName: string;
             argsStr: string;
             sceneName: string;
+            labels: string;
             executorName: string;
             taskType: string;
             idempotentId: string;
@@ -1044,6 +1047,7 @@ declare namespace App {
           groupName: string;
           ownerName: string;
           jobName: string;
+          labels: string;
           argsStr: string;
           shardNum: string;
           argsType: string;

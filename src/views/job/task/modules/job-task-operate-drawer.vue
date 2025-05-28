@@ -81,6 +81,8 @@ type Model = Pick<
   | 'parallelNum'
   | 'description'
   | 'notifyScene'
+  | 'labels'
+  | 'labelMap'
 >;
 
 async function getNotifyConfigSystemTaskTypeList() {
@@ -113,7 +115,9 @@ function createDefaultModel(): Model {
     retryInterval: 1,
     taskType: 1,
     parallelNum: 1,
-    description: ''
+    description: '',
+    labels: '{}',
+    labelMap: []
   };
 }
 
@@ -219,6 +223,7 @@ function handleUpdateModelWhenEdit() {
   Object.assign(model, createDefaultModel());
   executorCustomType.value = 0;
   httpHeaders.value = [];
+  model.labelMap = [];
   Object.assign(httpParams, createDefaultHttpParams());
   Object.assign(scriptParams, createDefaultScriptParams());
   if (props.operateType === 'add' && !props.rowData) {
@@ -227,6 +232,11 @@ function handleUpdateModelWhenEdit() {
 
   if (props.rowData) {
     Object.assign(model, props.rowData);
+    if (model.labels) {
+      model.labelMap = JSON.parse(model.labels).map((item: { key: string; value: string }) => {
+        return { key: item.key, value: item.value };
+      });
+    }
     if (model.taskType === 3 && model.argsStr) {
       Object.assign(dynamicForm, {
         args: JSON.parse(model.argsStr).map((item: string) => {
@@ -300,6 +310,8 @@ async function handleSubmit() {
     }
   }
 
+  const labels = model.labelMap?.length ? JSON.stringify(model.labelMap) : '{}';
+
   if (props.operateType === 'add') {
     const { error } = await fetchAddJob({
       groupName,
@@ -321,7 +333,8 @@ async function handleSubmit() {
       retryInterval,
       taskType,
       parallelNum,
-      description
+      description,
+      labels
     });
     if (error) return;
     window.$message?.success($t('common.addSuccess'));
@@ -349,7 +362,8 @@ async function handleSubmit() {
       retryInterval,
       taskType,
       parallelNum,
-      description
+      description,
+      labels
     });
     if (error) return;
     window.$message?.success($t('common.updateSuccess'));
@@ -468,6 +482,13 @@ const scriptMethodOptions = [
       </NFormItem>
       <NFormItem :label="$t('page.jobTask.ownerName')" path="ownerId">
         <SystemUser v-model:value="model.ownerId" :clearable="true" />
+      </NFormItem>
+      <NFormItem
+        :label="$t('page.jobTask.labels')"
+        path="labelMap"
+        :show-feedback="model.labelMap?.length ? false : true"
+      >
+        <LabelsInput v-model:value="model.labelMap" path="labelMap" />
       </NFormItem>
       <NFormItem :label="$t('page.jobTask.jobStatus')" path="jobStatus">
         <NRadioGroup v-model:value="model.jobStatus" name="jobStatus">

@@ -227,6 +227,18 @@ const isShow = (taskBatchStatus: number) => {
                   <div class="content min-h-72px">
                     <div v-if="!item.jobTask?.jobId" class="placeholder">请选择任务</div>
                     <template v-if="item.jobTask?.jobId">
+                      <div v-if="item.jobTask?.labels">
+                        <span class="content_label">标签:&nbsp;</span>
+                        <div class="flex-y-center gap-6px">
+                          <NTag
+                            v-for="[key, value] in Object.entries(JSON.parse(item.jobTask?.labels || '{}'))"
+                            :key="key"
+                            type="default"
+                          >
+                            {{ key }}:{{ value }}
+                          </NTag>
+                        </div>
+                      </div>
                       <div>
                         <NEllipsis class="max-w-123px">
                           <span class="content_label">任务名称:&nbsp;</span>

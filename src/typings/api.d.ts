@@ -330,6 +330,8 @@ declare namespace Api {
       extAttrs: string;
       /** 组名称 */
       groupName: string;
+      /** labels */
+      labels: string;
       /** host id */
       hostId: string;
       /** host IP */
@@ -784,6 +786,9 @@ declare namespace Api {
       retryStatus: RetryStatusType;
       /** 任务类型 1、重试数据 2、回调数据 */
       taskType?: TaskType;
+      /** 标签 */
+      labels: string;
+      labelMap?: { key: string; value: string }[];
     }>;
 
     type RetryBatchAdd = {
@@ -1028,6 +1033,10 @@ declare namespace Api {
       description?: string;
       /** 通知场景 */
       notifyScene?: string;
+      /** 标签 */
+      labels?: string;
+      /** 标签 */
+      labelMap?: { key: string; value: string }[];
     }>;
 
     type TriggerJobParams = {

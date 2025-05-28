@@ -56,6 +56,28 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       maxWidth: 200
     },
     {
+      key: 'labels',
+      title: $t('page.pods.labels'),
+      align: 'left',
+      titleAlign: 'center',
+      ellipsis: true,
+      ellipsisTooltip: {
+        rows: 2
+      },
+      width: 180,
+      render: row => {
+        if (!row.labels) {
+          return null;
+        }
+
+        return Object.entries(JSON.parse(row.labels)).map(([key, value]) => (
+          <NTag type="default" key={key}>
+            {key}:{value}
+          </NTag>
+        ));
+      }
+    },
+    {
       key: 'hostIp',
       title: $t('page.pods.hostIp'),
       align: 'left',

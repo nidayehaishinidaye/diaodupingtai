@@ -84,8 +84,9 @@ const rules = {
   }
 };
 
-const jobTaskChange = (_: string, option: { jobName: string }) => {
+const jobTaskChange = (_: string, option: { jobName: string; labels: string }) => {
   form.value.jobTask!.jobName = option.jobName;
+  form.value.jobTask!.labels = option.labels;
 };
 
 const renderTaskLabel = (option: Api.Job.Job) => {
