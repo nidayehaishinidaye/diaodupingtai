@@ -233,8 +233,8 @@ function handleUpdateModelWhenEdit() {
   if (props.rowData) {
     Object.assign(model, props.rowData);
     if (model.labels) {
-      model.labelMap = JSON.parse(model.labels).map((item: { key: string; value: string }) => {
-        return { key: item.key, value: item.value };
+      model.labelMap = Object.entries(JSON.parse(model.labels)).map(([key, value]) => {
+        return { key, value: value as string };
       });
     }
     if (model.taskType === 3 && model.argsStr) {
@@ -310,7 +310,10 @@ async function handleSubmit() {
     }
   }
 
-  const labels = model.labelMap?.length ? JSON.stringify(model.labelMap) : '{}';
+  const labels: Record<string, string> = {};
+  model.labelMap?.forEach(item => {
+    labels[item.key] = item.value;
+  });
 
   if (props.operateType === 'add') {
     const { error } = await fetchAddJob({
@@ -334,7 +337,7 @@ async function handleSubmit() {
       taskType,
       parallelNum,
       description,
-      labels
+      labels: JSON.stringify(labels)
     });
     if (error) return;
     window.$message?.success($t('common.addSuccess'));
@@ -363,7 +366,7 @@ async function handleSubmit() {
       taskType,
       parallelNum,
       description,
-      labels
+      labels: JSON.stringify(labels)
     });
     if (error) return;
     window.$message?.success($t('common.updateSuccess'));

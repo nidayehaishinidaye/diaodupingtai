@@ -102,12 +102,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'labels',
       title: $t('page.retry.labels'),
-      align: 'left',
-      titleAlign: 'center',
-      ellipsis: true,
-      ellipsisTooltip: {
-        rows: 2
-      },
+      align: 'center',
       width: 180,
       render: row => {
         if (!row.labels) {
@@ -115,7 +110,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
         }
 
         return Object.entries(JSON.parse(row.labels)).map(([key, value]) => (
-          <NTag type="default" key={key}>
+          <NTag class="mr-6px" type="default" key={key}>
             {key}:{value}
           </NTag>
         ));

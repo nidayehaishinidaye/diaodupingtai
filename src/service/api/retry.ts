@@ -18,7 +18,7 @@ export function fetchGetRetryById(id: string, groupName: string) {
 }
 
 /** add retryTask */
-export function fetchAddRetry(data: Api.Retry.Retry) {
+export function fetchAddRetry(data: CommonType.RecordNullable<Api.Retry.Retry>) {
   return request<boolean>({
     url: '/retry',
     method: 'post',
@@ -72,7 +72,7 @@ export function fetchBatchDeleteRetry(data: Api.Retry.BatchDeleteRetryVO) {
 }
 
 /** generate retryTask idempotent id */
-export function fetchIdempotentIdGenerate(data: Api.Retry.GenerateRetryIdempotentIdVO) {
+export function fetchIdempotentIdGenerate(data: CommonType.RecordNullable<Api.Retry.GenerateRetryIdempotentIdVO>) {
   return request<string>({
     url: '/retry/generate/idempotent-id',
     method: 'post',

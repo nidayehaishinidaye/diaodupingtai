@@ -45,25 +45,27 @@ const title = computed(() => {
   return titles[props.operateType];
 });
 
-type Model = Pick<
-  Api.Retry.Retry,
-  | 'groupName'
-  | 'sceneName'
-  | 'idempotentId'
-  | 'bizNo'
-  | 'executorName'
-  | 'argsStr'
-  | 'retryStatus'
-  | 'labels'
-  | 'labelMap'
+type Model = CommonType.RecordNullable<
+  Pick<
+    Api.Retry.Retry,
+    | 'groupName'
+    | 'sceneName'
+    | 'idempotentId'
+    | 'bizNo'
+    | 'executorName'
+    | 'argsStr'
+    | 'retryStatus'
+    | 'labels'
+    | 'labelMap'
+  >
 >;
 
 const model: Model = reactive(createDefaultModel());
 
 function createDefaultModel(): Model {
   return {
-    groupName: '',
-    sceneName: '',
+    groupName: undefined,
+    sceneName: undefined,
     idempotentId: '',
     bizNo: '',
     executorName: '',
@@ -120,8 +122,8 @@ function handleUpdateModelWhenEdit() {
     Object.assign(model, props.rowData);
     argsList.value = JSON.parse(props.rowData.argsStr || '[]');
     if (props.rowData.labels) {
-      model.labelMap = JSON.parse(props.rowData.labels).map((item: { key: string; value: string }) => {
-        return { key: item.key, value: item.value };
+      model.labelMap = Object.entries(JSON.parse(props.rowData.labels)).map(([key, value]) => {
+        return { key, value: value as string };
       });
     }
   }
@@ -134,7 +136,10 @@ function closeDrawer() {
 async function handleSubmit() {
   await validate();
 
-  const labels = model.labelMap?.length ? JSON.stringify(model.labelMap) : '{}';
+  const labels: Record<string, string> = {};
+  model.labelMap?.forEach(item => {
+    labels[item.key] = item.value;
+  });
 
   if (props.operateType === 'add') {
     const { groupName, sceneName, idempotentId, bizNo, executorName, retryStatus } = model;
@@ -146,7 +151,7 @@ async function handleSubmit() {
       executorName,
       argsStr: JSON.stringify(argsList.value),
       retryStatus,
-      labels
+      labels: JSON.stringify(labels)
     });
     if (error) return;
     window.$message?.success($t('common.addSuccess'));
@@ -212,7 +217,7 @@ async function setIdempotentId() {
         path="labelMap"
         :show-feedback="model.labelMap?.length ? false : true"
       >
-        <LabelsInput v-model:value="model.labelMap" path="labelMap" />
+        <LabelsInput v-model:value="model.labelMap!" path="labelMap" />
       </NFormItem>
       <NFormItem :label="$t('page.retry.argsStr')" path="argsStr">
         <NDynamicInput v-model:value="argsList" :on-create="() => ''">
