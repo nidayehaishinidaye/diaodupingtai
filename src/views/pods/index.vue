@@ -5,6 +5,7 @@ import { fetchPods } from '@/service/api';
 import { $t } from '@/locales';
 import { podsType } from '@/constants/business';
 import { useTable, useTableOperate } from '@/hooks/common/table';
+import LabelList from '@/components/common/label-list.vue';
 import PodsSearch from './modules/pods-search.vue';
 
 const appStore = useAppStore();
@@ -59,17 +60,9 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       key: 'labels',
       title: $t('page.pods.labels'),
       align: 'center',
-      width: 180,
+      width: 120,
       render: row => {
-        if (!row.labels) {
-          return null;
-        }
-
-        return Object.entries(JSON.parse(row.labels)).map(([key, value]) => (
-          <NTag class="mr-6px" type="default" key={key}>
-            {key}:{value}
-          </NTag>
-        ));
+        return <LabelList labels={JSON.parse(row.labels || '{}')} />;
       }
     },
     {

@@ -11,6 +11,7 @@ import StatusSwitch from '@/components/common/status-switch.vue';
 import { useRouterPush } from '@/hooks/common/router';
 import { useAuth } from '@/hooks/business/auth';
 import { downloadFetch } from '@/utils/download';
+import LabelList from '@/components/common/label-list.vue';
 import JobTaskOperateDrawer from './modules/job-task-operate-drawer.vue';
 import JobTaskTriggerModal from './modules/job-task-trigger-modal.vue';
 import JobTaskSearch from './modules/job-task-search.vue';
@@ -92,17 +93,9 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
       key: 'labels',
       title: $t('page.pods.labels'),
       align: 'center',
-      width: 180,
+      width: 120,
       render: row => {
-        if (!row.labels) {
-          return null;
-        }
-
-        return Object.entries(JSON.parse(row.labels)).map(([key, value]) => (
-          <NTag class="mr-6px" type="default" key={key}>
-            {key}:{value}
-          </NTag>
-        ));
+        return <LabelList labels={JSON.parse(row.labels || '{}')} />;
       }
     },
     {

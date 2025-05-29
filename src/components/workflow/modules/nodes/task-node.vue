@@ -5,6 +5,7 @@ import { fetchNodeRetry, fetchNodeStop } from '@/service/api';
 import { $t } from '@/locales';
 import { useWorkflowStore } from '@/store/modules/workflow';
 import { failStrategyRecord, taskBatchStatusEnum } from '@/constants/business';
+import LabelList from '@/components/common/label-list.vue';
 import TaskDrawer from '../drawer/task-drawer.vue';
 import TaskDetail from '../detail/task-detail.vue';
 import DetailCard from '../common/detail-card.vue';
@@ -234,13 +235,7 @@ const isShow = (taskBatchStatus: number) => {
                               <div class="flex-y-center gap-8px">
                                 <span class="content_label">标签:</span>
                                 <div class="flex-y-center gap-6px">
-                                  <NTag
-                                    v-for="[key, value] in Object.entries(JSON.parse(item.jobTask?.labels || '{}'))"
-                                    :key="key"
-                                    type="default"
-                                  >
-                                    {{ key }}:{{ value }}
-                                  </NTag>
+                                  <LabelList :labels="JSON.parse(item.jobTask?.labels || '{}')" />
                                 </div>
                               </div>
                             </div>
