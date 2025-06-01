@@ -42,7 +42,8 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     // the value can not be undefined, otherwise the property in Form will not be reactive
     groupName: null,
     sceneName: null,
-    sceneStatus: null
+    sceneStatus: null,
+    ownerId: null
   },
   columns: () => [
     {
@@ -78,6 +79,12 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'groupName',
       title: $t('page.retryScene.groupName'),
+      align: 'center',
+      width: 180
+    },
+    {
+      key: 'ownerName',
+      title: $t('page.retryScene.ownerName'),
       align: 'center',
       width: 180
     },
@@ -250,7 +257,8 @@ function body(): Api.RetryScene.ExportScene {
     sceneIds: checkedRowKeys.value,
     groupName: searchParams.groupName,
     sceneName: searchParams.sceneName,
-    sceneStatus: searchParams.sceneStatus
+    sceneStatus: searchParams.sceneStatus,
+    ownerId: searchParams.ownerId
   };
 }
 

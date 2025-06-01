@@ -3,6 +3,8 @@ declare namespace Workflow {
   export type NodeDataType = {
     /** 流程ID */
     id?: string;
+    /** 负责人 */
+    ownerId?: string;
     /** 工作流名称 */
     workflowName?: string;
     /** 组名称 */

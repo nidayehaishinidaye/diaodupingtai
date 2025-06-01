@@ -237,6 +237,9 @@ const rules: Record<RuleKey, FormItemRule> = {
             </NSpace>
           </NRadioGroup>
         </NFormItem>
+        <NFormItem path="ownerId" label="负责人">
+          <SystemUser v-model:value="form.ownerId" :clearable="true" />
+        </NFormItem>
         <NFormItem path="notifyIds" label="告警通知">
           <NSelect
             v-model:value="form.notifyIds"

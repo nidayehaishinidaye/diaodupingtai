@@ -795,6 +795,7 @@ declare namespace App {
           description: string;
           notifyAttribute: string;
           retryScene: string;
+          ownerName: string;
           job: string;
           workflow: string;
           form: {
@@ -945,6 +946,7 @@ declare namespace App {
           sceneName: string;
           notifyName: string;
           sceneStatus: string;
+          ownerName: string;
           backOff: string;
           maxRetryCount: string;
           triggerInterval: string;
@@ -967,6 +969,7 @@ declare namespace App {
             description: string;
             executorTimeout: string;
             sceneName: string;
+            ownerId: string;
             sceneStatus: string;
             deadlineRequest: string;
             routeKey: string;
@@ -1012,6 +1015,7 @@ declare namespace App {
           title: string;
           workflowName: string;
           groupName: string;
+          ownerName: string;
           nextTriggerAt: string;
           workflowStatus: string;
           triggerType: string;

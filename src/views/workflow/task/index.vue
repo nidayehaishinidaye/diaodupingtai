@@ -34,7 +34,8 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     // the value can not be undefined, otherwise the property in Form will not be reactive
     workflowName: null,
     groupName: null,
-    workflowStatus: null
+    workflowStatus: null,
+    ownerId: null
   },
   columns: () => [
     {
@@ -70,6 +71,12 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       title: $t('page.workflow.groupName'),
       align: 'left',
       minWidth: 120
+    },
+    {
+      key: 'ownerName',
+      title: $t('page.workflow.ownerName'),
+      align: 'center',
+      width: 180
     },
     {
       key: 'nextTriggerAt',
@@ -258,7 +265,8 @@ function body(): Api.Workflow.ExportWorkflow {
     workflowIds: checkedRowKeys.value,
     groupName: searchParams.groupName,
     workflowName: searchParams.workflowName,
-    workflowStatus: searchParams.workflowStatus
+    workflowStatus: searchParams.workflowStatus,
+    ownerId: searchParams.ownerId
   };
 }
 

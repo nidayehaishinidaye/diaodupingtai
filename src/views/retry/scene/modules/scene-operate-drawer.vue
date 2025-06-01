@@ -61,6 +61,8 @@ type Model = Pick<
   | 'notifyIds'
   | 'sceneName'
   | 'sceneStatus'
+  | 'ownerId'
+  | 'ownerName'
   | 'backOff'
   | 'maxRetryCount'
   | 'triggerInterval'
@@ -94,6 +96,8 @@ function createDefaultModel(): Model {
     sceneName: '',
     notifyIds: [],
     sceneStatus: 1,
+    ownerId: '',
+    ownerName: '',
     backOff: 2,
     maxRetryCount: 1,
     triggerInterval: '60',
@@ -180,6 +184,8 @@ async function handleSubmit() {
       sceneName,
       notifyIds,
       sceneStatus,
+      ownerId,
+      ownerName,
       backOff,
       maxRetryCount,
       triggerInterval,
@@ -198,6 +204,8 @@ async function handleSubmit() {
       sceneName,
       notifyIds,
       sceneStatus,
+      ownerId,
+      ownerName,
       backOff,
       maxRetryCount,
       triggerInterval,
@@ -222,6 +230,8 @@ async function handleSubmit() {
       sceneName,
       notifyIds,
       sceneStatus,
+      ownerId,
+      ownerName,
       backOff,
       maxRetryCount,
       triggerInterval,
@@ -241,6 +251,8 @@ async function handleSubmit() {
       sceneName,
       notifyIds,
       sceneStatus,
+      ownerId,
+      ownerName,
       backOff,
       maxRetryCount,
       triggerInterval,
@@ -310,6 +322,9 @@ watch(
           </NFormItem>
           <NFormItem :label="$t('page.retryScene.groupName')" path="groupName">
             <SelectGroup v-model:value="model.groupName" :disabled="props.operateType === 'edit'" />
+          </NFormItem>
+          <NFormItem :label="$t('page.retryScene.ownerName')" path="ownerId">
+            <SystemUser v-model:value="model.ownerId" :clearable="true" />
           </NFormItem>
           <NFormItem :label="$t('page.retryScene.sceneStatus')" path="sceneStatus">
             <NRadioGroup v-model:value="model.sceneStatus" name="sceneStatus">

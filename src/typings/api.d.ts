@@ -859,6 +859,9 @@ declare namespace Api {
       blockStrategy: RetryBlockStrategy;
       /** 状态 */
       sceneStatus: EnableStatusNumber;
+      /** 负责人 */
+      ownerId: string;
+      ownerName: string;
       /** 退避策略 */
       backOff: BackOff;
       /** 路由策略 */
@@ -887,6 +890,7 @@ declare namespace Api {
     type SceneSearchParams = CommonType.RecordNullable<
       Pick<
         Api.RetryScene.Scene,
+        | 'ownerId'
         | 'groupName'
         | 'sceneName'
         | 'sceneStatus'
@@ -924,6 +928,9 @@ declare namespace Api {
 
     /** workflow */
     type Workflow = Common.CommonRecord<{
+      /** 负责人 */
+      ownerId: string;
+      ownerName: string;
       /** 工作流名称 */
       workflowName: string;
       /** 组名称 */
@@ -951,7 +958,7 @@ declare namespace Api {
 
     /** workflow search params */
     type WorkflowSearchParams = CommonType.RecordNullable<
-      Pick<Api.Workflow.Workflow, 'workflowName' | 'groupName' | 'workflowStatus'> & CommonSearchParams
+      Pick<Api.Workflow.Workflow, 'workflowName' | 'groupName' | 'workflowStatus' | 'ownerId'> & CommonSearchParams
     >;
 
     /** workflow name search params */
@@ -961,8 +968,9 @@ declare namespace Api {
           keywords: string;
           workflowId: number;
           groupName: string;
+          ownerId: string;
         }>,
-        'keywords' | 'workflowId' | 'groupName'
+        'keywords' | 'workflowId' | 'groupName' | 'ownerId'
       >
     >;
 

@@ -48,6 +48,9 @@ function search() {
         clearable
       />
     </NFormItemGi>
+    <NFormItemGi span="24 s:12 m:6" :label="$t('page.workflow.ownerName')" path="ownerId" class="pr-24px">
+      <SystemUser v-model:value="model.ownerId" clearable />
+    </NFormItemGi>
   </SearchForm>
 </template>
 
