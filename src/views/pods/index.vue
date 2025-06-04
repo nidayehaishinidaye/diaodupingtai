@@ -21,7 +21,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'hostId',
       title: $t('page.pods.hostId'),
-      align: 'left',
+      align: 'center',
       resizable: true,
       width: 150,
       minWidth: 150,
@@ -50,7 +50,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'groupName',
       title: $t('page.pods.groupName'),
-      align: 'left',
+      align: 'center',
       width: 120,
       resizable: true,
       minWidth: 120,
@@ -68,55 +68,79 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'hostIp',
       title: $t('page.pods.hostIp'),
-      align: 'left',
-      width: 120
-    },
-    {
-      key: 'hostPort',
-      title: $t('page.pods.hostPort'),
-      align: 'left',
-      width: 80
+      align: 'center',
+      width: 120,
+      render: row => {
+        return `${row.hostIp}:${row.hostPort}`;
+      }
     },
     {
       key: 'consumerBuckets',
       title: $t('page.pods.consumerBuckets'),
       align: 'left',
-      width: 300,
-      resizable: true,
-      minWidth: 120,
-      maxWidth: 400,
+      width: 120,
       render: row => {
-        if (row.nodeType === null) {
-          return null;
+        if (row.nodeType === null) return null;
+        const buckets = row.consumerBuckets || [];
+        if (row.nodeType === 1) {
+          return (
+            <>
+              Path: <NTag type="info">{row.contextPath ?? '/'}</NTag>
+            </>
+          );
         }
-
-        const buckets = (slice?: number) => {
-          const consumerBuckets = slice ? row.consumerBuckets?.slice(0, slice) : row.consumerBuckets;
-          return consumerBuckets?.map(bucket => (
-            <NTag type="error" key={bucket} class="m-1 justify-center">
-              {bucket}
-            </NTag>
-          ));
-        };
-
-        const path = () => {
-          return <NTag type="info">{row.contextPath ?? '/'}</NTag>;
-        };
-
-        return row.nodeType === 1 ? (
-          <>Path: {path()}</>
-        ) : (
+        if (buckets.length === 0) return null;
+        if (buckets.length === 1) {
+          return (
+            <>
+              <span>Bucket: </span>
+              <NTag type="error" class="m-1 justify-center">
+                {buckets[0]}
+              </NTag>
+            </>
+          );
+        }
+        if (buckets.length === 2) {
+          return (
+            <>
+              <span>Bucket: </span>
+              <NTag type="error" class="m-1 justify-center">
+                {buckets[0]}
+              </NTag>
+              <NTag type="error" class="m-1 justify-center">
+                {buckets[1]}
+              </NTag>
+            </>
+          );
+        }
+        // 超过2个
+        return (
           <>
             <span>Bucket: </span>
-            {buckets(10)}
-            <n-popover trigger="hover">
+            <NTag type="error" class="m-1 justify-center">
+              {buckets[0]}
+            </NTag>
+            <n-popover trigger="hover" placement="top">
               {{
-                trigger: () => <NTag type="error">...</NTag>,
-                default: () => {
-                  return <div class="grid grid-cols-16">{buckets()}</div>;
-                }
+                trigger: () => (
+                  <NTag type="error" class="m-1 justify-center">
+                    ...
+                  </NTag>
+                ),
+                default: () => (
+                  <div class="grid grid-cols-16">
+                    {buckets.map(bucket => (
+                      <NTag type="error" key={bucket} class="m-1 justify-center">
+                        {bucket}
+                      </NTag>
+                    ))}
+                  </div>
+                )
               }}
             </n-popover>
+            <NTag type="error" class="m-1 justify-center">
+              {buckets[buckets.length - 1]}
+            </NTag>
           </>
         );
       }

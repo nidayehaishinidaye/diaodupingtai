@@ -8,7 +8,7 @@ const getType = (key: string, value: string) => {
   if (key === 'env' && value === 'prod') return 'error';
   if (key === 'env' && value === 'dev') return 'info';
   if (key === 'name') return 'success';
-  return 'default';
+  return 'info';
 };
 </script>
 
@@ -16,10 +16,10 @@ const getType = (key: string, value: string) => {
   <div>
     <template v-if="Object.keys(labels).length > 0">
       <NTag
+        strong
         class="mb-4px mr-6px"
         :type="getType(Object.keys(labels)[0], Object.values(labels)[0])"
         :title="`${Object.keys(labels)[0]}:${Object.values(labels)[0]}`"
-        style="max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap"
       >
         {{ Object.keys(labels)[0] }}:{{ Object.values(labels)[0] }}
       </NTag>
