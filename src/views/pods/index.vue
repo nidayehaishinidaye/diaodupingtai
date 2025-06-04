@@ -148,7 +148,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'updateDt',
       title: $t('page.pods.updateDt'),
-      align: 'left',
+      align: 'center',
       width: 130
     }
   ]

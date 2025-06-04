@@ -112,6 +112,17 @@ export const generatedRoutes: GeneratedRoute[] = [
         }
       },
       {
+        name: 'job_executor',
+        path: '/job/executor',
+        component: 'view.job_executor',
+        meta: {
+          title: 'job_executor',
+          i18nKey: 'route.job_executor',
+          icon: 'octicon:tasklist',
+          keepAlive: false
+        }
+      },
+      {
         name: 'job_task',
         path: '/job/task',
         component: 'view.job_task',

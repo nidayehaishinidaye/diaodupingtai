@@ -391,7 +391,8 @@ const local: App.I18n.Schema = {
     job: 'Schedule Task Management',
     job_task: 'Schedule Task List',
     job_batch: 'Schedule Task Batch List',
-    group: 'Group Config'
+    group: 'Group Config',
+    job_executor: 'Job Executor'
   },
   page: {
     common: {

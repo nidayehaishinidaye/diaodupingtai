@@ -391,7 +391,8 @@ const local: App.I18n.Schema = {
     workflow_form_add: '新增工作流',
     job: '定时任务',
     job_task: '定时配置',
-    job_batch: '定时队列'
+    job_batch: '定时队列',
+    job_executor: '执行器'
   },
   page: {
     common: {

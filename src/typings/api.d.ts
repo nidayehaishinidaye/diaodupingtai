@@ -1151,6 +1151,21 @@ declare namespace Api {
     type JobTaskList = Common.PaginatingQueryRecord<JobTask>;
     /** jobTask tree list */
     type JobTaskTreeList = JobTask[];
+
+    /** jobExecutor search params */
+    type JobExecutorParams = CommonType.RecordNullable<
+      Pick<Api.Job.JobExecutor, 'groupName' | 'executorInfo'> & CommonSearchParams
+    >;
+
+    /** 执行器信息 */
+    type JobExecutor = Common.CommonRecord<{
+      groupName: string;
+      executorInfo: string;
+      executorType: Api.Common.ExecutorType;
+    }>;
+
+    /** JobExecutor list */
+    type JobExecutorList = Common.PaginatingQueryRecord<JobExecutor>;
   }
 
   /**

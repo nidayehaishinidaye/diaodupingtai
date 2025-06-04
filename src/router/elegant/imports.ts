@@ -25,6 +25,7 @@ export const views: Record<LastLevelRouteKey, RouteComponent | (() => Promise<Ro
   group: () => import("@/views/group/index.vue"),
   home: () => import("@/views/home/index.vue"),
   job_batch: () => import("@/views/job/batch/index.vue"),
+  job_executor: () => import("@/views/job/executor/index.vue"),
   job_task: () => import("@/views/job/task/index.vue"),
   namespace: () => import("@/views/namespace/index.vue"),
   notify_config: () => import("@/views/notify/config/index.vue"),
