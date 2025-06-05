@@ -118,7 +118,7 @@ export const generatedRoutes: GeneratedRoute[] = [
         meta: {
           title: 'job_executor',
           i18nKey: 'route.job_executor',
-          icon: 'octicon:tasklist',
+          icon: 'cbi:scene-dynamic',
           keepAlive: false
         }
       },

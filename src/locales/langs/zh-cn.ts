@@ -870,6 +870,7 @@ const local: App.I18n.Schema = {
       description: '描述',
       updateDt: '更新时间',
       notifyId: '告警通知',
+      executorsType: '执行器类型',
       form: {
         jobStatus: '请输入状态',
         ownerName: '请输入负责人名称',

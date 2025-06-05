@@ -1,9 +1,11 @@
 <script setup lang="tsx">
-import { fetchGetExecutorList } from '@/service/api';
+import { NButton, NPopconfirm, NTag } from 'naive-ui';
+import { fetchBatchDeleteJobExecutor, fetchGetExecutorList } from '@/service/api';
 import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import JobExecutorSearch from '@/views/job/executor/modules/job-executor-search.vue';
+import { executorTypeRecord } from '@/constants/business';
 const appStore = useAppStore();
 
 const { columns, data, getData, loading, mobilePagination, searchParams, resetSearchParams } = useTable({
@@ -36,22 +38,78 @@ const { columns, data, getData, loading, mobilePagination, searchParams, resetSe
       key: 'executorInfo',
       title: $t('page.jobTask.executorInfo'),
       align: 'left',
-      width: 120
+      width: 200
+    },
+    {
+      key: 'executorType',
+      title: $t('page.jobTask.executorType'),
+      align: 'left',
+      width: 48,
+      render: row => {
+        if (row.executorType === null) {
+          return null;
+        }
+        const label = $t(executorTypeRecord[row.executorType!]);
+        const tagMap: Record<number, NaiveUI.ThemeColor> = {
+          1: 'info',
+          2: 'info',
+          3: 'info'
+        };
+        return <NTag type={tagMap[row.executorType!]}>{label}</NTag>;
+      }
     },
 
     {
       key: 'updateDt',
       title: $t('page.jobTask.updateDt'),
       align: 'center',
-      width: 120
+      width: 80
+    },
+    {
+      key: 'operate',
+      title: $t('common.operate'),
+      align: 'center',
+      width: 180,
+      fixed: 'right',
+      render: row => {
+        return (
+          <div class="flex-center gap-8px">
+            <n-divider vertical />
+            <NPopconfirm onPositiveClick={() => handleDelete(row.id!)}>
+              {{
+                default: () => $t('common.confirmDelete'),
+                trigger: () => (
+                  <NButton type="error" text ghost size="small">
+                    {$t('common.delete')}
+                  </NButton>
+                )
+              }}
+            </NPopconfirm>
+          </div>
+        );
+      }
     }
   ]
 });
 
 const {
-  checkedRowKeys
+  checkedRowKeys,
+  onDeleted,
+  onBatchDeleted
   // closeDrawer
 } = useTableOperate(data, getData);
+
+async function handleDelete(id: string) {
+  const { error } = await fetchBatchDeleteJobExecutor([id]);
+  if (error) return;
+  onDeleted();
+}
+
+async function handleBatchDelete() {
+  const { error } = await fetchBatchDeleteJobExecutor(checkedRowKeys.value);
+  if (error) return;
+  onBatchDeleted();
+}
 </script>
 
 <template>
@@ -70,6 +128,7 @@ const {
           :disabled-delete="checkedRowKeys.length === 0"
           :loading="loading"
           :show-add="false"
+          @delete="handleBatchDelete"
           @refresh="getData"
         />
       </template>

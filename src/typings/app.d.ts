@@ -1072,6 +1072,7 @@ declare namespace App {
           description: string;
           updateDt: string;
           notifyId: string;
+          executorsType: string;
           form: {
             jobName: string;
             jobStatus: string;

@@ -862,6 +862,7 @@ const local: App.I18n.Schema = {
       description: 'Description',
       updateDt: 'Update time',
       notifyId: 'Notify',
+      executorsType: 'Executors Type',
       form: {
         jobStatus: 'Please enter status',
         ownerName: 'Please enter ownerName',

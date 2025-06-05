@@ -109,8 +109,17 @@ export function fetchGetJobNameList(params?: Api.Job.JobNameListSearchParams) {
 /** job executor list */
 export function fetchGetExecutorList(params?: Api.Job.JobExecutorParams) {
   return request<Api.Job.JobExecutorList>({
-    url: '/job/executor/list',
+    url: '/job/executor/page/list',
     method: 'get',
     params
+  });
+}
+
+/** batch delete Job executor by ids */
+export function fetchBatchDeleteJobExecutor(data: string[]) {
+  return request<boolean>({
+    url: '/job/executor/ids',
+    method: 'delete',
+    data
   });
 }
