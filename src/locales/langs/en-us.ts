@@ -513,6 +513,8 @@ const local: App.I18n.Schema = {
       consumerBuckets: 'Path/Buckets',
       updateDt: 'Update Time',
       contextPath: 'Path/Buckets',
+      systemVersion: 'Client Version',
+      executorType: 'Executor Type',
       form: {
         groupName: 'Please enter group name'
       },

@@ -523,6 +523,8 @@ const local: App.I18n.Schema = {
       consumerBuckets: '路径/组',
       updateDt: '更新时间',
       contextPath: '路径/组',
+      systemVersion: '系统版本',
+      executorType: '执行器类型',
       form: {
         groupName: '请输入组名称'
       },

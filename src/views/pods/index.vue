@@ -146,6 +146,46 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       }
     },
     {
+      key: 'executorType',
+      title: $t('page.pods.executorType'),
+      align: 'center',
+      width: 120,
+      render: row => {
+        const extAttrsObj = JSON.parse(row.extAttrs || '{}');
+        const isEmptyObject = (obj: object) => {
+          return Object.keys(obj).length === 0 && obj.constructor === Object;
+        };
+
+        if (isEmptyObject(extAttrsObj) || extAttrsObj === null) {
+          return null;
+        }
+        const executorTypeValue = extAttrsObj['executor-type'];
+        const executorTypeMap: Record<string, string> = {
+          '1': 'java',
+          '2': 'python',
+          '3': 'go'
+        };
+        return <NTag type={'info'}>{executorTypeMap[executorTypeValue!] || '无'}</NTag>;
+      }
+    },
+    {
+      key: 'systemVersion',
+      title: $t('page.pods.systemVersion'),
+      align: 'center',
+      width: 120,
+      render: row => {
+        const extAttrsObj = JSON.parse(row.extAttrs || '{}');
+        const isEmptyObject = (obj: object) => {
+          return Object.keys(obj).length === 0 && obj.constructor === Object;
+        };
+
+        if (isEmptyObject(extAttrsObj) || extAttrsObj === null) {
+          return null;
+        }
+        return <NTag type={'info'}>{extAttrsObj['system-version'] || '无'}</NTag>;
+      }
+    },
+    {
       key: 'updateDt',
       title: $t('page.pods.updateDt'),
       align: 'center',
