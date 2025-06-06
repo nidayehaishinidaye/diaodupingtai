@@ -159,11 +159,11 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
         if (isEmptyObject(extAttrsObj) || extAttrsObj === null) {
           return null;
         }
-        const executorTypeValue = extAttrsObj['executor-type'];
+        const executorTypeValue = extAttrsObj?.executorType;
         const executorTypeMap: Record<string, string> = {
-          '1': 'java',
-          '2': 'python',
-          '3': 'go'
+          '1': 'Java',
+          '2': 'Python',
+          '3': 'Go'
         };
         return <NTag type={'info'}>{executorTypeMap[executorTypeValue!] || '无'}</NTag>;
       }
@@ -182,7 +182,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
         if (isEmptyObject(extAttrsObj) || extAttrsObj === null) {
           return null;
         }
-        return <NTag type={'info'}>{extAttrsObj['system-version'] || '无'}</NTag>;
+        return <NTag type={'info'}>{extAttrsObj?.systemVersion || '无'}</NTag>;
       }
     },
     {
