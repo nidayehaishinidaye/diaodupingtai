@@ -31,20 +31,20 @@ const { columns, data, getData, loading, mobilePagination, searchParams, resetSe
     {
       key: 'groupName',
       title: $t('page.jobTask.groupName'),
-      align: 'left',
-      width: 150
+      align: 'center',
+      width: 120
     },
     {
       key: 'executorInfo',
       title: $t('page.jobTask.executorInfo'),
-      align: 'left',
-      width: 200
+      align: 'center',
+      width: 300
     },
     {
       key: 'executorType',
       title: $t('page.jobTask.executorType'),
-      align: 'left',
-      width: 48,
+      align: 'center',
+      width: 80,
       render: row => {
         if (row.executorType === null) {
           return null;
@@ -63,13 +63,13 @@ const { columns, data, getData, loading, mobilePagination, searchParams, resetSe
       key: 'updateDt',
       title: $t('page.jobTask.updateDt'),
       align: 'center',
-      width: 80
+      width: 120
     },
     {
       key: 'operate',
       title: $t('common.operate'),
       align: 'center',
-      width: 180,
+      width: 80,
       fixed: 'right',
       render: row => {
         return (
