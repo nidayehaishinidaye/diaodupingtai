@@ -103,7 +103,6 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
         if (buckets.length === 2) {
           return (
             <>
-              <span>Bucket: </span>
               <NTag type="error" class="m-1 justify-center">
                 {buckets[0]}
               </NTag>
@@ -116,7 +115,6 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
         // 超过2个
         return (
           <>
-            <span>Bucket: </span>
             <NTag type="error" class="m-1 justify-center">
               {buckets[0]}
             </NTag>

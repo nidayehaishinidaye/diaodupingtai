@@ -521,7 +521,7 @@ const local: App.I18n.Schema = {
       hostId: 'Pod ID',
       hostIp: 'IP',
       hostPort: 'Port',
-      consumerBuckets: '路径/组',
+      consumerBuckets: '路径/分区',
       updateDt: '更新时间',
       contextPath: '路径/组',
       systemVersion: '系统版本',
