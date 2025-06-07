@@ -88,6 +88,7 @@ const local: App.I18n.Schema = {
     idDetailTip: '点击 ID 查看详情',
     generateRandomly: '随机生成',
     active: '活跃',
+    none: '无',
     yesOrNo: {
       yes: '是',
       no: '否'

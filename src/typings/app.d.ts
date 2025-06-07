@@ -376,6 +376,7 @@ declare namespace App {
         active: string;
         log: string;
         idDetailTip: string;
+        none: string;
         yesOrNo: {
           yes: string;
           no: string;

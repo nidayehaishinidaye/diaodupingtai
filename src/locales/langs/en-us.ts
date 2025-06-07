@@ -88,6 +88,7 @@ const local: App.I18n.Schema = {
     log: 'Log',
     generateRandomly: 'Generate randomly',
     active: 'Active',
+    none: 'None',
     yesOrNo: {
       yes: 'Yes',
       no: 'No'
