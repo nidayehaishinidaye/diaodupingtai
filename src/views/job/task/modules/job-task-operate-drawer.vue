@@ -18,7 +18,7 @@ import ExecutorType from '@/components/common/executor-type.vue';
 import TaskType from '@/components/common/task-type.vue';
 import CodeMirror from '@/components/common/code-mirror.vue';
 import JobTriggerInterval from '@/components/common/job-trigger-interval.vue';
-import { isNotNull } from '@/utils/common';
+import { isNotNull, translateOptions2 } from '@/utils/common';
 import SelectGroup from '@/components/common/select-group.vue';
 
 defineOptions({
@@ -466,10 +466,10 @@ const removeItem = (index: number) => {
   dynamicForm.args.splice(index, 1);
 };
 
-const executorInfoOptions = ref<Api.Job.JobExecutor[]>([]);
+const executorInfoOptions = ref<string[]>([]);
 
-const getExecutorInfoOptions = async () => {
-  const { error, data } = await fetchGetExecutorAllList();
+const getExecutorInfoOptions = async (groupName: string) => {
+  const { error, data } = await fetchGetExecutorAllList({ groupName });
   if (error) return;
   executorInfoOptions.value = data || [];
 };
@@ -482,7 +482,6 @@ watch(visible, () => {
   if (visible.value) {
     handleUpdateModelWhenEdit();
     restoreValidation();
-    getExecutorInfoOptions();
     getNotifyConfigSystemTaskTypeList();
     customformRef.value?.restoreValidation();
   }
@@ -510,6 +509,13 @@ watch(
         model.argsStr = '';
       }
     }
+  }
+);
+
+watch(
+  () => model.groupName,
+  groupName => {
+    getExecutorInfoOptions(groupName);
   }
 );
 
@@ -573,11 +579,7 @@ const scriptMethodOptions = [
       <NFormItem :label="$t('page.jobTask.ownerName')" path="ownerId">
         <SystemUser v-model:value="model.ownerId" :clearable="true" />
       </NFormItem>
-      <NFormItem
-        :label="$t('page.jobTask.labels')"
-        path="labelMap"
-        :show-feedback="model.labelMap?.length ? false : true"
-      >
+      <NFormItem :label="$t('page.jobTask.labels')" path="labelMap" :show-feedback="!model.labelMap?.length">
         <LabelsInput v-model:value="model.labelMap" path="labelMap" />
       </NFormItem>
       <NFormItem :label="$t('page.jobTask.jobStatus')" path="jobStatus">
@@ -609,7 +611,7 @@ const scriptMethodOptions = [
             v-model:value="model.executorInfo"
             filterable
             tag
-            :options="executorInfoOptions"
+            :options="translateOptions2(executorInfoOptions)"
             :placeholder="$t('page.jobTask.form.executorInfo')"
           />
           <NSelect

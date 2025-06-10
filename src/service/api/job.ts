@@ -117,7 +117,7 @@ export function fetchGetExecutorList(params?: Api.Job.JobExecutorParams) {
 
 /** job executor list */
 export function fetchGetExecutorAllList(params?: Api.Job.JobExecutorParams) {
-  return request<Api.Job.JobExecutor[]>({
+  return request<string[]>({
     url: '/job/executor/list',
     method: 'get',
     params
