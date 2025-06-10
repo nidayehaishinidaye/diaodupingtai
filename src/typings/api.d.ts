@@ -342,6 +342,8 @@ declare namespace Api {
       nodeType: DashboardPodsType;
       /** 更新时间 */
       updateDt: string;
+      systemVersion: string;
+      executorType: string;
     };
 
     /** dashboard search params */

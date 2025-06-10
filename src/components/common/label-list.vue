@@ -1,5 +1,6 @@
 <script setup lang="tsx">
 import { NTag, NTooltip } from 'naive-ui';
+import { $t } from '@/locales';
 
 defineProps<{ labels: Record<string, string> }>();
 
@@ -40,6 +41,6 @@ const getType = (key: string, value: string) => {
         </div>
       </NTooltip>
     </template>
-    <NTag v-else class="mb-4px mr-6px" type="info">无</NTag>
+    <NTag v-else class="mb-4px mr-6px" type="info">{{ $t('common.none') }}</NTag>
   </div>
 </template>

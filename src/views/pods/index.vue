@@ -3,7 +3,7 @@ import { NTag } from 'naive-ui';
 import { useAppStore } from '@/store/modules/app';
 import { fetchPods } from '@/service/api';
 import { $t } from '@/locales';
-import { podsType } from '@/constants/business';
+import { executorTypeRecord, podsType } from '@/constants/business';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import LabelList from '@/components/common/label-list.vue';
 import PodsSearch from './modules/pods-search.vue';
@@ -103,7 +103,6 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
         if (buckets.length === 2) {
           return (
             <>
-              <span>Bucket: </span>
               <NTag type="error" class="m-1 justify-center">
                 {buckets[0]}
               </NTag>
@@ -116,7 +115,6 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
         // 超过2个
         return (
           <>
-            <span>Bucket: </span>
             <NTag type="error" class="m-1 justify-center">
               {buckets[0]}
             </NTag>
@@ -143,6 +141,42 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
             </NTag>
           </>
         );
+      }
+    },
+    {
+      key: 'executorType',
+      title: $t('page.pods.executorType'),
+      align: 'center',
+      width: 60,
+      render: row => {
+        const extAttrsObj = JSON.parse(row.extAttrs || '{}');
+        const isEmptyObject = (obj: object) => {
+          return Object.keys(obj).length === 0 && obj.constructor === Object;
+        };
+
+        if (isEmptyObject(extAttrsObj) || extAttrsObj === null) {
+          return null;
+        }
+        const executorTypeValue = extAttrsObj?.executorType as Api.Common.ExecutorType;
+        const label = executorTypeValue ? $t(executorTypeRecord[executorTypeValue!]) : $t('common.none');
+        return <NTag type={'info'}>{label}</NTag>;
+      }
+    },
+    {
+      key: 'systemVersion',
+      title: $t('page.pods.systemVersion'),
+      align: 'center',
+      width: 80,
+      render: row => {
+        const extAttrsObj = JSON.parse(row.extAttrs || '{}');
+        const isEmptyObject = (obj: object) => {
+          return Object.keys(obj).length === 0 && obj.constructor === Object;
+        };
+
+        if (isEmptyObject(extAttrsObj) || extAttrsObj === null) {
+          return null;
+        }
+        return <NTag type={'info'}>{extAttrsObj?.systemVersion || $t('common.none')}</NTag>;
       }
     },
     {

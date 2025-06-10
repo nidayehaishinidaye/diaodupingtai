@@ -88,6 +88,7 @@ const local: App.I18n.Schema = {
     idDetailTip: '点击 ID 查看详情',
     generateRandomly: '随机生成',
     active: '活跃',
+    none: '无',
     yesOrNo: {
       yes: '是',
       no: '否'
@@ -520,9 +521,11 @@ const local: App.I18n.Schema = {
       hostId: 'Pod ID',
       hostIp: 'IP',
       hostPort: 'Port',
-      consumerBuckets: '路径/组',
+      consumerBuckets: '路径/分区',
       updateDt: '更新时间',
       contextPath: '路径/组',
+      systemVersion: '系统版本',
+      executorType: '执行器类型',
       form: {
         groupName: '请输入组名称'
       },

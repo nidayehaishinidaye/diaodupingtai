@@ -88,6 +88,7 @@ const local: App.I18n.Schema = {
     log: 'Log',
     generateRandomly: 'Generate randomly',
     active: 'Active',
+    none: 'None',
     yesOrNo: {
       yes: 'Yes',
       no: 'No'
@@ -513,6 +514,8 @@ const local: App.I18n.Schema = {
       consumerBuckets: 'Path/Buckets',
       updateDt: 'Update Time',
       contextPath: 'Path/Buckets',
+      systemVersion: 'Client Version',
+      executorType: 'Executor Type',
       form: {
         groupName: 'Please enter group name'
       },

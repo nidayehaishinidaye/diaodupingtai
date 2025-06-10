@@ -376,6 +376,7 @@ declare namespace App {
         active: string;
         log: string;
         idDetailTip: string;
+        none: string;
         yesOrNo: {
           yes: string;
           no: string;
@@ -725,6 +726,8 @@ declare namespace App {
           consumerBuckets: string;
           updateDt: string;
           contextPath: string;
+          systemVersion: string;
+          executorType: string;
           form: {
             groupName: string;
           };
