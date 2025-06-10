@@ -100,8 +100,8 @@ declare namespace Api {
     /** 执行器类型 1:Java 2:Python 3:Go */
     type ExecutorType = 1 | 2 | 3;
 
-    /** 触发类型 2:固定时间 3:CRON 表达式 99:工作流 */
-    type TriggerType = 2 | 3 | 99;
+    /** 触发类型 2:固定时间 3:CRON 表达式 5:指定时间点 99:工作流 */
+    type TriggerType = 2 | 3 | 5 | 99;
 
     /** 任务类型 1:集群 2:广播 3:切片 4:Map 5:MapReduce */
     type TaskType = 1 | 2 | 3 | 4 | 5;
@@ -1091,8 +1091,8 @@ declare namespace Api {
     }> &
       JobSearchParams;
 
-    /** 2、固定时间 3、CRON表达式 99、工作流 */
-    type TriggerType = 2 | 3 | 99;
+    /** 2、固定时间 3、CRON表达式 4、指定时间点 99、工作流 */
+    type TriggerType = 2 | 3 | 5 | 99;
 
     type JobNameListSearchParams = CommonType.RecordNullable<{
       groupName?: string;

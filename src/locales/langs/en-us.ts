@@ -707,7 +707,7 @@ const local: App.I18n.Schema = {
         argsStr: 'Please enter Execution method parameters',
         sceneName: 'Please enter Scene name',
         labels: 'Please enter Labels',
-        executorName: 'Please enter Actuator name',
+        executorName: 'Please select/enter Actuator name',
         taskType: 'Please enter Task type',
         idempotentId: 'Please enter Idempotent ID',
         logStr: 'Please enter log info'
@@ -892,6 +892,7 @@ const local: App.I18n.Schema = {
       triggerTypeItem: {
         fixed: 'Fixed rate',
         cron: 'CRON expression',
+        specifiedTime: 'Specified time',
         workflow: 'Workflow'
       },
       detail: 'Job Task Detail'

@@ -224,6 +224,7 @@ export const DelayLevel: Record<number, string> = {
 export const triggerTypeRecord: Record<Api.Job.TriggerType, App.I18n.I18nKey> = {
   2: 'page.jobTask.triggerTypeItem.fixed',
   3: 'page.jobTask.triggerTypeItem.cron',
+  5: 'page.jobTask.triggerTypeItem.specifiedTime',
   // 只会在定时任务中使用
   99: 'page.jobTask.triggerTypeItem.workflow'
 };

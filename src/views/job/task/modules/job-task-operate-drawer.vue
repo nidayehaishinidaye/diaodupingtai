@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue';
 import { type FormInst, NInputNumber } from 'naive-ui';
+import dayjs from 'dayjs';
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 import OperateDrawer from '@/components/common/operate-drawer.vue';
 import { $t } from '@/locales';
 import { enableStatusNumberOptions } from '@/constants/business';
-import { fetchAddJob, fetchEditJob, fetchGetNotifyConfigSystemTaskTypeList } from '@/service/api';
+import {
+  fetchAddJob,
+  fetchEditJob,
+  fetchGetExecutorAllList,
+  fetchGetNotifyConfigSystemTaskTypeList
+} from '@/service/api';
 import RouteKey from '@/components/common/route-key.vue';
 import BlockStrategy from '@/components/common/block-strategy.vue';
 import ExecutorType from '@/components/common/executor-type.vue';
@@ -48,6 +54,71 @@ const shardNum = ref(0);
 const customformRef = ref<FormInst | null>(null);
 const { formRef, validate, restoreValidation } = useNaiveForm();
 const { defaultRequiredRule } = useFormRules();
+
+/** 校验指定时间点列表的有效性 */
+const validateSpecifiedTimeList = (value: string): { isValid: boolean; message?: string } => {
+  // 基础非空校验
+  if (!isNotNull(value)) {
+    return { isValid: false, message: '触发间隔不能为空' };
+  }
+
+  try {
+    // JSON 解析校验
+    const parsed = JSON.parse(value);
+
+    // 数组结构校验
+    if (!Array.isArray(parsed)) {
+      return { isValid: false, message: '指定时间点必须是有效的时间数组格式' };
+    }
+
+    if (parsed.length === 0) {
+      return { isValid: false, message: '请至少添加一个指定时间点' };
+    }
+
+    const invalidTimes = parsed.filter(item => !isNotNull(item));
+
+    if (invalidTimes.length > 0) {
+      return { isValid: false, message: '存在无效的时间点' };
+    }
+
+    // 过滤掉 null 值，检查有效时间
+    const validTimes = parsed.filter(item => isNotNull(item));
+
+    if (validTimes.length === 0) {
+      return { isValid: false, message: '请至少设置一个有效的时间点' };
+    }
+
+    // 时间格式校验
+    const now = dayjs();
+    let hasValidFutureTime = false;
+
+    for (const timeStr of validTimes) {
+      if (typeof timeStr !== 'string') {
+        return { isValid: false, message: '时间点格式不正确，必须是字符串格式' };
+      }
+
+      // 验证时间格式是否正确
+      const timeObj = dayjs(timeStr, 'YYYY-MM-DD HH:mm:ss', true);
+      if (!timeObj.isValid()) {
+        return { isValid: false, message: `时间格式不正确: ${timeStr}，请使用 YYYY-MM-DD HH:mm:ss 格式` };
+      }
+
+      // 检查是否有未来时间点
+      if (timeObj.isAfter(now)) {
+        hasValidFutureTime = true;
+      }
+    }
+
+    // 业务逻辑校验：至少有一个未来时间点
+    if (!hasValidFutureTime) {
+      return { isValid: false, message: '请至少设置一个未来的时间点' };
+    }
+
+    return { isValid: true };
+  } catch {
+    return { isValid: false, message: '指定时间点数据格式错误，请检查JSON格式' };
+  }
+};
 
 const title = computed(() => {
   const titles: Record<NaiveUI.TableOperateType, string> = {
@@ -273,6 +344,13 @@ function closeDrawer() {
 
 async function handleSubmit() {
   await validate();
+  if (model.triggerType === 5) {
+    const validationResult = validateSpecifiedTimeList(model.triggerInterval);
+    if (!validationResult.isValid) {
+      window.$message?.error(validationResult.message || '指定时间点校验失败');
+      return;
+    }
+  }
   const {
     id,
     groupName,
@@ -388,6 +466,14 @@ const removeItem = (index: number) => {
   dynamicForm.args.splice(index, 1);
 };
 
+const executorInfoOptions = ref<Api.Job.JobExecutor[]>([]);
+
+const getExecutorInfoOptions = async () => {
+  const { error, data } = await fetchGetExecutorAllList();
+  if (error) return;
+  executorInfoOptions.value = data || [];
+};
+
 const addItem = () => {
   dynamicForm.args.push({ arg: '' });
 };
@@ -396,6 +482,7 @@ watch(visible, () => {
   if (visible.value) {
     handleUpdateModelWhenEdit();
     restoreValidation();
+    getExecutorInfoOptions();
     getNotifyConfigSystemTaskTypeList();
     customformRef.value?.restoreValidation();
   }
@@ -517,9 +604,12 @@ const scriptMethodOptions = [
             <NRadio :value="0">自定义执行器</NRadio>
             <NRadio :value="1">内置执行器</NRadio>
           </NRadioGroup>
-          <NInput
+          <NSelect
             v-if="executorCustomType === 0"
             v-model:value="model.executorInfo"
+            filterable
+            tag
+            :options="executorInfoOptions"
             :placeholder="$t('page.jobTask.form.executorInfo')"
           />
           <NSelect
@@ -662,7 +752,7 @@ const scriptMethodOptions = [
           </NFormItem>
         </NGi>
       </NGrid>
-      <NGrid cols="2 s:1 m:2" responsive="screen" x-gap="20">
+      <NGrid :cols="model.triggerType === 5 ? '1' : '2 s:1 m:2'" responsive="screen" x-gap="20">
         <NGi>
           <NFormItem :label="$t('page.jobTask.triggerType')" path="triggerType">
             <TriggerType v-model:value="model.triggerType" :placeholder="$t('page.jobTask.form.triggerType')" />

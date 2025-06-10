@@ -106,10 +106,19 @@ export function fetchGetJobNameList(params?: Api.Job.JobNameListSearchParams) {
   });
 }
 
-/** job executor list */
+/** job executor page */
 export function fetchGetExecutorList(params?: Api.Job.JobExecutorParams) {
   return request<Api.Job.JobExecutorList>({
     url: '/job/executor/page/list',
+    method: 'get',
+    params
+  });
+}
+
+/** job executor list */
+export function fetchGetExecutorAllList(params?: Api.Job.JobExecutorParams) {
+  return request<Api.Job.JobExecutor[]>({
+    url: '/job/executor/list',
     method: 'get',
     params
   });

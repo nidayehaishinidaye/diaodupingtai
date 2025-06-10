@@ -715,7 +715,7 @@ const local: App.I18n.Schema = {
         argsStr: '请输入执行方法参数',
         sceneName: '请输入场景名称',
         labels: '请输入标签',
-        executorName: '请输入执行器名称',
+        executorName: '请选择/输入执行器名称',
         taskType: '请输入任务类型',
         idempotentId: '请输入幂等ID',
         logStr: '日志信息'
@@ -900,6 +900,7 @@ const local: App.I18n.Schema = {
       triggerTypeItem: {
         fixed: '固定时间',
         cron: 'CRON表达式',
+        specifiedTime: '指定时间点',
         workflow: '工作流'
       },
       detail: '定时任务详情'

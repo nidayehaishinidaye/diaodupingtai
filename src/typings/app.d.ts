@@ -1102,6 +1102,7 @@ declare namespace App {
           triggerTypeItem: {
             fixed: string;
             cron: string;
+            specifiedTime: string;
             workflow: string;
           };
           detail: string;

@@ -44,7 +44,7 @@ const { columns, data, getData, loading, mobilePagination, searchParams, resetSe
       key: 'executorType',
       title: $t('page.jobTask.executorType'),
       align: 'left',
-      width: 48,
+      width: 60,
       render: row => {
         if (row.executorType === null) {
           return null;
@@ -117,7 +117,7 @@ async function handleBatchDelete() {
     <JobExecutorSearch v-model:model="searchParams" @reset="resetSearchParams" @search="getData" />
     <DeleteAlert />
     <NCard
-      :title="$t('page.jobTask.title')"
+      title="执行器列表"
       :bordered="false"
       size="small"
       class="sm:flex-1-hidden card-wrapper"

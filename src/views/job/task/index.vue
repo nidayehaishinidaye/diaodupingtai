@@ -155,6 +155,7 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
         const tagMap: Record<Api.Job.TriggerType, NaiveUI.ThemeColor> = {
           2: 'info',
           3: 'success',
+          5: 'warning',
           99: 'error'
         };
         const label = $t(triggerTypeRecord[row.triggerType!]);
