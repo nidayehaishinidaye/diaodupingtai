@@ -1,7 +1,7 @@
 <script setup lang="tsx">
-import { NTag } from 'naive-ui';
+import { NButton, NPopconfirm, NTag } from 'naive-ui';
 import { useAppStore } from '@/store/modules/app';
-import { fetchPods } from '@/service/api';
+import { fetchPods, fetchUpdatePodsStatus } from '@/service/api';
 import { $t } from '@/locales';
 import { executorTypeRecord, podsType } from '@/constants/business';
 import { useTable, useTableOperate } from '@/hooks/common/table';
@@ -184,9 +184,48 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       title: $t('page.pods.updateDt'),
       align: 'center',
       width: 130
+    },
+    {
+      key: 'operate',
+      title: $t('common.operate'),
+      align: 'center',
+      fixed: 'right',
+      width: 130,
+      render: row => {
+        if (!row.labels || row.nodeType === 2) {
+          return null;
+        }
+
+        const labels = JSON.parse(row.labels || '{}');
+        let serverNodeStatus;
+        if (labels.state === 'up') {
+          serverNodeStatus = 2;
+        } else {
+          serverNodeStatus = 1;
+        }
+
+        return (
+          <div class="flex-center gap-8px">
+            <NPopconfirm onPositiveClick={() => updatePodStatus(row.id! as any, serverNodeStatus)}>
+              {{
+                default: () => (serverNodeStatus === 2 ? $t('page.pods.online') : $t('page.pods.offline')),
+                trigger: () => (
+                  <NButton type="error" text ghost size="small">
+                    {serverNodeStatus === 2 ? $t('page.pods.online') : $t('page.pods.offline')}
+                  </NButton>
+                )
+              }}
+            </NPopconfirm>
+          </div>
+        );
+      }
     }
   ]
 });
+
+async function updatePodStatus(id: number, serverNodeStatus: number) {
+  await fetchUpdatePodsStatus({ id, serverNodeStatus });
+}
 
 const { checkedRowKeys } = useTableOperate(data, getData);
 </script>

@@ -42,3 +42,11 @@ export function fetchPods(params?: Api.Dashboard.DashboardPodsParams) {
     params
   });
 }
+
+export function fetchUpdatePodsStatus(data?: Api.Dashboard.UpdatePodsStatus) {
+  return request<boolean>({
+    url: '/dashboard/pods/status',
+    method: 'put',
+    data
+  });
+}

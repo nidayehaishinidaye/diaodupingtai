@@ -735,6 +735,8 @@ declare namespace App {
             client: string;
             server: string;
           };
+          online: string;
+          offline: string;
         };
         namespace: {
           title: string;

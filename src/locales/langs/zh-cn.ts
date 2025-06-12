@@ -532,7 +532,9 @@ const local: App.I18n.Schema = {
       type: {
         client: '客户端',
         server: '服务端'
-      }
+      },
+      online: '上线',
+      offline: '下线'
     },
     namespace: {
       title: '命名空间',

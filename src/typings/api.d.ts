@@ -320,6 +320,7 @@ declare namespace Api {
 
     /** dashboard pod */
     type DashboardPod = {
+      id: string;
       /** 路径/组 */
       consumerBuckets: number[];
       /** context path */
@@ -350,6 +351,11 @@ declare namespace Api {
     type DashboardPodsParams = CommonType.RecordNullable<
       Pick<Api.Dashboard.DashboardPod, 'groupName'> & CommonSearchParams
     >;
+
+    type UpdatePodsStatus = {
+      id: number;
+      serverNodeStatus: number;
+    };
   }
 
   /**

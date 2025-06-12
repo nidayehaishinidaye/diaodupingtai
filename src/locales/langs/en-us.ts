@@ -522,7 +522,9 @@ const local: App.I18n.Schema = {
       type: {
         client: 'Client',
         server: 'Server'
-      }
+      },
+      online: 'Online',
+      offline: 'Offline'
     },
     namespace: {
       title: 'Namespace',
