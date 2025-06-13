@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { NButton, NPopconfirm, NTag } from 'naive-ui';
+import { NButton, NPopconfirm, NTag, NTooltip } from 'naive-ui';
 import { useAppStore } from '@/store/modules/app';
 import { fetchPods, fetchUpdatePodsStatus } from '@/service/api';
 import { $t } from '@/locales';
@@ -22,10 +22,28 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       key: 'hostId',
       title: $t('page.pods.hostId'),
       align: 'center',
-      resizable: true,
-      width: 150,
-      minWidth: 150,
-      maxWidth: 200
+      width: 80,
+      render: row => {
+        function middleEllipsis(str: string, frontLen = 4, endLen = 4) {
+          if (!str) return '';
+          const maxLen = frontLen + endLen + 3;
+          if (str.length <= maxLen) return str;
+          return `${str.slice(0, frontLen)}...${str.slice(-endLen)}`;
+        }
+        const display = middleEllipsis(row.hostId, 4, 4);
+        return (
+          <NTooltip>
+            {{
+              trigger: () => (
+                <span style="max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; vertical-align: middle;">
+                  {display}
+                </span>
+              ),
+              default: () => row.hostId
+            }}
+          </NTooltip>
+        );
+      }
     },
     {
       key: 'nodeType',
@@ -75,10 +93,31 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       }
     },
     {
+      key: 'nodeStatus',
+      title: '状态',
+      align: 'center',
+      width: 60,
+      render: row => {
+        if (!row.labels || row.nodeType === 2) {
+          return <NTag type={'success'}>up</NTag>;
+        }
+
+        // 解析 labels
+        const labels = JSON.parse(row.labels || '{}');
+        const state = labels.state || '';
+        const colorMap: Record<string, 'error' | 'success'> = {
+          up: 'success',
+          down: 'error'
+        };
+        const tagType = colorMap[state] || 'default';
+        return <NTag type={tagType}>{state}</NTag>;
+      }
+    },
+    {
       key: 'consumerBuckets',
       title: $t('page.pods.consumerBuckets'),
       align: 'left',
-      width: 120,
+      width: 100,
       render: row => {
         if (row.nodeType === null) return null;
         const buckets = row.consumerBuckets || [];
@@ -94,7 +133,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
           return (
             <>
               <span>Bucket: </span>
-              <NTag type="error" class="m-1 justify-center">
+              <NTag type="info" class="m-1 justify-center">
                 {buckets[0]}
               </NTag>
             </>
@@ -103,10 +142,10 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
         if (buckets.length === 2) {
           return (
             <>
-              <NTag type="error" class="m-1 justify-center">
+              <NTag type="info" class="m-1 justify-center">
                 {buckets[0]}
               </NTag>
-              <NTag type="error" class="m-1 justify-center">
+              <NTag type="info" class="m-1 justify-center">
                 {buckets[1]}
               </NTag>
             </>
@@ -115,20 +154,20 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
         // 超过2个
         return (
           <>
-            <NTag type="error" class="m-1 justify-center">
+            <NTag type="info" class="m-1 justify-center">
               {buckets[0]}
             </NTag>
             <n-popover trigger="hover" placement="top">
               {{
                 trigger: () => (
-                  <NTag type="error" class="m-1 justify-center">
+                  <NTag type="info" class="m-1 justify-center">
                     ...
                   </NTag>
                 ),
                 default: () => (
                   <div class="grid grid-cols-16">
                     {buckets.map(bucket => (
-                      <NTag type="error" key={bucket} class="m-1 justify-center">
+                      <NTag type="info" key={bucket} class="m-1 justify-center">
                         {bucket}
                       </NTag>
                     ))}
@@ -136,7 +175,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
                 )
               }}
             </n-popover>
-            <NTag type="error" class="m-1 justify-center">
+            <NTag type="info" class="m-1 justify-center">
               {buckets[buckets.length - 1]}
             </NTag>
           </>
@@ -147,7 +186,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       key: 'executorType',
       title: $t('page.pods.executorType'),
       align: 'center',
-      width: 60,
+      width: 80,
       render: row => {
         const extAttrsObj = JSON.parse(row.extAttrs || '{}');
         const isEmptyObject = (obj: object) => {
@@ -190,7 +229,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       title: $t('common.operate'),
       align: 'center',
       fixed: 'right',
-      width: 130,
+      width: 80,
       render: row => {
         if (!row.labels || row.nodeType === 2) {
           return null;

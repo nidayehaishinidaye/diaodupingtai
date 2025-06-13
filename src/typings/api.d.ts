@@ -345,6 +345,7 @@ declare namespace Api {
       updateDt: string;
       systemVersion: string;
       executorType: string;
+      nodeStatus: number;
     };
 
     /** dashboard search params */

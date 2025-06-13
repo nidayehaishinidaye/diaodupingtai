@@ -1,8 +1,10 @@
 <script setup lang="tsx">
 import { NTag, NTooltip } from 'naive-ui';
+import { computed } from 'vue';
 import { $t } from '@/locales';
 
-defineProps<{ labels: Record<string, string> }>();
+const props = defineProps<{ labels: Record<string, string> }>();
+const labelsVar = props.labels;
 
 const getType = (key: string, value: string) => {
   // 默认的一些标签加特殊颜色
@@ -11,32 +13,28 @@ const getType = (key: string, value: string) => {
   if (key === 'name') return 'success';
   return 'info';
 };
+
+const filteredEntries = computed(() => Object.entries(labelsVar).filter(([key]) => key !== 'state'));
 </script>
 
 <template>
   <div>
-    <template v-if="Object.keys(labels).length > 0">
+    <template v-if="filteredEntries.length > 0">
       <NTag
         strong
         class="mb-4px mr-6px"
-        :type="getType(Object.keys(labels)[0], Object.values(labels)[0])"
-        :title="`${Object.keys(labels)[0]}:${Object.values(labels)[0]}`"
+        :type="getType(filteredEntries[0][0], filteredEntries[0][1])"
+        :title="`${filteredEntries[0][0]}:${filteredEntries[0][1]}`"
       >
-        {{ Object.keys(labels)[0] }}:{{ Object.values(labels)[0] }}
+        {{ filteredEntries[0][0] }}:{{ filteredEntries[0][1] }}
       </NTag>
-      <NTooltip v-if="Object.keys(labels).length > 1">
+      <NTooltip v-if="filteredEntries.length > 1">
         <template #trigger>
-          <NTag class="mb-4px mr-6px" type="default">+{{ Object.keys(labels).length - 1 }}</NTag>
+          <NTag class="mb-4px mr-6px" type="default">+{{ filteredEntries.length - 1 }}</NTag>
         </template>
         <div style="max-width: 220px; word-break: break-all">
-          <template v-for="(value, key) in Object.entries(labels)" :key="key">
-            <NTag
-              v-if="key > 0"
-              class="mb-4px mr-6px"
-              :type="getType(Object.keys(labels)[key], Object.values(labels)[key])"
-            >
-              {{ Object.keys(labels)[key] }}:{{ Object.values(labels)[key] }}
-            </NTag>
+          <template v-for="([key, value], idx) in filteredEntries" :key="key">
+            <NTag v-if="idx > 0" class="mb-4px mr-6px" :type="getType(key, value)">{{ key }}:{{ value }}</NTag>
           </template>
         </div>
       </NTooltip>
