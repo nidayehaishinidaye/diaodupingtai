@@ -208,10 +208,10 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
           <div class="flex-center gap-8px">
             <NPopconfirm onPositiveClick={() => updatePodStatus(row.id! as any, serverNodeStatus)}>
               {{
-                default: () => (serverNodeStatus === 2 ? $t('page.pods.online') : $t('page.pods.offline')),
+                default: () => (serverNodeStatus === 1 ? $t('page.pods.online') : $t('page.pods.offline')),
                 trigger: () => (
                   <NButton type="error" text ghost size="small">
-                    {serverNodeStatus === 2 ? $t('page.pods.online') : $t('page.pods.offline')}
+                    {serverNodeStatus === 1 ? $t('page.pods.online') : $t('page.pods.offline')}
                   </NButton>
                 )
               }}
@@ -224,7 +224,9 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
 });
 
 async function updatePodStatus(id: number, serverNodeStatus: number) {
-  await fetchUpdatePodsStatus({ id, serverNodeStatus });
+  const { error } = await fetchUpdatePodsStatus({ id, serverNodeStatus });
+  if (error) return;
+  getData();
 }
 
 const { checkedRowKeys } = useTableOperate(data, getData);
