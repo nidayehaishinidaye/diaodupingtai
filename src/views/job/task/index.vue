@@ -168,9 +168,52 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
       title: $t('page.jobTask.triggerInterval'),
       align: 'center',
       width: 120,
-      ellipsis: true,
-      ellipsisTooltip: {
-        row: 2
+      render: row => {
+        let dates: string[];
+        try {
+          const parsed = JSON.parse(row.triggerInterval);
+          if (Array.isArray(parsed) && parsed.every(item => typeof item === 'string')) {
+            dates = parsed as string[];
+          } else {
+            // If not an array or not all strings, return original string
+            return row.triggerInterval;
+          }
+        } catch {
+          // Parsing failed, return original string
+          return row.triggerInterval;
+        }
+
+        // At this point, 'dates' is guaranteed to be a string[]
+        if (dates.length === 0) {
+          return row.triggerInterval; // Handle empty array case, return original string
+        }
+
+        if (dates.length === 1) {
+          return dates[0];
+        } else if (dates.length === 2) {
+          return `${dates[0]} ~ ${dates[1]}`;
+        }
+        // More than 2 dates
+        return (
+          <>
+            {dates[0]} ~
+            <n-tooltip>
+              {{
+                trigger: () => <span>...</span>,
+                default: () => (
+                  <div style="max-width:320px; display:flex; flex-wrap:wrap; gap:6px;">
+                    {dates.map((date: string) => (
+                      <NTag key={date} type="default">
+                        {date}
+                      </NTag>
+                    ))}
+                  </div>
+                )
+              }}
+            </n-tooltip>{' '}
+            ~ {dates[dates.length - 1]}
+          </>
+        );
       }
     },
     {
