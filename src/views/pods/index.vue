@@ -116,7 +116,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'consumerBuckets',
       title: $t('page.pods.consumerBuckets'),
-      align: 'left',
+      align: 'center',
       width: 100,
       render: row => {
         if (row.nodeType === null) return null;
@@ -222,13 +222,12 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       key: 'updateDt',
       title: $t('page.pods.updateDt'),
       align: 'center',
-      width: 130
+      width: 100
     },
     {
       key: 'operate',
       title: $t('common.operate'),
       align: 'center',
-      fixed: 'right',
       width: 80,
       render: row => {
         if (!row.labels || row.nodeType === 2) {
