@@ -167,52 +167,60 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
       key: 'triggerInterval',
       title: $t('page.jobTask.triggerInterval'),
       align: 'center',
-      width: 120,
+      width: 130,
       render: row => {
+        function isStringArray(arr: any): arr is string[] {
+          return Array.isArray(arr) && arr.every(item => typeof item === 'string');
+        }
+
         let dates: string[];
         try {
           const parsed = JSON.parse(row.triggerInterval);
-          if (Array.isArray(parsed) && parsed.every(item => typeof item === 'string')) {
-            dates = parsed as string[];
-          } else {
-            // If not an array or not all strings, return original string
-            return row.triggerInterval;
-          }
+          if (!isStringArray(parsed)) return row.triggerInterval;
+          dates = parsed;
         } catch {
-          // Parsing failed, return original string
           return row.triggerInterval;
         }
+        if (dates.length === 0) return row.triggerInterval;
 
-        // At this point, 'dates' is guaranteed to be a string[]
-        if (dates.length === 0) {
-          return row.triggerInterval; // Handle empty array case, return original string
+        const renderTag = (text: string) => (
+          <NTag class="cursor-pointer" type="default">
+            {text}
+          </NTag>
+        );
+        if (dates.length === 1) return renderTag(dates[0]);
+        const [first, second] = dates;
+        const last = dates[dates.length - 1];
+        if (dates.length === 2) {
+          return (
+            <div class="flex flex-wrap gap-4px">
+              {renderTag(first)}
+              {renderTag(second)}
+            </div>
+          );
         }
-
-        if (dates.length === 1) {
-          return dates[0];
-        } else if (dates.length === 2) {
-          return `${dates[0]} ~ ${dates[1]}`;
-        }
-        // More than 2 dates
+        // 多于两个日期，显示 tooltip
         return (
-          <>
-            {dates[0]} ~
-            <n-tooltip>
-              {{
-                trigger: () => <span>...</span>,
-                default: () => (
-                  <div style="max-width:320px; display:flex; flex-wrap:wrap; gap:6px;">
-                    {dates.map((date: string) => (
-                      <NTag key={date} type="default">
-                        {date}
-                      </NTag>
-                    ))}
-                  </div>
-                )
-              }}
-            </n-tooltip>{' '}
-            ~ {dates[dates.length - 1]}
-          </>
+          <n-popover trigger="hover" class="cursor-pointer">
+            {{
+              trigger: () => (
+                <div class="flex flex-center flex-wrap gap-4px">
+                  {renderTag(first)}
+                  {renderTag('...')}
+                  {renderTag(last)}
+                </div>
+              ),
+              default: () => (
+                <div class="max-w-310px flex flex-wrap gap-4px">
+                  {dates.map(date => (
+                    <NTag class="cursor-pointer" key={date} type="default">
+                      {date}
+                    </NTag>
+                  ))}
+                </div>
+              )
+            }}
+          </n-popover>
         );
       }
     },
