@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { NTag, NTooltip } from 'naive-ui';
+import { NTag } from 'naive-ui';
 import { computed } from 'vue';
 import { $t } from '@/locales';
 
@@ -28,7 +28,7 @@ const filteredEntries = computed(() => Object.entries(labelsVar).filter(([key]) 
       >
         {{ filteredEntries[0][0] }}:{{ filteredEntries[0][1] }}
       </NTag>
-      <NTooltip v-if="filteredEntries.length > 1">
+      <NPopover v-if="filteredEntries.length > 1">
         <template #trigger>
           <NTag class="mb-4px mr-6px" type="default">+{{ filteredEntries.length - 1 }}</NTag>
         </template>
@@ -37,7 +37,7 @@ const filteredEntries = computed(() => Object.entries(labelsVar).filter(([key]) 
             <NTag v-if="idx > 0" class="mb-4px mr-6px" :type="getType(key, value)">{{ key }}:{{ value }}</NTag>
           </template>
         </div>
-      </NTooltip>
+      </NPopover>
     </template>
     <NTag v-else class="mb-4px mr-6px" type="info">{{ $t('common.none') }}</NTag>
   </div>
