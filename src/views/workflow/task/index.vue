@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { NButton, NDropdown, NPopconfirm, NTag } from 'naive-ui';
+import { NButton, NDropdown, NPopconfirm, NPopover, NTag } from 'naive-ui';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 import { useBoolean } from '@sa/hooks';
@@ -52,7 +52,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'workflowName',
       title: $t('page.workflow.workflowName'),
-      align: 'left',
+      align: 'center',
       minWidth: 120,
       render: row => {
         function showDetailDrawer() {
@@ -69,7 +69,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'groupName',
       title: $t('page.workflow.groupName'),
-      align: 'left',
+      align: 'center',
       minWidth: 120
     },
     {
@@ -81,13 +81,13 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'nextTriggerAt',
       title: $t('page.workflow.nextTriggerAt'),
-      align: 'left',
+      align: 'center',
       minWidth: 120
     },
     {
       key: 'workflowStatus',
       title: $t('page.workflow.workflowStatus'),
-      align: 'left',
+      align: 'center',
       minWidth: 120,
       render: row => {
         const fetchFn = async (workflowStatus: Api.Common.EnableStatusNumber, callback: (flag: boolean) => void) => {
@@ -105,8 +105,8 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'triggerType',
       title: $t('page.workflow.triggerType'),
-      align: 'left',
-      minWidth: 120,
+      align: 'center',
+      width: 140,
       render: row => {
         if (!row.triggerType) {
           return null;
@@ -119,19 +119,71 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
     {
       key: 'triggerInterval',
       title: $t('page.workflow.triggerInterval'),
-      align: 'left',
-      minWidth: 120
+      align: 'center',
+      minWidth: 140,
+      render: row => {
+        const parseDates = (interval: string): string[] | null => {
+          try {
+            const parsed = JSON.parse(interval);
+            return Array.isArray(parsed) && parsed.every(item => typeof item === 'string') ? parsed : null;
+          } catch {
+            return null;
+          }
+        };
+        const dates = parseDates(row.triggerInterval);
+        if (!dates || dates.length === 0) return row.triggerInterval;
+
+        const renderTag = (text: string) => (
+          <NTag class="cursor-pointer" type="default">
+            {text}
+          </NTag>
+        );
+        if (dates.length === 1) return renderTag(dates[0]);
+        const [first, second] = dates;
+        const last = dates[dates.length - 1];
+        if (dates.length === 2) {
+          return (
+            <div class="flex flex-wrap gap-4px">
+              {renderTag(first)}
+              {renderTag(second)}
+            </div>
+          );
+        }
+        // 多于两个日期，显示 tooltip
+        return (
+          <NPopover trigger="hover" class="cursor-pointer">
+            {{
+              trigger: () => (
+                <div class="flex flex-center flex-wrap gap-4px">
+                  {renderTag(first)}
+                  {renderTag('...')}
+                  {renderTag(last)}
+                </div>
+              ),
+              default: () => (
+                <div class="w-310px flex flex-wrap gap-4px">
+                  {dates.map(date => (
+                    <NTag class="cursor-pointer" key={date} type="default">
+                      {date}
+                    </NTag>
+                  ))}
+                </div>
+              )
+            }}
+          </NPopover>
+        );
+      }
     },
     {
       key: 'executorTimeout',
       title: $t('page.workflow.executorTimeout'),
-      align: 'left',
+      align: 'center',
       minWidth: 120
     },
     {
       key: 'updateDt',
       title: $t('page.workflow.updateDt'),
-      align: 'left',
+      align: 'center',
       minWidth: 120
     },
     {

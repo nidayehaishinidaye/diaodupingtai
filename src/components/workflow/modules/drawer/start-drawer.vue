@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { nextTick, onMounted, ref, watch } from 'vue';
-import CronInput from '@sa/cron-input';
 import { type FormInst, type FormItemRule } from 'naive-ui';
 import {
   blockStrategyRecordOptions,
@@ -69,8 +68,12 @@ watch(
   () => props.modelValue,
   val => {
     form.value = val;
+    if (!val.triggerInterval) {
+      form.value.triggerType = 2;
+      form.value.triggerInterval = '60';
+    }
     if (val.triggerType === 2) {
-      form.value.triggerInterval = Number(val.triggerInterval);
+      form.value.triggerInterval = val.triggerInterval;
     }
     if (val.workflowName) {
       title = val.workflowName;
@@ -119,7 +122,7 @@ const typeChange = (value: number) => {
   if (value === 3) {
     form.value.triggerInterval = '* * * * * ?';
   } else if (value === 2) {
-    form.value.triggerInterval = 60;
+    form.value.triggerInterval = '60';
   }
 };
 
@@ -162,8 +165,8 @@ const rules: Record<RuleKey, FormItemRule> = {
             "
           />
         </NFormItem>
-        <NGrid :cols="24" x-gap="20">
-          <NGi :span="8">
+        <NGrid :cols="form.triggerType === 5 ? '1' : '2 s:1 m:2'" responsive="screen" x-gap="20">
+          <NGi>
             <NFormItem path="triggerType" label="触发类型">
               <NSelect
                 v-model:value="form.triggerType"
@@ -180,22 +183,9 @@ const rules: Record<RuleKey, FormItemRule> = {
               />
             </NFormItem>
           </NGi>
-          <NGi :span="16">
-            <NFormItem path="triggerInterval" label="触发间隔">
-              <CronInput
-                v-if="form.triggerType === 3"
-                v-model="form.triggerInterval as string"
-                placeholder="请输入Cron表达式"
-              />
-              <NInputNumber
-                v-else
-                v-model:value="form.triggerInterval as number"
-                :min="1"
-                class="w-full"
-                placeholder="请输入触发间隔"
-              >
-                <template #suffix>秒</template>
-              </NInputNumber>
+          <NGi>
+            <NFormItem :label="$t('page.jobTask.triggerInterval')" path="triggerInterval">
+              <JobTriggerInterval v-model="form.triggerInterval" :trigger-type="form.triggerType ?? 2" />
             </NFormItem>
           </NGi>
         </NGrid>

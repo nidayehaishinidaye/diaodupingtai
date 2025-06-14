@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { nextTick, ref, watch } from 'vue';
 import CronInput from '@sa/cron-input';
 import dayjs from 'dayjs';
 import { useAppStore } from '@/store/modules/app';
@@ -42,7 +42,7 @@ const dateList = ref<Array<string | null>>(
   props.triggerType === 5 && model.value ? parseJsonToDateList(model.value) : [null]
 );
 
-const specifiedDate = ref<number>(new Date().getTime());
+const specifiedDate = ref<number>(dayjs().add(15, 'second').valueOf());
 const specifiedUnit = ref<string>('second');
 const specifiedStep = ref<number>(10);
 const specifiedCount = ref<number>(1);
@@ -103,6 +103,7 @@ watch(
       model.value = cron.value;
     } else if (triggerType === 5) {
       // 如果已有 model.value，解析后赋值给 dateList
+      specifiedDate.value = dayjs().add(15, 'second').valueOf();
       if (model.value) {
         dateList.value = parseJsonToDateList(model.value);
       }
@@ -134,11 +135,13 @@ const handleAddDate = () => {
     dateList.value = dateList.value.filter(item => isNotNull(item));
     const date = new Date(specifiedDate.value);
     for (let i = 0; i < specifiedCount.value; i += 1) {
-      dateList.value.push(
-        dayjs(date)
-          .add(i * specifiedStep.value, specifiedUnit.value as dayjs.ManipulateType)
-          .format('YYYY-MM-DD HH:mm:ss')
-      );
+      const newDate = dayjs(date)
+        .add(i * specifiedStep.value, specifiedUnit.value as dayjs.ManipulateType)
+        .format('YYYY-MM-DD HH:mm:ss');
+      // 检查是否已存在相同的日期，如果不存在才添加
+      if (!dateList.value.includes(newDate)) {
+        dateList.value.push(newDate);
+      }
     }
     return;
   }
@@ -154,6 +157,21 @@ const handleRemoveDate = (index: number) => {
   if (dateList.value.length === 0) {
     dateList.value.push(null);
   }
+};
+
+const handleFormattedValueUpdate = (value: string, index: number) => {
+  if (!value) return true;
+  const duplicateIndex = dateList.value.findIndex((item, idx) => idx !== index && item === value);
+
+  if (duplicateIndex !== -1) {
+    window.$message?.warning(`该时间点 ${value} 已存在，请选择其他时间`);
+    nextTick(() => {
+      dateList.value[index] = null;
+    });
+    return false;
+  }
+
+  return true;
 };
 
 const disablePreviousDate = (ts: number) => {
@@ -280,6 +298,7 @@ const disablePreviousTime = (ts: number) => {
                 format="yyyy-MM-dd HH:mm:ss"
                 :is-date-disabled="disablePreviousDate"
                 :is-time-disabled="disablePreviousTime"
+                @update:formatted-value="value => handleFormattedValueUpdate(value, index)"
               />
               <NButton type="error" ghost @click="handleRemoveDate(index)">
                 <template #icon>

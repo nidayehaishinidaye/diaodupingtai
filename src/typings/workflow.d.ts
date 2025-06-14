@@ -14,7 +14,7 @@ declare namespace Workflow {
     /** 触发类型 */
     triggerType?: Api.Common.TriggerType;
     /** 触发间隔 */
-    triggerInterval?: string | number;
+    triggerInterval?: string;
     /** 阻塞策略 */
     blockStrategy?: Api.Common.BlockStrategy;
     /** 执行超时时间 */

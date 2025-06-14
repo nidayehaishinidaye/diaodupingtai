@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { NButton, NDropdown, NPopconfirm, NTag } from 'naive-ui';
+import { NButton, NDropdown, NPopconfirm, NPopover, NTag } from 'naive-ui';
 import { useBoolean } from '@sa/hooks';
 import { ref } from 'vue';
 import { fetchBatchDeleteJob, fetchGetJobPage, fetchUpdateJobStatus } from '@/service/api';
@@ -169,19 +169,16 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
       align: 'center',
       width: 130,
       render: row => {
-        function isStringArray(arr: any): arr is string[] {
-          return Array.isArray(arr) && arr.every(item => typeof item === 'string');
-        }
-
-        let dates: string[];
-        try {
-          const parsed = JSON.parse(row.triggerInterval);
-          if (!isStringArray(parsed)) return row.triggerInterval;
-          dates = parsed;
-        } catch {
-          return row.triggerInterval;
-        }
-        if (dates.length === 0) return row.triggerInterval;
+        const parseDates = (interval: string): string[] | null => {
+          try {
+            const parsed = JSON.parse(interval);
+            return Array.isArray(parsed) && parsed.every(item => typeof item === 'string') ? parsed : null;
+          } catch {
+            return null;
+          }
+        };
+        const dates = parseDates(row.triggerInterval);
+        if (!dates || dates.length === 0) return row.triggerInterval;
 
         const renderTag = (text: string) => (
           <NTag class="cursor-pointer" type="default">
@@ -201,7 +198,7 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
         }
         // 多于两个日期，显示 tooltip
         return (
-          <n-popover trigger="hover" class="cursor-pointer">
+          <NPopover trigger="hover" class="cursor-pointer">
             {{
               trigger: () => (
                 <div class="flex flex-center flex-wrap gap-4px">
@@ -211,7 +208,7 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
                 </div>
               ),
               default: () => (
-                <div class="max-w-310px flex flex-wrap gap-4px">
+                <div class="w-310px flex flex-wrap gap-4px">
                   {dates.map(date => (
                     <NTag class="cursor-pointer" key={date} type="default">
                       {date}
@@ -220,7 +217,7 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
                 </div>
               )
             }}
-          </n-popover>
+          </NPopover>
         );
       }
     },
