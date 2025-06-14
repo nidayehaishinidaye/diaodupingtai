@@ -103,7 +103,7 @@ watch(
       model.value = cron.value;
     } else if (triggerType === 5) {
       // 如果已有 model.value，解析后赋值给 dateList
-      specifiedDate.value = dayjs().add(15, 'second').valueOf();
+      specifiedDate.value = dayjs().add(60, 'second').valueOf();
       if (model.value) {
         dateList.value = parseJsonToDateList(model.value);
       }
