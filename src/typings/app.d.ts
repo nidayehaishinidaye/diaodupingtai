@@ -910,6 +910,7 @@ declare namespace App {
           bizNo: string;
           executorName: string;
           argsStr: string;
+          serializerName: string;
           nextTriggerAt: string;
           retryCount: string;
           retryStatus: string;

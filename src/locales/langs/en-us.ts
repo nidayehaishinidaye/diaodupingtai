@@ -700,6 +700,7 @@ const local: App.I18n.Schema = {
       bizNo: 'Business Number',
       executorName: 'Actuator name',
       argsStr: 'Actuator arguments',
+      serializerName: 'Name of the argument serializer',
       nextTriggerAt: 'Next trigger time',
       retryCount: 'Number of retries',
       retryStatus: 'Retry status',

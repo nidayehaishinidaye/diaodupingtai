@@ -708,6 +708,7 @@ const local: App.I18n.Schema = {
       bizNo: '业务编号',
       executorName: '执行器名称',
       argsStr: '方法参数',
+      serializerName: '方法参数序列化器名称',
       nextTriggerAt: '下次触发时间',
       retryCount: '次数',
       retryStatus: '状态',
