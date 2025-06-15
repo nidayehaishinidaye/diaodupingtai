@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { NDynamicTags, NInput, NPopover, NTag } from 'naive-ui';
+import { NButton, NDynamicTags, NInput, NPopover, NTag } from 'naive-ui';
 import { computed, nextTick, ref, watch } from 'vue';
 import type { OnCreate } from 'naive-ui/es/dynamic-tags/src/interface';
 import { isNull } from '@/utils/common';
@@ -7,13 +7,19 @@ import { fetchUpdatePodsLabels } from '@/service/api/dashboard';
 
 interface Props {
   id?: string | number;
-  labels: string;
+  labels?: string;
+  editable?: boolean;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  id: undefined,
+  labels: '{}',
+  editable: false
+});
 const emit = defineEmits<{ (e: 'submitted'): void }>();
 
 const inputValue = ref<string | null>(null);
+const inputRef = ref<InstanceType<typeof NInput>>();
 
 const parsedLabels = computed<Record<string, string>>(() => {
   try {
@@ -24,12 +30,9 @@ const parsedLabels = computed<Record<string, string>>(() => {
 });
 
 const entries = computed(() => Object.entries(parsedLabels.value).filter(([k]) => k !== 'state'));
-
-const [firstEntry, restEntries] = (() => {
-  const first = computed(() => entries.value[0]);
-  const rest = computed(() => entries.value.slice(1));
-  return [first, rest];
-})();
+const firstEntry = computed(() => entries.value[0]);
+const restEntries = computed(() => entries.value.slice(1));
+const restValues = computed(() => restEntries.value.map(([k, v]) => `${k}:${v}`));
 
 const getType = (key: string, value: string): 'info' | 'error' | 'success' => {
   if (key === 'env') return value === 'prod' ? 'error' : 'info';
@@ -57,8 +60,8 @@ const parseLabelStr = (label: string): [string, string] | null => {
 };
 
 const handleCreate: OnCreate = label => {
-  if (label.length !== 2 || isNull(label[0]) || isNull(label[1])) {
-    window.$message?.error('请输入 "key:value" 格式的标签');
+  if (!Array.isArray(label) || label.length !== 2 || isNull(label[0]) || isNull(label[1])) {
+    window.$message?.error('请输入有效的标签，格式如 "key:value"');
     return label;
   }
   const [key, value] = label;
@@ -69,7 +72,6 @@ const handleCreate: OnCreate = label => {
 };
 
 const handleUpdateMain = () => {
-  // 第一个标签被删除，仅保留 restEntries
   const newLabels: Record<string, string> = {};
   restEntries.value.forEach(([k, v]) => {
     newLabels[k] = v;
@@ -90,70 +92,54 @@ const handleUpdateRest = (values: string[]) => {
       updated[k] = v;
     }
   });
-
   updateLabels(updated);
 };
 
-const inputRef = ref<InstanceType<typeof NInput>>();
-
 const handleInputConfirm = () => {
-  if (inputValue.value && inputValue.value.length === 2) {
+  if (inputValue.value?.length === 2) {
     handleCreate(inputValue.value);
   }
 };
+
+const handleInputEvent = (deactivate?: () => void) => {
+  deactivate?.();
+  handleInputConfirm();
+};
+
 watch(inputRef, value => {
   if (value) nextTick(() => value.focus());
 });
 </script>
 
 <template>
-  <div class="flex items-center">
+  <div class="flex items-center justify-center">
     <template v-if="entries.length">
-      <!-- 主标签 -->
-      <NDynamicTags
-        class="mr-2"
-        :value="[`${firstEntry[0]}:${firstEntry[1]}`]"
-        :type="getType(firstEntry[0], firstEntry[1])"
-        @create="handleCreate"
-        @update:value="handleUpdateMain"
-      >
-        <template #trigger="{ activate }">
-          <NButton v-if="firstEntry && !restEntries.length" size="small" dashed @click="activate">+</NButton>
-        </template>
+      <!-- 只读模式 -->
+      <template v-if="!editable">
+        <NTag class="mr-2" :type="getType(firstEntry[0], firstEntry[1])">{{ firstEntry[0] }}:{{ firstEntry[1] }}</NTag>
 
-        <template #input="{ deactivate }">
-          <NInput
-            ref="inputRef"
-            v-model:value="inputValue"
-            size="small"
-            pair
-            separator=":"
-            :placeholder="['key', 'value']"
-            @blur="
-              () => {
-                deactivate?.();
-                handleInputConfirm();
-              }
-            "
-            @keydown.enter.prevent="
-              deactivate?.();
-              handleInputConfirm();
-            "
-          />
-        </template>
-      </NDynamicTags>
+        <NPopover v-if="restEntries.length" trigger="click">
+          <template #trigger>
+            <NTag>+{{ restEntries.length }}</NTag>
+          </template>
+          <div class="flex flex-wrap justify-center gap-2">
+            <NTag v-for="[k, v] in restEntries" :key="k" type="info">{{ k }}:{{ v }}</NTag>
+          </div>
+        </NPopover>
+      </template>
 
-      <!-- 其余标签 -->
-      <NPopover v-if="restEntries.length" trigger="click">
-        <template #trigger>
-          <NTag>+{{ restEntries.length }}</NTag>
-        </template>
+      <!-- 可编辑模式 -->
+      <template v-else>
         <NDynamicTags
-          :value="restEntries.map(([k, v]) => `${k}:${v}`)"
-          type="info"
+          class="mr-2 flex justify-center"
+          :value="[`${firstEntry[0]}:${firstEntry[1]}`]"
+          :type="getType(firstEntry[0], firstEntry[1])"
           @create="handleCreate"
-          @update:value="handleUpdateRest"
+          @update:value="handleUpdateMain"
         >
+          <template #trigger="{ activate }">
+            <NButton v-if="firstEntry && !restEntries.length" size="small" dashed @click="activate">+</NButton>
+          </template>
           <template #input="{ deactivate }">
             <NInput
               ref="inputRef"
@@ -162,24 +148,48 @@ watch(inputRef, value => {
               pair
               separator=":"
               :placeholder="['key', 'value']"
-              @blur="
-                () => {
-                  deactivate?.();
-                  handleInputConfirm();
-                }
-              "
-              @keydown.enter.prevent="
-                deactivate?.();
-                handleInputConfirm();
-              "
+              @blur="() => handleInputEvent(deactivate)"
+              @keydown.enter.prevent="handleInputEvent(deactivate)"
             />
           </template>
         </NDynamicTags>
-      </NPopover>
+
+        <NPopover v-if="restEntries.length" trigger="click">
+          <template #trigger>
+            <NTag>+{{ restEntries.length }}</NTag>
+          </template>
+          <NDynamicTags
+            class="flex justify-center"
+            :value="restValues"
+            type="info"
+            @create="handleCreate"
+            @update:value="handleUpdateRest"
+          >
+            <template #input="{ deactivate }">
+              <NInput
+                ref="inputRef"
+                v-model:value="inputValue"
+                size="small"
+                pair
+                separator=":"
+                :placeholder="['key', 'value']"
+                @blur="() => handleInputEvent(deactivate)"
+                @keydown.enter.prevent="handleInputEvent(deactivate)"
+              />
+            </template>
+          </NDynamicTags>
+        </NPopover>
+      </template>
     </template>
 
     <!-- 无标签情况 -->
-    <NDynamicTags v-else type="info" @create="handleCreate" @update:value="handleUpdateRest">
+    <NDynamicTags
+      v-else-if="editable"
+      type="info"
+      class="flex justify-center"
+      @create="handleCreate"
+      @update:value="handleUpdateRest"
+    >
       <template #input="{ deactivate }">
         <NInput
           ref="inputRef"
@@ -188,20 +198,20 @@ watch(inputRef, value => {
           pair
           separator=":"
           :placeholder="['key', 'value']"
-          @blur="
-            () => {
-              deactivate?.();
-              handleInputConfirm();
-            }
-          "
-          @keydown.enter.prevent="
-            deactivate?.();
-            handleInputConfirm();
-          "
+          @blur="() => handleInputEvent(deactivate)"
+          @keydown.enter.prevent="handleInputEvent(deactivate)"
         />
       </template>
     </NDynamicTags>
+    <NTag v-else-if="!entries.length" type="info">无</NTag>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.n-dynamic-tags {
+  justify-content: center;
+}
+.n-input {
+  width: 130px;
+}
+</style>

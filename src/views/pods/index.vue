@@ -80,7 +80,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       align: 'center',
       width: 140,
       render: row => {
-        return <LabelList id={row.id} labels={row.labels || '{}'} onSubmitted={getData} />;
+        return <LabelList id={row.id} labels={row.labels} onSubmitted={getData} editable />;
       }
     },
     {
