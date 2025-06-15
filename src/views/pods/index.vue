@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { NButton, NPopconfirm, NTag, NTooltip } from 'naive-ui';
+import { NButton, NDivider, NPopconfirm, NTag, NTooltip } from 'naive-ui';
 import { useAppStore } from '@/store/modules/app';
 import { fetchPods, fetchUpdatePodsStatus } from '@/service/api';
 import { $t } from '@/locales';
@@ -7,6 +7,7 @@ import { executorTypeRecord, podsType } from '@/constants/business';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import LabelList from '@/components/common/label-list.vue';
 import PodsSearch from './modules/pods-search.vue';
+import PodsOperateDrawer from './modules/pods-operate-drawer.vue';
 
 const appStore = useAppStore();
 
@@ -80,7 +81,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       align: 'center',
       width: 140,
       render: row => {
-        return <LabelList id={row.id} labels={row.labels} onSubmitted={getData} editable />;
+        return <LabelList id={row.id} labels={row.labels} />;
       }
     },
     {
@@ -230,20 +231,31 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       align: 'center',
       width: 80,
       render: row => {
-        if (!row.labels || row.nodeType === 2) {
-          return null;
-        }
+        const editBtn = () => {
+          if (row.nodeType === 2) {
+            return null;
+          }
+          return (
+            <NButton text type="warning" ghost size="small" onClick={() => edit(row.id!)}>
+              {$t('common.edit')}
+            </NButton>
+          );
+        };
 
-        const labels = JSON.parse(row.labels || '{}');
-        let serverNodeStatus;
-        if (labels.state === 'up') {
-          serverNodeStatus = 2;
-        } else {
-          serverNodeStatus = 1;
-        }
+        const podStatusBtn = () => {
+          if (!row.labels || row.nodeType === 2) {
+            return null;
+          }
 
-        return (
-          <div class="flex-center gap-8px">
+          const labels = JSON.parse(row.labels || '{}');
+          let serverNodeStatus;
+          if (labels.state === 'up') {
+            serverNodeStatus = 2;
+          } else {
+            serverNodeStatus = 1;
+          }
+
+          return (
             <NPopconfirm onPositiveClick={() => updatePodStatus(row.id! as any, serverNodeStatus)}>
               {{
                 default: () => (serverNodeStatus === 1 ? $t('page.pods.online') : $t('page.pods.offline')),
@@ -254,6 +266,19 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
                 )
               }}
             </NPopconfirm>
+          );
+        };
+
+        const buttons = [editBtn(), podStatusBtn()];
+
+        return (
+          <div class="flex-center gap-8px">
+            {buttons.filter(Boolean).map((btn, index) => (
+              <>
+                {index !== 0 && <NDivider vertical />}
+                {btn}
+              </>
+            ))}
           </div>
         );
       }
@@ -267,7 +292,11 @@ async function updatePodStatus(id: number, serverNodeStatus: number) {
   getData();
 }
 
-const { checkedRowKeys } = useTableOperate(data, getData);
+const { checkedRowKeys, handleEdit, drawerVisible, editingData } = useTableOperate(data, getData);
+
+function edit(id: string) {
+  handleEdit(id);
+}
 </script>
 
 <template>
@@ -303,6 +332,7 @@ const { checkedRowKeys } = useTableOperate(data, getData);
         class="sm:h-full"
       />
     </NCard>
+    <PodsOperateDrawer v-model:visible="drawerVisible" :row-data="editingData" @submitted="getData" />
   </div>
 </template>
 

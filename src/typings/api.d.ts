@@ -332,7 +332,8 @@ declare namespace Api {
       /** 组名称 */
       groupName: string;
       /** labels */
-      labels: string;
+      labels?: string;
+      labelMap?: { key: string; value: string }[];
       /** host id */
       hostId: string;
       /** host IP */

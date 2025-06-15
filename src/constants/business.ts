@@ -23,6 +23,8 @@ export const podsType: Record<Api.Dashboard.DashboardPodsType, App.I18n.I18nKey>
   2: 'page.pods.type.server'
 };
 
+export const nodeTypeOptions = transformRecordToNumberOption(podsType);
+
 export const alarmTypeRecord: Record<Api.NotifyRecipient.AlarmType, App.I18n.I18nKey> = {
   1: 'page.notifyRecipient.dingDing',
   2: 'page.notifyRecipient.email',
