@@ -175,6 +175,10 @@ export function isNotNull(value: any) {
   return value !== undefined && value !== null && value !== '' && value !== 'undefined';
 }
 
+export function isNull(value: any) {
+  return value === undefined || value === null || value === '' || value === 'undefined' || value === 'null';
+}
+
 export function parseArgsJson(value: string) {
   let argsJson;
 

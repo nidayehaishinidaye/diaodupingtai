@@ -235,7 +235,7 @@ const isShow = (taskBatchStatus: number) => {
                               <div class="flex-y-center gap-8px">
                                 <span class="content_label">标签:</span>
                                 <div class="flex-y-center gap-6px">
-                                  <LabelList :labels="JSON.parse(item.jobTask?.labels || '{}')" />
+                                  <LabelList :labels="item.jobTask?.labels || '{}'" />
                                 </div>
                               </div>
                             </div>

@@ -50,3 +50,11 @@ export function fetchUpdatePodsStatus(data?: Api.Dashboard.UpdatePodsStatus) {
     data
   });
 }
+/** update Pods */
+export function fetchUpdatePodsLabels(data?: Api.Dashboard.DashboardPodsOperateParams) {
+  return request<boolean>({
+    url: '/dashboard/pods/labels',
+    method: 'put',
+    data
+  });
+}

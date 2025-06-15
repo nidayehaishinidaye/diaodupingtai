@@ -353,6 +353,9 @@ declare namespace Api {
       Pick<Api.Dashboard.DashboardPod, 'groupName'> & CommonSearchParams
     >;
 
+    /** dashboard pods operate params */
+    type DashboardPodsOperateParams = CommonType.RecordNullable<Pick<Api.Dashboard.DashboardPod, 'id' | 'labels'>>;
+
     type UpdatePodsStatus = {
       id: number;
       serverNodeStatus: number;

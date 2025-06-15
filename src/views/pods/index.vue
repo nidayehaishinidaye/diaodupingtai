@@ -78,9 +78,9 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       key: 'labels',
       title: $t('page.pods.labels'),
       align: 'center',
-      width: 120,
+      width: 140,
       render: row => {
-        return <LabelList labels={JSON.parse(row.labels || '{}')} />;
+        return <LabelList id={row.id} labels={row.labels || '{}'} onSubmitted={getData} />;
       }
     },
     {

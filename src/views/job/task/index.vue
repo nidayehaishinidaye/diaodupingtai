@@ -95,7 +95,7 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
       align: 'center',
       width: 120,
       render: row => {
-        return <LabelList labels={JSON.parse(row.labels || '{}')} />;
+        return <LabelList labels={row.labels || '{}'} />;
       }
     },
     {
