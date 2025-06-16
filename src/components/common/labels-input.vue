@@ -28,6 +28,18 @@ const dynamicInputRule = [
     }
   }
 ];
+
+const dynamicKeyInputRule = [
+  {
+    trigger: ['input', 'blur'],
+    validator(_: unknown, val: string) {
+      if (!val) return new Error('不能为空');
+      if (val === 'state') return new Error('key 不能为 state');
+      if (content.value.some(item => item.key === val)) return new Error('key 不能重复');
+      return true;
+    }
+  }
+];
 </script>
 
 <template>
@@ -37,7 +49,7 @@ const dynamicInputRule = [
         :span="11"
         ignore-path-change
         :show-label="false"
-        :rule="dynamicInputRule"
+        :rule="dynamicKeyInputRule"
         :path="`${path}[${index}].key`"
       >
         <NInput v-model:value="content[index].key" placeholder="key" @keydown.enter.prevent />

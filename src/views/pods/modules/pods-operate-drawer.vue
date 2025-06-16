@@ -64,9 +64,11 @@ function handleUpdateModelWhenEdit() {
 
   Object.assign(model, props.rowData);
   if (model.labels) {
-    model.labelMap = Object.entries(JSON.parse(model.labels)).map(([key, value]) => {
-      return { key, value: value as string };
-    });
+    model.labelMap = Object.entries(JSON.parse(model.labels))
+      .filter(([key, _]) => key !== 'state')
+      .map(([key, value]) => {
+        return { key, value: value as string };
+      });
   }
 }
 
