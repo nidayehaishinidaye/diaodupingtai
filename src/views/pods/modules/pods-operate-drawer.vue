@@ -30,16 +30,6 @@ const visible = defineModel<boolean>('visible', {
 
 const { formRef, validate, restoreValidation } = useNaiveForm();
 
-type RuleKey = Extract<keyof Model, 'labelMap'>;
-
-const rules: Record<RuleKey, App.Global.FormRule> = {
-  labelMap: {
-    required: true,
-    message: '标签不能为空',
-    type: 'array'
-  }
-};
-
 type Model = Pick<
   Api.Dashboard.DashboardPod,
   'id' | 'labels' | 'labelMap' | 'nodeType' | 'groupName' | 'hostIp' | 'hostPort'
@@ -103,7 +93,7 @@ watch(visible, () => {
 
 <template>
   <OperateDrawer v-model="visible" :min-size="480" title="编辑在线机器">
-    <NForm ref="formRef" :model="model" :rules="rules">
+    <NForm ref="formRef" :model="model">
       <NFormItem label="ID" path="id">
         <NInput v-model:value="model.id" disabled />
       </NFormItem>
