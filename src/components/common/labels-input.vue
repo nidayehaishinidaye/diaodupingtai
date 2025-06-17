@@ -35,7 +35,10 @@ const dynamicKeyInputRule = [
     validator(_: unknown, val: string) {
       if (!val) return new Error('不能为空');
       if (val === 'state') return new Error('key 不能为 state');
-      if (content.value.some(item => item.key === val)) return new Error('key 不能重复');
+      const keyCount = content.value.filter(item => item.key === val).length;
+      if (keyCount > 1) {
+        return new Error('key 不能重复');
+      }
       return true;
     }
   }
