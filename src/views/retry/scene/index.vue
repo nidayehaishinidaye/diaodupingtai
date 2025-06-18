@@ -21,9 +21,11 @@ import {
 import StatusSwitch from '@/components/common/status-switch.vue';
 import { downloadFetch } from '@/utils/download';
 import { useAuth } from '@/hooks/business/auth';
+import LabelList from '@/components/common/label-list.vue';
 import SceneOperateDrawer from './modules/scene-operate-drawer.vue';
 import SceneSearch from './modules/scene-search.vue';
 import SceneDetailDrawer from './modules/scene-detail-drawer.vue';
+
 const { hasAuth } = useAuth();
 
 const appStore = useAppStore();
@@ -81,6 +83,15 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       title: $t('page.retryScene.groupName'),
       align: 'center',
       width: 180
+    },
+    {
+      key: 'labels',
+      title: $t('page.pods.labels'),
+      align: 'center',
+      width: 120,
+      render: row => {
+        return <LabelList labels={row.labels} />;
+      }
     },
     {
       key: 'ownerName',

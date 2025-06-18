@@ -75,6 +75,8 @@ type Model = Pick<
   | 'cbTriggerType'
   | 'cbTriggerInterval'
   | 'cbMaxCount'
+  | 'labelMap'
+  | 'labels'
 >;
 
 onMounted(() => {
@@ -92,11 +94,11 @@ const model: Model = reactive(createDefaultModel());
 
 function createDefaultModel(): Model {
   return {
-    groupName: '',
+    groupName: undefined,
     sceneName: '',
     notifyIds: [],
     sceneStatus: 1,
-    ownerId: '',
+    ownerId: undefined,
     ownerName: '',
     backOff: 2,
     maxRetryCount: 1,
@@ -109,7 +111,9 @@ function createDefaultModel(): Model {
     cbStatus: 0,
     cbTriggerType: 1,
     cbTriggerInterval: '',
-    cbMaxCount: 16
+    cbMaxCount: 16,
+    labelMap: [],
+    labels: ''
   };
 }
 
@@ -161,6 +165,8 @@ const rules = {
 } satisfies Record<RuleKey, App.Global.FormRule[]>;
 
 function handleUpdateModelWhenEdit() {
+  model.labelMap = [];
+
   if (props.operateType === 'add') {
     Object.assign(model, createDefaultModel());
     return;
@@ -168,6 +174,11 @@ function handleUpdateModelWhenEdit() {
 
   if (props.operateType === 'edit' && props.rowData) {
     Object.assign(model, props.rowData);
+    if (model.labels) {
+      model.labelMap = Object.entries(JSON.parse(model.labels)).map(([key, value]) => {
+        return { key, value: value as string };
+      });
+    }
   }
 }
 
@@ -177,6 +188,11 @@ function closeDrawer() {
 
 async function handleSubmit() {
   await validate();
+
+  const labels: Record<string, string> = {};
+  model.labelMap?.forEach(item => {
+    labels[item.key] = item.value;
+  });
   // request
   if (props.operateType === 'add') {
     const {
@@ -217,7 +233,8 @@ async function handleSubmit() {
       cbStatus,
       cbTriggerType,
       cbTriggerInterval,
-      cbMaxCount
+      cbMaxCount,
+      labels: JSON.stringify(labels)
     });
     if (error) return;
     window.$message?.success($t('common.addSuccess'));
@@ -264,7 +281,8 @@ async function handleSubmit() {
       cbStatus,
       cbTriggerType,
       cbTriggerInterval,
-      cbMaxCount
+      cbMaxCount,
+      labels: JSON.stringify(labels)
     });
     if (error) return;
     window.$message?.success($t('common.updateSuccess'));
@@ -325,6 +343,9 @@ watch(
           </NFormItem>
           <NFormItem :label="$t('page.retryScene.ownerName')" path="ownerId">
             <SystemUser v-model:value="model.ownerId" :clearable="true" />
+          </NFormItem>
+          <NFormItem :label="$t('page.jobTask.labels')" path="labelMap" :show-feedback="!model.labelMap?.length">
+            <LabelsInput v-model:value="model.labelMap" path="labelMap" />
           </NFormItem>
           <NFormItem :label="$t('page.retryScene.sceneStatus')" path="sceneStatus">
             <NRadioGroup v-model:value="model.sceneStatus" name="sceneStatus">

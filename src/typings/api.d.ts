@@ -865,7 +865,7 @@ declare namespace Api {
     /** scene */
     type Scene = Common.CommonRecord<{
       /** 组名 */
-      groupName: string;
+      groupName?: string;
       /** 场景名 */
       sceneName: string;
       /** 通知场景ids */
@@ -875,7 +875,7 @@ declare namespace Api {
       /** 状态 */
       sceneStatus: EnableStatusNumber;
       /** 负责人 */
-      ownerId: string;
+      ownerId?: string;
       ownerName: string;
       /** 退避策略 */
       backOff: BackOff;
@@ -899,6 +899,10 @@ declare namespace Api {
       cbTriggerInterval: string;
       /** 回调的最大执行次数 */
       cbMaxCount: number;
+      /** 标签 */
+      labels?: string;
+      /** 标签 */
+      labelMap?: { key: string; value: string }[];
     }>;
 
     /** scene search params */
