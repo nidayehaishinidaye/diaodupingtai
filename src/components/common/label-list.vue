@@ -4,6 +4,7 @@ import { computed, nextTick, ref, watch } from 'vue';
 import type { OnCreate } from 'naive-ui/es/dynamic-tags/src/interface';
 import { isNull } from '@/utils/common';
 import { fetchUpdatePodsLabels } from '@/service/api/dashboard';
+import { $t } from '@/locales';
 
 interface Props {
   id?: string | number;
@@ -203,7 +204,7 @@ watch(inputRef, value => {
         />
       </template>
     </NDynamicTags>
-    <NTag v-else-if="!entries.length" type="info">无</NTag>
+    <NTag v-else-if="!entries.length" type="info">{{ $t('common.none') }}</NTag>
   </div>
 </template>
 

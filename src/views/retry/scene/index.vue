@@ -53,12 +53,6 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       align: 'center',
       width: 48
     },
-    // {
-    //   key: 'id',
-    //   title: $t('common.index'),
-    //   align: 'center',
-    //   width: 64
-    // },
     {
       key: 'sceneName',
       align: 'center',
@@ -82,7 +76,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       key: 'groupName',
       title: $t('page.retryScene.groupName'),
       align: 'center',
-      width: 180
+      width: 150
     },
     {
       key: 'labels',
@@ -97,7 +91,10 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       key: 'ownerName',
       title: $t('page.retryScene.ownerName'),
       align: 'center',
-      width: 180
+      width: 60,
+      render: row => {
+        return row.ownerName ? row.ownerName : $t('common.none');
+      }
     },
     {
       key: 'sceneStatus',
@@ -187,12 +184,6 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       width: 80
     },
     {
-      key: 'createDt',
-      title: $t('page.retryScene.createDt'),
-      align: 'center',
-      width: 120
-    },
-    {
       key: 'updateDt',
       title: $t('page.retryScene.updateDt'),
       align: 'center',
@@ -209,7 +200,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       title: $t('common.operate'),
       align: 'center',
       fixed: 'right',
-      width: 100,
+      width: 80,
       render: row => (
         <div class="flex-center gap-8px">
           <NButton type="primary" text ghost size="small" onClick={() => edit(row.id!)}>
