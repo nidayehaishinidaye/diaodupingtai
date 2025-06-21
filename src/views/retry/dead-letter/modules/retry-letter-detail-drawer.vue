@@ -29,6 +29,9 @@ defineProps<Props>();
         {{ rowData?.executorName }}
       </NDescriptionsItem>
       <NDescriptionsItem :label="$t('page.retry.argsStr')" :span="3">{{ rowData?.argsStr }}</NDescriptionsItem>
+      <NDescriptionsItem :label="$t('page.retry.serializerName')" :span="2">
+        {{ rowData?.serializerName }}
+      </NDescriptionsItem>
       <NDescriptionsItem :label="$t('common.createDt')" :span="3">{{ rowData?.createDt }}</NDescriptionsItem>
     </NDescriptions>
   </OperateDrawer>

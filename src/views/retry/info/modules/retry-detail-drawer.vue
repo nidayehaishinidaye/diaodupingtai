@@ -50,6 +50,9 @@ const visible = defineModel<boolean>('visible', {
         {{ rowData?.executorName }}
       </NDescriptionsItem>
       <NDescriptionsItem :label="$t('page.retry.argsStr')" :span="2">{{ rowData?.argsStr }}</NDescriptionsItem>
+      <NDescriptionsItem :label="$t('page.retry.serializerName')" :span="2">
+        {{ rowData?.serializerName }}
+      </NDescriptionsItem>
       <NDescriptionsItem :label="$t('common.createDt')" :span="1">{{ rowData?.createDt }}</NDescriptionsItem>
       <NDescriptionsItem :label="$t('common.updateDt')" :span="1">{{ rowData?.updateDt }}</NDescriptionsItem>
     </NDescriptions>

@@ -741,6 +741,8 @@ declare namespace Api {
       executorName: string;
       /** 执行方法参数 */
       argsStr: string;
+      /** 执行方法参数序列化器名称 */
+      serializerName: string;
     }>;
 
     /** deadLetter search params */
