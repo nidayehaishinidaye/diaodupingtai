@@ -1002,6 +1002,11 @@ declare namespace Api {
 
     /** workflow list */
     type WorkflowList = Common.PaginatingQueryRecord<Workflow>;
+
+    type WorkflowdUpdateJobStatusRequestVO = {
+      id: string;
+      status: Common.EnableStatusNumber;
+    };
   }
 
   /**

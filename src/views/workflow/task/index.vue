@@ -91,7 +91,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, searchP
       minWidth: 120,
       render: row => {
         const fetchFn = async (workflowStatus: Api.Common.EnableStatusNumber, callback: (flag: boolean) => void) => {
-          const { error } = await fetchUpdateWorkflowStatus(row.id!);
+          const { error } = await fetchUpdateWorkflowStatus({ id: row.id!, status: workflowStatus });
           if (!error) {
             row.workflowStatus = workflowStatus;
             window.$message?.success($t('common.updateSuccess'));

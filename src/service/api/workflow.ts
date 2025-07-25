@@ -45,10 +45,11 @@ export function fetchGetWorkflowBatchList(params?: Api.WorkflowBatch.WorkflowBat
   });
 }
 
-export function fetchUpdateWorkflowStatus(id: string) {
+export function fetchUpdateWorkflowStatus(data: Api.Workflow.WorkflowdUpdateJobStatusRequestVO) {
   return request({
-    url: `/workflow/update/status/${id}`,
-    method: 'put'
+    url: `/workflow/update/status`,
+    method: 'put',
+    data
   });
 }
 
