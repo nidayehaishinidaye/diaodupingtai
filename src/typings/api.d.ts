@@ -1106,7 +1106,7 @@ declare namespace Api {
 
     type JobUpdateJobStatusRequestVO = {
       id: string;
-      jobStatus: Common.EnableStatusNumber;
+      status: Common.EnableStatusNumber;
     };
 
     /** JobTask list */

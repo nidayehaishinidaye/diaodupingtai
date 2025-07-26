@@ -111,7 +111,7 @@ const { columnChecks, columns, data, getData, loading, mobilePagination, searchP
       width: 60,
       render: row => {
         const fetchFn = async (jobStatus: Api.Common.EnableStatusNumber, callback: (flag: boolean) => void) => {
-          const { error } = await fetchUpdateJobStatus({ id: row.id!, jobStatus });
+          const { error } = await fetchUpdateJobStatus({ id: row.id!, status: jobStatus });
           if (!error) {
             row.jobStatus = jobStatus;
             window.$message?.success($t('common.updateSuccess'));
