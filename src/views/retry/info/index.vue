@@ -375,7 +375,7 @@ function handleFinish(id: number) {
 }
 
 async function updateRetryTaskStatus(id: number, status: Api.Retry.RetryStatusType) {
-  const { error } = await fetchUpdateRetryStatus({ id, retryStatus: status });
+  const { error } = await fetchUpdateRetryStatus({ id, status });
   if (error) return;
   window.$message?.success($t('common.updateSuccess'));
   getData();

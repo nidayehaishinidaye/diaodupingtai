@@ -821,7 +821,7 @@ declare namespace Api {
       /** id */
       id: number;
       /** 重试状态 0、重试中 1、重试完成 2、最大次数 3、暂停 */
-      retryStatus: RetryStatusType;
+      status: RetryStatusType;
     };
 
     type ManualTriggerRequestVO = {
