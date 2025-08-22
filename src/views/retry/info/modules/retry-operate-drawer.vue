@@ -5,7 +5,7 @@ import OperateDrawer from '@/components/common/operate-drawer.vue';
 import { $t } from '@/locales';
 import { fetchAddRetry, fetchIdempotentIdGenerate } from '@/service/api';
 import { translateOptions } from '@/utils/common';
-import { retryStatusTypeOptions } from '@/constants/business';
+import { retryArgsTypeRecordOptions, retryStatusTypeOptions } from '@/constants/business';
 import CodeMirror from '@/components/common/code-mirror.vue';
 import SelectGroup from '@/components/common/select-group.vue';
 import SelectScene from '@/components/common/select-scene.vue';
@@ -55,8 +55,8 @@ type Model = CommonType.RecordNullable<
     | 'executorName'
     | 'argsStr'
     | 'retryStatus'
-    | 'labels'
-    | 'labelMap'
+    | 'serializerName'
+    | 'argsType'
   >
 >;
 
@@ -71,14 +71,14 @@ function createDefaultModel(): Model {
     executorName: '',
     argsStr: '',
     retryStatus: 0,
-    labels: '{}',
-    labelMap: []
+    serializerName: 'fory',
+    argsType: 1
   };
 }
 
 type RuleKey = Extract<
   keyof Model,
-  'groupName' | 'sceneName' | 'idempotentId' | 'bizNo' | 'executorName' | 'retryStatus'
+  'groupName' | 'sceneName' | 'idempotentId' | 'bizNo' | 'executorName' | 'retryStatus' | 'serializerName'
 >;
 
 const rules: Record<RuleKey, App.Global.FormRule> = {
@@ -87,31 +87,12 @@ const rules: Record<RuleKey, App.Global.FormRule> = {
   idempotentId: defaultRequiredRule,
   bizNo: defaultRequiredRule,
   executorName: defaultRequiredRule,
-  // argsStr: { ...defaultRequiredRule, required: false, validator: validatorArgsStr },
+  serializerName: defaultRequiredRule,
   retryStatus: defaultRequiredRule
 };
 
-// function validatorArgsStr() {
-//   if (argsList.value.length === 0) {
-//     return false;
-//   }
-
-//   try {
-//     argsList.value.forEach(arg => {
-//       if (!isNotNull(arg)) {
-//         throw new Error($t('form.required'));
-//       }
-//     });
-//   } catch {
-//     return false;
-//   }
-
-//   return true;
-// }
-
 function handleUpdateModelWhenEdit() {
   argsList.value = [];
-  model.labelMap = [];
 
   if (props.operateType === 'add') {
     Object.assign(model, createDefaultModel());
@@ -121,11 +102,6 @@ function handleUpdateModelWhenEdit() {
   if (props.operateType === 'edit' && props.rowData) {
     Object.assign(model, props.rowData);
     argsList.value = JSON.parse(props.rowData.argsStr || '[]');
-    if (props.rowData.labels) {
-      model.labelMap = Object.entries(JSON.parse(props.rowData.labels)).map(([key, value]) => {
-        return { key, value: value as string };
-      });
-    }
   }
 }
 
@@ -136,22 +112,18 @@ function closeDrawer() {
 async function handleSubmit() {
   await validate();
 
-  const labels: Record<string, string> = {};
-  model.labelMap?.forEach(item => {
-    labels[item.key] = item.value;
-  });
-
   if (props.operateType === 'add') {
-    const { groupName, sceneName, idempotentId, bizNo, executorName, retryStatus } = model;
+    const { groupName, sceneName, idempotentId, bizNo, executorName, retryStatus, serializerName, argsStr, argsType } =
+      model;
     const { error } = await fetchAddRetry({
       groupName,
       sceneName,
       idempotentId,
       bizNo,
       executorName,
-      argsStr: JSON.stringify(argsList.value),
+      argsStr: argsType === 1 ? argsStr : JSON.stringify(argsList.value),
       retryStatus,
-      labels: JSON.stringify(labels)
+      serializerName
     });
     if (error) return;
     window.$message?.success($t('common.addSuccess'));
@@ -171,13 +143,15 @@ watch(visible, () => {
 async function setIdempotentId() {
   const groupName = model.groupName;
   const sceneName = model.sceneName;
+  const serializerName = model.serializerName;
   const executorName = model.executorName;
-  const argsStr = JSON.stringify(argsList.value);
+  const argsStr = model.argsType === 1 ? model.argsStr : JSON.stringify(argsList.value);
   const { data: idempotentId, error } = await fetchIdempotentIdGenerate({
     groupName,
     sceneName,
     executorName,
-    argsStr
+    argsStr,
+    serializerName
   });
   if (!error) {
     model.idempotentId = idempotentId;
@@ -212,15 +186,27 @@ async function setIdempotentId() {
           :disabled="props.operateType === 'edit'"
         />
       </NFormItem>
-      <NFormItem
-        :label="$t('page.retry.labels')"
-        path="labelMap"
-        :show-feedback="model.labelMap?.length ? false : true"
-      >
-        <LabelsInput v-model:value="model.labelMap!" path="labelMap" />
+      <NFormItem :label="$t('page.retryTask.argsType')" path="argsType">
+        <NRadioGroup v-model:value="model.argsType" name="argsType">
+          <NSpace>
+            <NRadio
+              v-for="item in retryArgsTypeRecordOptions"
+              :key="item.value"
+              :value="item.value"
+              :label="$t(item.label)"
+            />
+          </NSpace>
+        </NRadioGroup>
+      </NFormItem>
+      <NFormItem :label="$t('page.retryTask.serializerName')" path="serializerName">
+        <NInput
+          v-model:value="model.serializerName"
+          :placeholder="$t('page.retryTask.form.serializerName')"
+          :disabled="props.operateType === 'edit'"
+        />
       </NFormItem>
       <NFormItem :label="$t('page.retry.argsStr')" path="argsStr">
-        <NDynamicInput v-model:value="argsList" :on-create="() => ''">
+        <NDynamicInput v-if="model.argsType === 2" v-model:value="argsList" :on-create="() => ''">
           <template #default="{ index }">
             <NFormItem
               class="w-full"
@@ -233,6 +219,7 @@ async function setIdempotentId() {
             </NFormItem>
           </template>
         </NDynamicInput>
+        <CodeMirror v-else v-model="model.argsStr as any" lang="js" :placeholder="$t('page.retry.argsStr')" />
       </NFormItem>
       <NFormItem :label="$t('page.retryTask.idempotentId')" path="idempotentId">
         <NInputGroup>

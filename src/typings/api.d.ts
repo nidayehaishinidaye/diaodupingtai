@@ -777,6 +777,8 @@ declare namespace Api {
 
     type TaskType = 1 | 2;
 
+    type ArgsType = 1 | 2;
+
     /** RetryTask */
     type Retry = Common.CommonRecord<{
       /** 组名称 */
@@ -803,9 +805,7 @@ declare namespace Api {
       retryStatus: RetryStatusType;
       /** 任务类型 1、重试数据 2、回调数据 */
       taskType?: TaskType;
-      /** 标签 */
-      labels: string;
-      labelMap?: { key: string; value: string }[];
+      argsType: number;
     }>;
 
     type RetryBatchAdd = {
@@ -843,6 +843,10 @@ declare namespace Api {
       argsStr: string;
       /** 执行器名称 */
       executorName: string;
+      /** 序列化名称 */
+      serializerName: string;
+      /** 是否使用原始参数 */
+      useOriginArgs: number;
     };
 
     /** RetryTask search params */

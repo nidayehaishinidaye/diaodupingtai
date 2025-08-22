@@ -437,3 +437,9 @@ export const jobExecutorEnum: Workflow.JobTagType = {
     color: '#d06892'
   }
 };
+
+export const retryArgsTypeRecord: Record<Api.Retry.ArgsType, App.I18n.I18nKey> = {
+  1: 'page.retry.argsType.str',
+  2: 'page.retry.argsType.arrays'
+};
+export const retryArgsTypeRecordOptions = transformRecordToNumberOption(retryArgsTypeRecord, false);

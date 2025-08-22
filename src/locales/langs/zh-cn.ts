@@ -739,7 +739,11 @@ const local: App.I18n.Schema = {
       generateIdempotentId: '通过客户端生成',
       addRetry: '新增重试',
       editRetry: '编辑重试',
-      batchAddRetry: '批量新增'
+      batchAddRetry: '批量新增',
+      argsType: {
+        arrays: '数组(JSON序列化)',
+        str: '字符串(FORY等二进制类型的序列化)'
+      }
     },
     retryScene: {
       title: '场景列表',
@@ -805,12 +809,16 @@ const local: App.I18n.Schema = {
       updateDt: '更新时间',
       operationReason: '操作原因',
       retryId: '重试ID',
+      serializerName: '序列化名称',
+      argsType: '参数类型',
       form: {
         groupName: '请输入组名称',
         idempotentId: '请输入幂等id',
         sceneName: '请输入场景名称',
         bizNo: '请输入业务编号',
-        retryId: '请输入重试ID'
+        retryId: '请输入重试ID',
+        serializerName: '序列化名称',
+        argsType: '请选择参数类型'
       },
       addRetryTask: '新增重试任务',
       editRetryTask: '编辑重试任务'

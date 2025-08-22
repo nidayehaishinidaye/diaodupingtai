@@ -942,6 +942,10 @@ declare namespace App {
           addRetry: string;
           editRetry: string;
           batchAddRetry: string;
+          argsType: {
+            arrays: string;
+            str: string;
+          };
         };
         retryScene: {
           title: string;
@@ -1007,12 +1011,16 @@ declare namespace App {
           updateDt: string;
           operationReason: string;
           retryId: string;
+          serializerName: string;
+          argsType: string;
           form: {
             groupName: string;
             idempotentId: string;
             sceneName: string;
             bizNo: string;
             retryId: string;
+            serializerName: string;
+            argsType: string;
           };
           addRetryTask: string;
           editRetryTask: string;

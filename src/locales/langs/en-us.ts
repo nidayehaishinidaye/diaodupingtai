@@ -731,7 +731,11 @@ const local: App.I18n.Schema = {
       generateIdempotentId: 'Generate by client',
       addRetry: 'Add Retry task',
       editRetry: 'Add Retry task',
-      batchAddRetry: 'Batch add retry task'
+      batchAddRetry: 'Batch add retry task',
+      argsType: {
+        arrays: 'Arrays(JSON Serializer)',
+        str: 'String(Serialization of binary types such as FORY)'
+      }
     },
     retryScene: {
       title: 'Scene List',
@@ -797,12 +801,16 @@ const local: App.I18n.Schema = {
       updateDt: 'Update time',
       operationReason: 'Operation reason',
       retryId: 'Retry id',
+      serializerName: 'SerializerName',
+      argsType: 'Args Type',
       form: {
         groupName: 'Please enter Group name',
         idempotentId: 'Please enter Idempotent ID',
         sceneName: 'Please enter Scene name',
         bizNo: 'Please enter Business Number',
-        retryId: 'Please enter retry id'
+        retryId: 'Please enter retry id',
+        serializerName: 'Please enter serializer name',
+        argsType: 'Please choose args type'
       },
       addRetryTask: 'Add Retry Task',
       editRetryTask: 'Add Retry Task'
