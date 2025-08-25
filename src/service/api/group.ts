@@ -43,14 +43,6 @@ export function fetchUpdateGroupStatus(data: Api.GroupConfig.GroupConfigRequestV
   });
 }
 
-/** get partition table list */
-export function fetchGetPartitionTableList() {
-  return request<number[]>({
-    url: '/group/partition-table/list',
-    method: 'get'
-  });
-}
-
 /** get all group config list */
 export function fetchGetAllGroupConfigList(data: string[]) {
   return request<Api.GroupConfig.GroupConfig[]>({

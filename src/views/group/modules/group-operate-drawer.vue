@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, reactive, watch } from 'vue';
 import { useClipboard } from '@vueuse/core';
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 import { $t } from '@/locales';
 import { groupConfigStatusOptions, groupConfigYesOrNoOptions } from '@/constants/business';
-import { fetchAddGroupConfig, fetchEditGroupConfig, fetchGetPartitionTableList } from '@/service/api/group';
+import { fetchAddGroupConfig, fetchEditGroupConfig } from '@/service/api/group';
 
 defineOptions({
   name: 'GroupOperateDrawer'
@@ -40,8 +40,6 @@ const title = computed(() => {
   };
   return titles[props.operateType];
 });
-
-const partitionList = ref<string[]>([]);
 
 type Model = Pick<
   Api.GroupConfig.GroupConfig,
@@ -149,14 +147,8 @@ function generateToken(length: number) {
   return token;
 }
 
-const getAllPartitions = async () => {
-  const { data } = await fetchGetPartitionTableList();
-  partitionList.value = data!.map(p => String(p));
-};
-
 watch(visible, () => {
   if (visible.value) {
-    getAllPartitions(); // 因为drawer会keepalive，onMounted不能报账每次打开drawer会调用刷新
     handleUpdateModelWhenEdit();
     restoreValidation();
   }
@@ -271,13 +263,6 @@ async function handleCopy(source: string) {
               </NSpace>
             </NRadioGroup>
           </NFormItem>
-          <!--          <NFormItem :label="$t('page.groupConfig.groupPartition')" path="groupPartition">-->
-          <!--            <NSelect-->
-          <!--              v-model:value="model.groupPartition"-->
-          <!--              :placeholder="$t('page.groupConfig.form.groupPartition')"-->
-          <!--              :options="translateOptions2(partitionList)"-->
-          <!--            />-->
-          <!--          </NFormItem>-->
         </NCollapseItem>
       </NCollapse>
     </NForm>
