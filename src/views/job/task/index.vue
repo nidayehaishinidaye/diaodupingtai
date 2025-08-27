@@ -1,17 +1,17 @@
 <script setup lang="tsx">
+import { ref } from 'vue';
 import { NButton, NDropdown, NPopconfirm, NPopover, NTag } from 'naive-ui';
 import { useBoolean } from '@sa/hooks';
-import { ref } from 'vue';
 import { jsonClone } from '@sa/utils';
+import { blockStrategyRecord, taskTypeRecord, triggerTypeRecord } from '@/constants/business';
 import { fetchBatchDeleteJob, fetchGetJobPage, fetchUpdateJobStatus } from '@/service/api';
-import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import { blockStrategyRecord, taskTypeRecord, triggerTypeRecord } from '@/constants/business';
-import StatusSwitch from '@/components/common/status-switch.vue';
 import { useRouterPush } from '@/hooks/common/router';
 import { useAuth } from '@/hooks/business/auth';
 import { downloadFetch } from '@/utils/download';
+import StatusSwitch from '@/components/common/status-switch.vue';
+import { $t } from '@/locales';
 import LabelList from '@/components/common/label-list.vue';
 import JobTaskOperateDrawer from './modules/job-task-operate-drawer.vue';
 import JobTaskTriggerModal from './modules/job-task-trigger-modal.vue';
@@ -375,6 +375,7 @@ function copy(id: string) {
 
 async function handleTriggerJob(job: Api.Job.Job) {
   triggerData.value = jsonClone(job);
+  console.log('triggerData:', triggerData.value);
   openTriggerModal();
 }
 
@@ -406,7 +407,7 @@ function handleExport() {
       :title="$t('page.jobTask.title')"
       :bordered="false"
       size="small"
-      class="sm:flex-1-hidden card-wrapper"
+      class="card-wrapper sm:flex-1-hidden"
       header-class="view-card-header"
     >
       <template #header-extra>

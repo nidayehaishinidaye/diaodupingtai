@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import type { SelectOption } from 'naive-ui';
+import { fetchGetWorkflowNameList } from '@/service/api';
 import { $t } from '@/locales';
 import SelectGroup from '@/components/common/select-group.vue';
 import TaskBatchStatus from '@/components/common/task-batch-status.vue';
 import DatetimeRange from '@/components/common/datetime-range.vue';
-
-import { fetchGetWorkflowNameList } from '@/service/api';
 
 defineOptions({
   name: 'WorkflowBatchSearch'

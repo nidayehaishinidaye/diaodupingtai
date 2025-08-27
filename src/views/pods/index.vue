@@ -1,10 +1,10 @@
 <script setup lang="tsx">
 import { NButton, NDivider, NPopconfirm, NTag, NTooltip } from 'naive-ui';
-import { useAppStore } from '@/store/modules/app';
-import { fetchPods, fetchUpdatePodsStatus } from '@/service/api';
-import { $t } from '@/locales';
 import { executorTypeRecord, podsType } from '@/constants/business';
+import { fetchPods, fetchUpdatePodsStatus } from '@/service/api';
+import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
+import { $t } from '@/locales';
 import LabelList from '@/components/common/label-list.vue';
 import PodsSearch from './modules/pods-search.vue';
 import PodsOperateDrawer from './modules/pods-operate-drawer.vue';
@@ -307,7 +307,7 @@ function edit(id: string) {
       :bordered="false"
       size="small"
       header-class="view-card-header"
-      class="sm:flex-1-hidden card-wrapper"
+      class="card-wrapper sm:flex-1-hidden"
     >
       <template #header-extra>
         <TableHeaderOperation

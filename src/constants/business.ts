@@ -1,5 +1,5 @@
-import { $t } from '@/locales';
 import { transformRecordToNumberOption } from '@/utils/common';
+import { $t } from '@/locales';
 
 export const yesOrNoRecord: Record<Api.Common.YesOrNo, App.I18n.I18nKey> = {
   '0': 'common.yesOrNo.no',

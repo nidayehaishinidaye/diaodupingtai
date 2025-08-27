@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 import type { OptionValue } from 'naive-ui/es/transfer/src/interface';
+import { groupConfigYesOrNoOptions, roleRecordOptions } from '@/constants/business';
+import { fetchAddUser, fetchEditUser, fetchGetAllGroupConfigList } from '@/service/api';
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
+import { md5 } from '@/utils/common';
 import OperateDrawer from '@/components/common/operate-drawer.vue';
 import { $t } from '@/locales';
-import { md5 } from '@/utils/common';
-import { fetchAddUser, fetchEditUser, fetchGetAllGroupConfigList } from '@/service/api';
-import { groupConfigYesOrNoOptions, roleRecordOptions } from '@/constants/business';
 import Permission = Api.UserManager.Permission;
 
 defineOptions({

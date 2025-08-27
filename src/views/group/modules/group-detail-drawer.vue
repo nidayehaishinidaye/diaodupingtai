@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core';
 import { groupConfigStatusRecord, yesOrNoRecord } from '@/constants/business';
-import { $t } from '@/locales';
 import { tagColor } from '@/utils/common';
+import { $t } from '@/locales';
 defineOptions({
   name: 'GroupDetailDrawer'
 });

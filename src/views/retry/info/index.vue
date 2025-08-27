@@ -1,7 +1,7 @@
 <script setup lang="tsx">
-import { NButton, NDropdown, NPopconfirm, NTag, NTooltip } from 'naive-ui';
 import { onMounted, ref } from 'vue';
-import { useBoolean } from '~/packages/hooks';
+import { NButton, NDropdown, NPopconfirm, NTag, NTooltip } from 'naive-ui';
+import { retryStatusTypeRecord, retryTaskTypeRecord } from '@/constants/business';
 import {
   fetchBatchDeleteRetry,
   fetchExecuteRetry,
@@ -10,17 +10,17 @@ import {
   fetchGetRetryList,
   fetchUpdateRetryStatus
 } from '@/service/api';
-import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import { retryStatusTypeRecord, retryTaskTypeRecord } from '@/constants/business';
-import { tagColor } from '@/utils/common';
-import SvgIcon from '@/components/custom/svg-icon.vue';
 import { useRouterPush } from '@/hooks/common/router';
+import { tagColor } from '@/utils/common';
+import { $t } from '@/locales';
+import SvgIcon from '@/components/custom/svg-icon.vue';
 import RetryTaskOperateDrawer from './modules/retry-operate-drawer.vue';
 import RetryTaskBatchAddDrawer from './modules/retr-batch-add-drawer.vue';
 import RetryTaskSearch from './modules/retry-search.vue';
 import RetryTaskDetailDrawerVue from './modules/retry-detail-drawer.vue';
+import { useBoolean } from '~/packages/hooks';
 
 /** 详情页属性数据 */
 const detailData = ref<Api.Retry.Retry | null>();
@@ -396,7 +396,7 @@ onMounted(async () => {
       :title="$t('page.retry.title')"
       :bordered="false"
       size="small"
-      class="sm:flex-1-hidden card-wrapper"
+      class="card-wrapper sm:flex-1-hidden"
       header-class="view-card-header"
     >
       <template #header-extra>

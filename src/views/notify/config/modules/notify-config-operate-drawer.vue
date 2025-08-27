@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue';
-import { useFormRules, useNaiveForm } from '@/hooks/common/form';
-import OperateDrawer from '@/components/common/operate-drawer.vue';
-import { $t } from '@/locales';
+import {
+  enableStatusNumberOptions,
+  jobNotifySceneOptions,
+  retryNotifySceneOptions,
+  systemTaskTypeOptions,
+  workflowNotifySceneOptions
+} from '@/constants/business';
 import {
   fetchAddNotify,
   fetchEditNotify,
@@ -11,14 +15,10 @@ import {
   fetchGetRetrySceneList,
   fetchGetWorkflowNameList
 } from '@/service/api';
-import {
-  enableStatusNumberOptions,
-  jobNotifySceneOptions,
-  retryNotifySceneOptions,
-  systemTaskTypeOptions,
-  workflowNotifySceneOptions
-} from '@/constants/business';
+import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 import { translateOptions } from '@/utils/common';
+import OperateDrawer from '@/components/common/operate-drawer.vue';
+import { $t } from '@/locales';
 import SelectGroup from '@/components/common/select-group.vue';
 
 defineOptions({

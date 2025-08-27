@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue';
 import { type FormInst, NInputNumber } from 'naive-ui';
-import { useFormRules } from '@/hooks/common/form';
-import { $t } from '@/locales';
 import { fetchTriggerJobParams } from '@/service/api';
-import CodeMirror from '@/components/common/code-mirror.vue';
+import { useFormRules } from '@/hooks/common/form';
 import { isNotNull } from '@/utils/common';
+import { $t } from '@/locales';
+import CodeMirror from '@/components/common/code-mirror.vue';
 
 defineOptions({
   name: 'JobTaskTriggerModal'
@@ -109,17 +109,22 @@ function createDefaultScriptParams() {
 }
 
 function handleUpdateModelWhenEdit() {
+  console.log('112: props.rowData:', props.rowData);
+  console.log('113: model:', model);
+
   httpHeaders.value = [];
   Object.assign(httpParams, createDefaultHttpParams());
   Object.assign(scriptParams, createDefaultScriptParams());
   Object.assign(model, createDefaultModel());
 
+  console.log('120: model:', model);
   if (!props.rowData) {
     return;
   }
 
   model.jobId = props.rowData?.id;
   model.tmpArgsStr = props.rowData?.argsStr;
+  console.log('127: model:', model);
 
   const taskType = props.rowData.taskType;
   const argsStr = props.rowData.argsStr;
@@ -155,6 +160,7 @@ function handleUpdateModelWhenEdit() {
       Object.assign(scriptParams, JSON.parse(argsStr));
     }
   }
+  console.log('163: model:', model);
 }
 
 function closeDrawer() {

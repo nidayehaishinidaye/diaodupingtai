@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import Workflow from '@/components/workflow';
-import { useWorkflowStore } from '@/store/modules/workflow';
-import { $t } from '@/locales';
 import { fetchAddWorkflow } from '@/service/api';
+import { useWorkflowStore } from '@/store/modules/workflow';
+import Workflow from '@/components/workflow';
+import { $t } from '@/locales';
 
 const store = useWorkflowStore();
 const router = useRouter();

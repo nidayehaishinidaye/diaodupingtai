@@ -1,9 +1,9 @@
 <script setup lang="tsx">
 import { ref } from 'vue';
 import { executorTypeRecord, operationReasonRecord, taskBatchStatusRecord } from '@/constants/business';
-import { $t } from '@/locales';
-import { tagColor } from '@/utils/common';
 import { fetchJobBatchRetry } from '@/service/api';
+import { tagColor } from '@/utils/common';
+import { $t } from '@/locales';
 
 defineOptions({
   name: 'JobBatchDetailDrawer'

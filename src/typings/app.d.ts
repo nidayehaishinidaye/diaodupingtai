@@ -58,6 +58,10 @@ declare namespace App {
           /** Whether to show the multilingual */
           visible: boolean;
         };
+        globalSearch: {
+          /** Whether to show the GlobalSearch */
+          visible: boolean;
+        };
       };
       /** Tab */
       tab: {
@@ -108,6 +112,8 @@ declare namespace App {
         visible: boolean;
         /** Watermark text */
         text: string;
+        /** Whether to use user name as watermark text */
+        enableUserName: boolean;
       };
       /** define some theme settings tokens, will transform to css variables */
       tokens: {
@@ -174,6 +180,13 @@ declare namespace App {
     type RouteMap = import('@elegant-router/types').RouteMap;
     type RoutePath = import('@elegant-router/types').RoutePath;
     type LastLevelRouteKey = import('@elegant-router/types').LastLevelRouteKey;
+
+    /** The router push options */
+    type RouterPushOptions = {
+      query?: Record<string, string>;
+      params?: Record<string, string>;
+      state?: Record<string, any>;
+    };
 
     /** The global header props */
     interface HeaderProps {
@@ -573,6 +586,9 @@ declare namespace App {
           multilingual: {
             visible: string;
           };
+          globalSearch: {
+            visible: string;
+          };
         };
         tab: {
           visible: string;
@@ -597,6 +613,7 @@ declare namespace App {
         watermark: {
           visible: string;
           text: string;
+          enableUserName: string;
         };
         themeDrawerTitle: string;
         pageFunTitle: string;

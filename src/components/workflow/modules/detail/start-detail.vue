@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { $t } from '@/locales';
 import { blockStrategyRecord, triggerTypeRecord, workFlowNodeStatusRecord } from '@/constants/business';
+import { $t } from '@/locales';
 
 defineOptions({
   name: 'StartDetail'

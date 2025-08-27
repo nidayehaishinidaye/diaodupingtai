@@ -1,17 +1,17 @@
 <script setup lang="tsx">
-import { NButton, NPopconfirm, NTag } from 'naive-ui';
 import { useRouter } from 'vue-router';
+import { NButton, NPopconfirm, NTag } from 'naive-ui';
+import { operationReasonRecord, taskBatchStatusRecord } from '@/constants/business';
 import {
   fetchBatchDeleteWorkflowBatch,
   fetchDeleteWorkflowBatch,
   fetchGetWorkflowBatchList,
   fetchStopWorkflowBatch
 } from '@/service/api';
-import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import { operationReasonRecord, taskBatchStatusRecord } from '@/constants/business';
 import { monthRangeISO8601, tagColor } from '@/utils/common';
+import { $t } from '@/locales';
 import WorkflowBatchSearch from './modules/workflow-batch-search.vue';
 
 const router = useRouter();
@@ -198,7 +198,7 @@ function handleDetail(id: string) {
       :title="$t('page.workflowBatch.title')"
       :bordered="false"
       size="small"
-      class="sm:flex-1-hidden card-wrapper"
+      class="card-wrapper sm:flex-1-hidden"
       header-class="view-card-header"
     >
       <template #header-extra>

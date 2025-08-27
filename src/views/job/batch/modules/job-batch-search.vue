@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import type { SelectOption } from 'naive-ui';
+import { taskBatchStatusRecordOptions } from '@/constants/business';
+import { fetchGetJobNameList } from '@/service/api';
+import { translateOptions } from '@/utils/common';
 import SelectGroup from '@/components/common/select-group.vue';
 import DatetimeRange from '@/components/common/datetime-range.vue';
 import { $t } from '@/locales';
-import { fetchGetJobNameList } from '@/service/api';
-import { taskBatchStatusRecordOptions } from '@/constants/business';
-import { translateOptions } from '@/utils/common';
 
 defineOptions({
   name: 'JobBatchSearch'

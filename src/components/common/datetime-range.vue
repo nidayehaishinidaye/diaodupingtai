@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { $t } from '@/locales';
 import { dayRange, monthRange } from '@/utils/common';
+import { $t } from '@/locales';
 
 defineOptions({
   name: 'DatetimeRange'

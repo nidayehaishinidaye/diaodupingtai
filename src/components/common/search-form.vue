@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
-import { useNaiveForm } from '@/hooks/common/form';
 import { useSearchStore } from '@/store/modules/search';
+import { useNaiveForm } from '@/hooks/common/form';
+import { $t } from '@/locales';
 
 defineOptions({
   name: 'SearchForm'

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { nextTick, ref, watch } from 'vue';
-import { $t } from '@/locales';
-import { useWorkflowStore } from '@/store/modules/workflow';
 import { contentTypeRecord, taskBatchStatusEnum } from '@/constants/business';
+import { useWorkflowStore } from '@/store/modules/workflow';
+import { $t } from '@/locales';
 import CallbackDrawer from '../drawer/callback-drawer.vue';
 import CallbackDetail from '../detail/callback-detail.vue';
 import DetailCard from '../common/detail-card.vue';

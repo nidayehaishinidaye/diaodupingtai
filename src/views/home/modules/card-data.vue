@@ -2,9 +2,9 @@
 import { computed, nextTick, onUnmounted, reactive } from 'vue';
 import { createReusableTemplate } from '@vueuse/core';
 import { getPaletteColorByNumber } from '@sa/color';
-import { $t } from '@/locales';
 import { useThemeStore } from '@/store/modules/theme';
 import { useRouterPush } from '@/hooks/common/router';
+import { $t } from '@/locales';
 import DardRetryChart from './card-retry-chart.vue';
 
 const { routerPushByKey } = useRouterPush();

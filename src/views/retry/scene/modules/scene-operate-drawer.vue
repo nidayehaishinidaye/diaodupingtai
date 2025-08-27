@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue';
-import { useFormRules, useNaiveForm } from '@/hooks/common/form';
-import OperateDrawer from '@/components/common/operate-drawer.vue';
-import RouteKey from '@/components/common/route-key.vue';
-import { $t } from '@/locales';
-import { fetchAddRetryScene, fetchEditRetryScene, fetchGetNotifyConfigSystemTaskTypeList } from '@/service/api';
 import {
   DelayLevel,
   backOffRecordOptions,
   enableStatusNumberOptions,
   groupConfigYesOrNoOptions
 } from '@/constants/business';
+import { fetchAddRetryScene, fetchEditRetryScene, fetchGetNotifyConfigSystemTaskTypeList } from '@/service/api';
+import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 import { isNotNull, translateOptions } from '@/utils/common';
+import OperateDrawer from '@/components/common/operate-drawer.vue';
+import RouteKey from '@/components/common/route-key.vue';
+import { $t } from '@/locales';
 import BlockStrategy from '@/components/common/block-strategy.vue';
 
 defineOptions({

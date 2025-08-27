@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import Vcode from 'vue3-puzzle-vcode';
+import { useAuthStore } from '@/store/modules/auth';
+import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 import { md5 } from '@/utils/common';
 import { $t } from '@/locales';
-import { useFormRules, useNaiveForm } from '@/hooks/common/form';
-import { useAuthStore } from '@/store/modules/auth';
 
 defineOptions({
   name: 'PwdLogin'

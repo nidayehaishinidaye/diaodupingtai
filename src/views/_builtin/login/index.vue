@@ -2,13 +2,13 @@
 import { computed, ref } from 'vue';
 import type { Component } from 'vue';
 import { getPaletteColorByNumber, mixColor } from '@sa/color';
-import { $t } from '@/locales';
-import GlobalFooter from '@/layouts/modules/global-footer/index.vue';
+import { loginModuleRecord } from '@/constants/app';
+import { fetchVersion } from '@/service/api';
 import { useAppStore } from '@/store/modules/app';
 import { useThemeStore } from '@/store/modules/theme';
-import { loginModuleRecord } from '@/constants/app';
 import { localStg } from '@/utils/storage';
-import { fetchVersion } from '@/service/api';
+import { $t } from '@/locales';
+import GlobalFooter from '@/layouts/modules/global-footer/index.vue';
 import PwdLogin from './modules/pwd-login.vue';
 
 interface Props {

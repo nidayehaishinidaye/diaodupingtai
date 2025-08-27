@@ -3,11 +3,11 @@ import { nextTick, ref, useSlots, watch } from 'vue';
 import { NTag } from 'naive-ui';
 import hljs from 'highlight.js/lib/core';
 import json from 'highlight.js/lib/languages/json';
-import { isNotNull } from '@/utils/common';
 import { jobExecutorEnum, jobOperationReasonEnum, jobStatusEnum, taskBatchStatusEnum } from '@/constants/business';
-import { useWorkflowStore } from '@/store/modules/workflow';
-import { $t } from '@/locales';
 import { fetchGetJobBatchDetail, fetchGetJobDetail, fetchWorkflowNodeRetry } from '@/service/api';
+import { useWorkflowStore } from '@/store/modules/workflow';
+import { isNotNull } from '@/utils/common';
+import { $t } from '@/locales';
 
 defineOptions({
   name: 'DetailCard'

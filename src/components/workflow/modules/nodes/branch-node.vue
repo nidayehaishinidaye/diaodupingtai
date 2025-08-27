@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { nextTick, ref, watch } from 'vue';
-import { $t } from '@/locales';
-import { useWorkflowStore } from '@/store/modules/workflow';
 import { expressionRecord, taskBatchStatusEnum } from '@/constants/business';
+import { useWorkflowStore } from '@/store/modules/workflow';
+import { $t } from '@/locales';
 import BranchDrawer from '../drawer/branch-drawer.vue';
 import BranchDetail from '../detail/branch-detail.vue';
 import DetailCard from '../common/detail-card.vue';

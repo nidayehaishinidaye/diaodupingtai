@@ -11,4 +11,5 @@ body,
 
 html {
   overflow-x: hidden;
+  color: rgb(var(--base-text-color));
 }

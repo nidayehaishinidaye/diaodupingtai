@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed, reactive, watch } from 'vue';
-import { nanoid } from '@sa/utils';
 import { useClipboard } from '@vueuse/core';
+import { nanoid } from '@sa/utils';
+import { fetchAddNamespace, fetchEditNamespace } from '@/service/api';
+import { useAuthStore } from '@/store/modules/auth';
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 import OperateDrawer from '@/components/common/operate-drawer.vue';
 import { $t } from '@/locales';
-import { fetchAddNamespace, fetchEditNamespace } from '@/service/api';
-import { useAuthStore } from '@/store/modules/auth';
 
 defineOptions({
   name: 'NamespaceOperateDrawer'

@@ -6,10 +6,10 @@ import {
   workflowTriggerTypeOptions as triggerTypeOptions,
   workFlowNodeStatusOptions
 } from '@/constants/business';
-import { $t } from '@/locales';
 import { fetchGetAllGroupNameList, fetchGetNotifyConfigSystemTaskTypeList } from '@/service/api';
-import { isNotNull, parseContent, stringToContent } from '@/utils/common';
 import { useWorkflowStore } from '@/store/modules/workflow';
+import { isNotNull, parseContent, stringToContent } from '@/utils/common';
+import { $t } from '@/locales';
 import EditableInput from '@/components/common/editable-input.vue';
 
 defineOptions({

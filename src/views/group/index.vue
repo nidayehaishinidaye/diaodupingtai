@@ -1,16 +1,16 @@
 <script setup lang="tsx">
-import { NButton, NPopconfirm, NTag } from 'naive-ui';
 import { ref } from 'vue';
+import { NButton, NPopconfirm, NTag } from 'naive-ui';
 import { useBoolean } from '@sa/hooks';
+import { yesOrNoRecord } from '@/constants/business';
 import { fetchDeleteGroup, fetchGetGroupConfigList, fetchUpdateGroupStatus } from '@/service/api';
-import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import { yesOrNoRecord } from '@/constants/business';
-import { tagColor } from '@/utils/common';
-import StatusSwitch from '@/components/common/status-switch.vue';
 import { useAuth } from '@/hooks/business/auth';
+import { tagColor } from '@/utils/common';
 import { downloadFetch } from '@/utils/download';
+import StatusSwitch from '@/components/common/status-switch.vue';
+import { $t } from '@/locales';
 import GroupOperateDrawer from './modules/group-operate-drawer.vue';
 import GroupDetailDrawer from './modules/group-detail-drawer.vue';
 import GroupSearch from './modules/group-search.vue';
@@ -177,7 +177,7 @@ function handleExport() {
       :bordered="false"
       size="small"
       header-class="view-card-header"
-      class="sm:flex-1-hidden card-wrapper"
+      class="card-wrapper sm:flex-1-hidden"
     >
       <template #header-extra>
         <TableHeaderOperation

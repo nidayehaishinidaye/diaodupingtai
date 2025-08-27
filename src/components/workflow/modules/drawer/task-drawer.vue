@@ -1,9 +1,9 @@
 <script setup lang="tsx">
 import { ref, watch } from 'vue';
 import { type FormInst, NTag, NTooltip } from 'naive-ui';
+import { failStrategyOptions, taskTypeRecord, workFlowNodeStatusOptions } from '@/constants/business';
 import { useWorkflowStore } from '@/store/modules/workflow';
 import { $t } from '@/locales';
-import { failStrategyOptions, taskTypeRecord, workFlowNodeStatusOptions } from '@/constants/business';
 import EditableInput from '@/components/common/editable-input.vue';
 
 defineOptions({

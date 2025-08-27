@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { $t } from '@/locales';
-import { translateOptions } from '@/utils/common';
 import { routeKeyRecordOptions } from '@/constants/business';
+import { translateOptions } from '@/utils/common';
+import { $t } from '@/locales';
 
 defineOptions({
   name: 'RouterKey'

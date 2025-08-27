@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { defineStore } from 'pinia';
 import { fetchGetJobList } from '@/service/api';
 import { SetupStoreId } from '@/enum';
 

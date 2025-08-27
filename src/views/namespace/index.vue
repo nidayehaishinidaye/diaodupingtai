@@ -1,13 +1,13 @@
 <script setup lang="tsx">
-import { NButton, NPopconfirm, NPopover } from 'naive-ui';
 import { ref } from 'vue';
 import { useClipboard } from '@vueuse/core';
+import { NButton, NPopconfirm, NPopover } from 'naive-ui';
 import { fetchDeleteNamespace, fetchGetNamespaceList } from '@/service/api';
-import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
+import { useAuthStore } from '@/store/modules/auth';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import { localStg } from '@/utils/storage';
-import { useAuthStore } from '@/store/modules/auth';
+import { $t } from '@/locales';
 import SvgIcon from '@/components/custom/svg-icon.vue';
 import NamespaceOperateDrawer from './modules/namespace-operate-drawer.vue';
 import NamespaceSearch from './modules/namespace-search.vue';
@@ -177,7 +177,7 @@ async function handleDelete(uniqueId: string) {
       :title="$t('page.namespace.title')"
       :bordered="false"
       size="small"
-      class="sm:flex-1-hidden card-wrapper"
+      class="card-wrapper sm:flex-1-hidden"
       header-class="view-card-header"
     >
       <template #header-extra>

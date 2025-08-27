@@ -1,12 +1,12 @@
 <script setup lang="tsx">
-import { NButton, NPopconfirm, NTag } from 'naive-ui';
 import { ref } from 'vue';
+import { NButton, NPopconfirm, NTag } from 'naive-ui';
 import { useBoolean } from '@sa/hooks';
+import { roleRecord } from '@/constants/business';
 import { fetchBatchDelteUser, fetchDelUser, fetchGetUserPageList } from '@/service/api';
-import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import { roleRecord } from '@/constants/business';
+import { $t } from '@/locales';
 import UserManagerOperateDrawer from './modules/user-manager-operate-drawer.vue';
 import UserManagerSearch from './modules/user-manager-search.vue';
 import UserManagerDetailDrawer from './modules/user-manager-detail-drawer.vue';
@@ -175,7 +175,7 @@ function edit(id: string) {
       :title="$t('page.userManager.title')"
       :bordered="false"
       size="small"
-      class="sm:flex-1-hidden card-wrapper"
+      class="card-wrapper sm:flex-1-hidden"
       header-class="view-card-header"
     >
       <template #header-extra>

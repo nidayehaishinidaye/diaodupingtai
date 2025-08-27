@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import type { FormInst, FormRules } from 'naive-ui';
+import { contentTypeOptions, workFlowNodeStatusOptions } from '@/constants/business';
 import { $t } from '@/locales';
 import EditableInput from '@/components/common/editable-input.vue';
-import { contentTypeOptions, workFlowNodeStatusOptions } from '@/constants/business';
 
 defineOptions({
   name: 'CallbackDrawer'

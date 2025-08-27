@@ -1,9 +1,9 @@
 <script setup lang="tsx">
 import { computed, ref, watch } from 'vue';
 import type { DataTableColumns } from 'naive-ui';
-import { $t } from '@/locales';
-import { useAppStore } from '@/store/modules/app';
 import { fetchAllGroupName, fetchJobLine, fetchRetryLine } from '@/service/api';
+import { useAppStore } from '@/store/modules/app';
+import { $t } from '@/locales';
 import DatetimeRange from '@/components/common/datetime-range.vue';
 import TaskLineChart from './task-line-chart.vue';
 import TaskPieChart from './task-pie-chart.vue';

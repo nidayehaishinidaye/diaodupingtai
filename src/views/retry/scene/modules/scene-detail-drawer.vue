@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { DelayLevel, backOffRecord, enableStatusNumberRecord, routeKeyRecord } from '@/constants/business';
-import { $t } from '@/locales';
 import { tagColor } from '@/utils/common';
+import { $t } from '@/locales';
 
 defineOptions({
   name: 'SceneDetailDrawer'

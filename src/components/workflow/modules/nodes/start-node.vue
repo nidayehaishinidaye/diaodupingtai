@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
-import { $t } from '@/locales';
-import { useWorkflowStore } from '@/store/modules/workflow';
 import { blockStrategyRecord, taskBatchStatusEnum } from '@/constants/business';
+import { useWorkflowStore } from '@/store/modules/workflow';
+import { $t } from '@/locales';
 import StartDetail from '../detail/start-detail.vue';
 import StartDrawer from '../drawer/start-drawer.vue';
 import AddNode from './add-node.vue';

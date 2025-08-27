@@ -1,15 +1,15 @@
 <script setup lang="tsx">
-import { NButton, NDivider, NPopconfirm, NTag } from 'naive-ui';
 import { ref } from 'vue';
+import { NButton, NDivider, NPopconfirm, NTag } from 'naive-ui';
 import { useBoolean } from '@sa/hooks';
+import { alarmTypeRecord } from '@/constants/business';
 import { fetchDeleteNotifyRecipient, fetchGetNotifyRecipientPageList } from '@/service/api';
-import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import { alarmTypeRecord } from '@/constants/business';
-import { tagColor } from '@/utils/common';
 import { useAuth } from '@/hooks/business/auth';
+import { tagColor } from '@/utils/common';
 import { downloadFetch } from '@/utils/download';
+import { $t } from '@/locales';
 import NotifyRecipientOperateDrawer from './modules/notify-recipient-operate-drawer.vue';
 import NotifyRecipientSearch from './modules/notify-recipient-search.vue';
 import NotifyRecipientDetailDrawer from './modules/notify-recipient-detail-drawer.vue';
@@ -164,7 +164,7 @@ function handleExport() {
       :title="$t('page.notifyRecipient.title')"
       :bordered="false"
       size="small"
-      class="sm:flex-1-hidden card-wrapper"
+      class="card-wrapper sm:flex-1-hidden"
       header-class="view-card-header"
     >
       <template #header-extra>

@@ -1,6 +1,6 @@
 <script setup lang="tsx">
-import { NButton, NPopconfirm } from 'naive-ui';
 import { onMounted, ref } from 'vue';
+import { NButton, NPopconfirm } from 'naive-ui';
 import { useBoolean } from '@sa/hooks';
 import {
   fetchDeleteRetryDeadLetter,
@@ -9,10 +9,10 @@ import {
   fetchGetRetryDeadLetterPageList,
   fetchRollbackRetryDeadLetter
 } from '@/service/api';
-import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import { monthRangeISO8601 } from '@/utils/common';
+import { $t } from '@/locales';
 import RetryDeadLetterSearch from './modules/dead-letter-search.vue';
 import RetryDeadLetterDetailDrawer from './modules/retry-letter-detail-drawer.vue';
 
@@ -178,7 +178,7 @@ onMounted(async () => {
       :title="$t('page.retryDeadLetter.title')"
       :bordered="false"
       size="small"
-      class="sm:flex-1-hidden card-wrapper"
+      class="card-wrapper sm:flex-1-hidden"
       header-class="view-card-header"
     >
       <template #header-extra>

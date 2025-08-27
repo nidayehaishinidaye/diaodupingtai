@@ -1,4 +1,8 @@
 <script setup lang="tsx">
+import { defineComponent, nextTick, onBeforeUnmount, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import type { UseWebSocketReturn } from '@vueuse/core';
+import { useWebSocket } from '@vueuse/core';
 import {
   NCard,
   NCollapse,
@@ -10,13 +14,9 @@ import {
   NVirtualList,
   type VirtualListInst
 } from 'naive-ui';
-import { defineComponent, nextTick, onBeforeUnmount, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
-import type { UseWebSocketReturn } from '@vueuse/core';
-import { useWebSocket } from '@vueuse/core';
-import ButtonIcon from '@/components/custom/button-icon.vue';
 import { initWebSocketUrl } from '@/utils/websocket';
 import { generateRandomString } from '@/utils/common';
+import ButtonIcon from '@/components/custom/button-icon.vue';
 
 defineOptions({
   name: 'LogDrawer'
@@ -389,7 +389,7 @@ const SnailLogComponent = defineComponent({
       <SnailLogComponent v-if="logList.length > 0" />
     </NDrawerContent>
   </NDrawer>
-  <NCard v-else :bordered="false" :title="title" size="small" class="h-full sm:flex-1-hidden card-wrapper">
+  <NCard v-else :bordered="false" :title="title" size="small" class="h-full card-wrapper sm:flex-1-hidden">
     <template #header-extra>
       <div class="flex items-center">
         <ButtonIcon

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { InputInst } from 'naive-ui';
 import { nextTick, ref, watch } from 'vue';
+import type { InputInst } from 'naive-ui';
 
 defineOptions({
   name: 'EditableInput'

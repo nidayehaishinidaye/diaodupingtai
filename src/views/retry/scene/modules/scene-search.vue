@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { enableStatusNumberOptions } from '@/constants/business';
+import { translateOptions } from '@/utils/common';
 import { $t } from '@/locales';
 import SelectGroup from '@/components/common/select-group.vue';
-import { translateOptions } from '@/utils/common';
-import { enableStatusNumberOptions } from '@/constants/business';
 
 defineOptions({
   name: 'SceneSearch'

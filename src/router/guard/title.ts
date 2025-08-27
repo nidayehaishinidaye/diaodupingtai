@@ -1,5 +1,5 @@
-import { useTitle } from '@vueuse/core';
 import type { Router } from 'vue-router';
+import { useTitle } from '@vueuse/core';
 import { $t } from '@/locales';
 
 const { VITE_APP_TITLE } = import.meta.env;

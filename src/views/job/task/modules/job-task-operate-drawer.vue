@@ -2,9 +2,6 @@
 import { computed, reactive, ref, watch } from 'vue';
 import { type FormInst, NInputNumber } from 'naive-ui';
 import dayjs from 'dayjs';
-import { useFormRules, useNaiveForm } from '@/hooks/common/form';
-import OperateDrawer from '@/components/common/operate-drawer.vue';
-import { $t } from '@/locales';
 import { enableStatusNumberOptions } from '@/constants/business';
 import {
   fetchAddJob,
@@ -12,13 +9,16 @@ import {
   fetchGetExecutorAllList,
   fetchGetNotifyConfigSystemTaskTypeList
 } from '@/service/api';
+import { useFormRules, useNaiveForm } from '@/hooks/common/form';
+import { isNotNull, translateOptions2 } from '@/utils/common';
+import OperateDrawer from '@/components/common/operate-drawer.vue';
+import { $t } from '@/locales';
 import RouteKey from '@/components/common/route-key.vue';
 import BlockStrategy from '@/components/common/block-strategy.vue';
 import ExecutorType from '@/components/common/executor-type.vue';
 import TaskType from '@/components/common/task-type.vue';
 import CodeMirror from '@/components/common/code-mirror.vue';
 import JobTriggerInterval from '@/components/common/job-trigger-interval.vue';
-import { isNotNull, translateOptions2 } from '@/utils/common';
 import SelectGroup from '@/components/common/select-group.vue';
 
 defineOptions({

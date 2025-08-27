@@ -1,5 +1,5 @@
-import { Md5 } from 'ts-md5';
 import dayjs from 'dayjs';
+import { Md5 } from 'ts-md5';
 import { $t } from '@/locales';
 
 /**
@@ -24,7 +24,7 @@ export function transformRecordToOption<T extends Record<string, string>>(record
   return Object.entries(record).map(([value, label]) => ({
     value,
     label
-  })) as CommonType.Option<keyof T>[];
+  })) as CommonType.Option<keyof T, T[keyof T]>[];
 }
 
 /**

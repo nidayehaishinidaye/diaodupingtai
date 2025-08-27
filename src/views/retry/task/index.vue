@@ -1,7 +1,7 @@
 <script setup lang="tsx">
-import { NButton, NPopconfirm, NTag, NTooltip } from 'naive-ui';
 import { ref } from 'vue';
-import { useBoolean } from '~/packages/hooks';
+import { NButton, NPopconfirm, NTag, NTooltip } from 'naive-ui';
+import { retryOperationReasonRecord, retryTaskStatusTypeRecord, retryTaskTypeRecord } from '@/constants/business';
 import {
   fetchBatchDeleteRetryTask,
   fetchDeleteRetryTask,
@@ -9,14 +9,14 @@ import {
   fetchRetryTaskPageList,
   fetchStopRetryTask
 } from '@/service/api';
-import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import { retryOperationReasonRecord, retryTaskStatusTypeRecord, retryTaskTypeRecord } from '@/constants/business';
 import { monthRangeISO8601, tagColor } from '@/utils/common';
+import { $t } from '@/locales';
 import SvgIcon from '@/components/custom/svg-icon.vue';
 import RetryLogSearch from './modules/retry-task-search.vue';
 import RetryLogDetailDrawer from './modules/retry-task-detail-drawer.vue';
+import { useBoolean } from '~/packages/hooks';
 
 const appStore = useAppStore();
 
@@ -250,7 +250,7 @@ async function handleStopRetry(id: string) {
       :title="$t('page.retryTask.title')"
       :bordered="false"
       size="small"
-      class="sm:flex-1-hidden card-wrapper"
+      class="card-wrapper sm:flex-1-hidden"
       header-class="view-card-header"
     >
       <template #header-extra>

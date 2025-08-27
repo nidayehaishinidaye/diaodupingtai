@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
-import OperateDrawer from '@/components/common/operate-drawer.vue';
-import { useFormRules, useNaiveForm } from '@/hooks/common/form';
-import { $t } from '@/locales';
-import { md5 } from '@/utils/common';
 import { fetchUpdateUserPassword } from '@/service/api';
 import { useAppStore } from '@/store/modules/app';
+import { useFormRules, useNaiveForm } from '@/hooks/common/form';
+import { md5 } from '@/utils/common';
+import OperateDrawer from '@/components/common/operate-drawer.vue';
+import { $t } from '@/locales';
 
 defineOptions({
   name: 'ChangePassword'

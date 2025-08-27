@@ -2,10 +2,10 @@
 import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { NEllipsis } from 'naive-ui';
-import { $t } from '@/locales';
-import { localStg } from '@/utils/storage';
 import { useAppStore } from '@/store/modules/app';
 import { useAuthStore } from '@/store/modules/auth';
+import { localStg } from '@/utils/storage';
+import { $t } from '@/locales';
 import ButtonIcon from '@/components/custom/button-icon.vue';
 import SvgIcon from '@/components/custom/svg-icon.vue';
 

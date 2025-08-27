@@ -2,10 +2,10 @@
 import { onMounted, ref, watch } from 'vue';
 import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 import { jsonClone } from '@sa/utils';
+import { fetchUpdateWorkflow, fetchWorkflowInfo } from '@/service/api';
+import { useWorkflowStore } from '@/store/modules/workflow';
 import Workflow from '@/components/workflow';
 import { $t } from '@/locales';
-import { useWorkflowStore } from '@/store/modules/workflow';
-import { fetchUpdateWorkflow, fetchWorkflowInfo } from '@/service/api';
 
 const store = useWorkflowStore();
 const route = useRoute();

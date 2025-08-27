@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, reactive, watch } from 'vue';
 import { useClipboard } from '@vueuse/core';
-import { useFormRules, useNaiveForm } from '@/hooks/common/form';
-import { $t } from '@/locales';
 import { groupConfigStatusOptions, groupConfigYesOrNoOptions } from '@/constants/business';
 import { fetchAddGroupConfig, fetchEditGroupConfig } from '@/service/api/group';
+import { useFormRules, useNaiveForm } from '@/hooks/common/form';
+import { $t } from '@/locales';
 
 defineOptions({
   name: 'GroupOperateDrawer'

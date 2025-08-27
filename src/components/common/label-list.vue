@@ -1,9 +1,9 @@
 <script setup lang="tsx">
-import { NButton, NDynamicTags, NInput, NPopover, NTag } from 'naive-ui';
 import { computed, nextTick, ref, watch } from 'vue';
+import { NButton, NDynamicTags, NInput, NPopover, NTag } from 'naive-ui';
 import type { OnCreate } from 'naive-ui/es/dynamic-tags/src/interface';
-import { isNull } from '@/utils/common';
 import { fetchUpdatePodsLabels } from '@/service/api/dashboard';
+import { isNull } from '@/utils/common';
 import { $t } from '@/locales';
 
 interface Props {

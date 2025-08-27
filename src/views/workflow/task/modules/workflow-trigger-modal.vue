@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue';
-import { $t } from '@/locales';
 import { fetchTriggerWorkflowParams } from '@/service/api';
 import { parseContent, stringToContent } from '@/utils/common';
+import { $t } from '@/locales';
 
 defineOptions({
   name: 'WorkflowTriggerModal'

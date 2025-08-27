@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
-import pkg from '~/package.json';
 import { localStg } from '@/utils/storage';
+import { $t } from '@/locales';
+import pkg from '~/package.json';
 
 const appStore = useAppStore();
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { NTag } from 'naive-ui';
 import { roleRecord } from '@/constants/business';
-import { $t } from '@/locales';
 import { tagColor } from '@/utils/common';
+import { $t } from '@/locales';
 
 defineOptions({
   name: 'UserManagerDetailDrawer'

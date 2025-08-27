@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue';
+import { nodeTypeOptions } from '@/constants/business';
+import { fetchUpdatePodsLabels } from '@/service/api/dashboard';
 import { useNaiveForm } from '@/hooks/common/form';
+import { translateOptions } from '@/utils/common';
 import OperateDrawer from '@/components/common/operate-drawer.vue';
 import { $t } from '@/locales';
-import { fetchUpdatePodsLabels } from '@/service/api/dashboard';
-import { nodeTypeOptions } from '@/constants/business';
-import { translateOptions } from '@/utils/common';
 
 defineOptions({
   name: 'PodsOperateDrawer'

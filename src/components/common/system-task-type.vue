@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { $t } from '@/locales';
-import { translateOptions } from '@/utils/common';
 import { systemTaskTypeOptions } from '@/constants/business';
+import { translateOptions } from '@/utils/common';
+import { $t } from '@/locales';
 
 defineOptions({
   name: 'SystemTaskType'

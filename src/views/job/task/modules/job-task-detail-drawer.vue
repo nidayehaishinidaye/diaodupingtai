@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { $t } from '@/locales';
-import { tagColor } from '@/utils/common';
 import {
   blockStrategyRecord,
   enableStatusNumberRecord,
@@ -9,6 +7,8 @@ import {
   taskTypeRecord,
   triggerTypeRecord
 } from '@/constants/business';
+import { tagColor } from '@/utils/common';
+import { $t } from '@/locales';
 
 defineOptions({
   name: 'JobTaskDetailDrawer'

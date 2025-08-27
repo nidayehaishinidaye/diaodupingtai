@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { $t } from '@/locales';
-import { translateOptions } from '@/utils/common';
 import { blockStrategyRecordOptions } from '@/constants/business';
+import { translateOptions } from '@/utils/common';
+import { $t } from '@/locales';
 
 defineOptions({
   name: 'BlockStrategy'

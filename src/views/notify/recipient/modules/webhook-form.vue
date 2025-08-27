@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue';
-import { useFormRules, useNaiveForm } from '@/hooks/common/form';
-import { $t } from '@/locales';
-import { translateOptions } from '@/utils/common';
 import { alarmWebhookTypeRecordOptions } from '@/constants/business';
+import { useFormRules, useNaiveForm } from '@/hooks/common/form';
+import { translateOptions } from '@/utils/common';
+import { $t } from '@/locales';
 
 defineOptions({
   name: 'WebhookForm'

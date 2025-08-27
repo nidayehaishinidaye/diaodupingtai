@@ -1,16 +1,7 @@
 <script setup lang="tsx">
-import { NButton, NPopconfirm, NTag } from 'naive-ui';
 import { ref } from 'vue';
+import { NButton, NPopconfirm, NTag } from 'naive-ui';
 import { useBoolean } from '@sa/hooks';
-import {
-  fetchBatchDeleteRetryScene,
-  fetchDeleteRetryScene,
-  fetchGetRetryScenePageList,
-  fetchUpdateSceneStatus
-} from '@/service/api';
-import { $t } from '@/locales';
-import { useAppStore } from '@/store/modules/app';
-import { useTable, useTableOperate } from '@/hooks/common/table';
 import {
   DelayLevel,
   backOffRecord,
@@ -18,9 +9,18 @@ import {
   groupConfigStatusRecord,
   routeKeyRecord
 } from '@/constants/business';
-import StatusSwitch from '@/components/common/status-switch.vue';
-import { downloadFetch } from '@/utils/download';
+import {
+  fetchBatchDeleteRetryScene,
+  fetchDeleteRetryScene,
+  fetchGetRetryScenePageList,
+  fetchUpdateSceneStatus
+} from '@/service/api';
+import { useAppStore } from '@/store/modules/app';
+import { useTable, useTableOperate } from '@/hooks/common/table';
 import { useAuth } from '@/hooks/business/auth';
+import { downloadFetch } from '@/utils/download';
+import StatusSwitch from '@/components/common/status-switch.vue';
+import { $t } from '@/locales';
 import LabelList from '@/components/common/label-list.vue';
 import SceneOperateDrawer from './modules/scene-operate-drawer.vue';
 import SceneSearch from './modules/scene-search.vue';
@@ -277,7 +277,7 @@ function handleExport() {
       :title="$t('page.retryScene.title')"
       :bordered="false"
       size="small"
-      class="sm:flex-1-hidden card-wrapper"
+      class="card-wrapper sm:flex-1-hidden"
       header-class="view-card-header"
     >
       <template #header-extra>

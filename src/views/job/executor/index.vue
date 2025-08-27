@@ -1,11 +1,11 @@
 <script setup lang="tsx">
 import { NButton, NPopconfirm, NTag } from 'naive-ui';
+import { executorTypeRecord } from '@/constants/business';
 import { fetchBatchDeleteJobExecutor, fetchGetExecutorList } from '@/service/api';
-import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
+import { $t } from '@/locales';
 import JobExecutorSearch from '@/views/job/executor/modules/job-executor-search.vue';
-import { executorTypeRecord } from '@/constants/business';
 const appStore = useAppStore();
 
 const { columns, data, getData, loading, mobilePagination, searchParams, resetSearchParams } = useTable({
@@ -120,7 +120,7 @@ async function handleBatchDelete() {
       title="执行器列表"
       :bordered="false"
       size="small"
-      class="sm:flex-1-hidden card-wrapper"
+      class="card-wrapper sm:flex-1-hidden"
       header-class="view-card-header"
     >
       <template #header-extra>

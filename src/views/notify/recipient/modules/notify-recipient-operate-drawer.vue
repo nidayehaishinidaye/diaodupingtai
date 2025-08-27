@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import { fetchAddNotifyRecipient, fetchEditNotifyRecipient } from '@/service/api';
 import { useNaiveForm } from '@/hooks/common/form';
 import OperateDrawer from '@/components/common/operate-drawer.vue';
 import { $t } from '@/locales';
-import { fetchAddNotifyRecipient, fetchEditNotifyRecipient } from '@/service/api';
 import DingDingForm from './dingding-form.vue';
 import LarkForm from './lark-form.vue';
 import EmailForm from './email-form.vue';

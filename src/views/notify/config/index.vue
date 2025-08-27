@@ -1,18 +1,18 @@
 <script setup lang="tsx">
-import { NButton, NEllipsis, NPopconfirm, NTag } from 'naive-ui';
 import { ref } from 'vue';
+import { NButton, NEllipsis, NPopconfirm, NTag } from 'naive-ui';
 import { useBoolean } from '@sa/hooks';
+import { jobNotifyScene, retryNotifyScene, systemTaskType, workflowNotifyScene } from '@/constants/business';
 import { fetchBatchDeleteNotify, fetchGetNotifyConfigList, fetchUpdateNotifyStatus } from '@/service/api';
-import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
+import { useAuth } from '@/hooks/business/auth';
+import { tagColor } from '@/utils/common';
+import { $t } from '@/locales';
 import NotifyConfigOperateDrawer from '@/views/notify/config/modules/notify-config-operate-drawer.vue';
 import NotifyConfigSearch from '@/views/notify/config/modules/notify-config-search.vue';
 import NotifyConfigDetailDrawer from '@/views/notify/config/modules/notify-config-detail-drawer.vue';
 import StatusSwitch from '@/components/common/status-switch.vue';
-import { jobNotifyScene, retryNotifyScene, systemTaskType, workflowNotifyScene } from '@/constants/business';
-import { tagColor } from '@/utils/common';
-import { useAuth } from '@/hooks/business/auth';
 const { hasAuth } = useAuth();
 
 const appStore = useAppStore();
@@ -243,7 +243,7 @@ function edit(id: string) {
       :title="$t('page.notifyConfig.title')"
       :bordered="false"
       size="small"
-      class="sm:flex-1-hidden card-wrapper"
+      class="card-wrapper sm:flex-1-hidden"
       header-class="view-card-header"
     >
       <template #header-extra>

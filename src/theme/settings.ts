@@ -30,6 +30,9 @@ export const themeSettings: App.Theme.ThemeSetting = {
     },
     multilingual: {
       visible: true
+    },
+    globalSearch: {
+      visible: true
     }
   },
   tab: {
@@ -53,6 +56,11 @@ export const themeSettings: App.Theme.ThemeSetting = {
     height: 48,
     right: true
   },
+  watermark: {
+    visible: false,
+    text: 'Snail Job',
+    enableUserName: true
+  },
   tokens: {
     light: {
       colors: {
@@ -74,10 +82,6 @@ export const themeSettings: App.Theme.ThemeSetting = {
         'base-text': 'rgb(224, 224, 224)'
       }
     }
-  },
-  watermark: {
-    visible: false,
-    text: 'Snail Job'
   }
 };
 

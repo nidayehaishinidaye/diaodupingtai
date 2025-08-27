@@ -1,8 +1,9 @@
 <script setup lang="tsx">
-import { NButton, NPopconfirm, NTag, NTooltip } from 'naive-ui';
-import { useBoolean } from '@sa/hooks';
 import { ref } from 'vue';
+import { NButton, NPopconfirm, NTag, NTooltip } from 'naive-ui';
 import dayjs from 'dayjs';
+import { useBoolean } from '@sa/hooks';
+import { operationReasonRecord, taskBatchStatusRecord, taskTypeRecord } from '@/constants/business';
 import {
   fetchBatchDeleteJobBatch,
   fetchDeleteJobBatch,
@@ -10,11 +11,10 @@ import {
   fetchJobBatchRetry,
   fetchJobBatchStop
 } from '@/service/api';
-import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import { operationReasonRecord, taskBatchStatusRecord, taskTypeRecord } from '@/constants/business';
 import { tagColor, weekRangeISO8601 } from '@/utils/common';
+import { $t } from '@/locales';
 import SvgIcon from '@/components/custom/svg-icon.vue';
 import JobBatchSearch from './modules/job-batch-search.vue';
 import JobBatchDetailDrawer from './modules/job-batch-detail-drawer.vue';
@@ -300,7 +300,7 @@ async function handleStopJob(id: string) {
       :title="$t('page.jobBatch.title')"
       :bordered="false"
       size="small"
-      class="sm:flex-1-hidden card-wrapper"
+      class="card-wrapper sm:flex-1-hidden"
       header-class="view-card-header"
     >
       <template #header-extra>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { nextTick, ref, watch } from 'vue';
-import CronInput from '@sa/cron-input';
 import dayjs from 'dayjs';
+import CronInput from '@sa/cron-input';
 import { useAppStore } from '@/store/modules/app';
 import { isNotNull } from '@/utils/common';
 

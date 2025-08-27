@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import type { FormInst, FormRules } from 'naive-ui';
-import EditableInput from '@/components/common/editable-input.vue';
-import { fetchCheckNodeExpression } from '@/service/api';
 import { expressionOptions } from '@/constants/business';
+import { fetchCheckNodeExpression } from '@/service/api';
+import EditableInput from '@/components/common/editable-input.vue';
 
 defineOptions({
   name: 'BranchDrawer'

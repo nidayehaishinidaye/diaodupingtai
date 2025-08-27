@@ -2,9 +2,9 @@
 import { ref, watch } from 'vue';
 import type { SelectOption } from 'naive-ui';
 import { NEllipsis } from 'naive-ui';
-import { $t } from '@/locales';
-import { translateOptions2 } from '@/utils/common';
 import { fetchGetRetrySceneList } from '@/service/api';
+import { translateOptions2 } from '@/utils/common';
+import { $t } from '@/locales';
 
 defineOptions({
   name: 'SelectScene'

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import cronParser from 'cron-parser';
 import { computed, ref, watch } from 'vue';
+import cronParser from 'cron-parser';
 import { DEFAULT_CRON_EXPRESSION, DEFAULT_LOCALE, FIELDS, LOCALE_CN, TYPE } from '../../shared/constants';
 import { weekNumberToLetter, zerofill } from '../../shared/utils';
 import Locales from '../../i18n';

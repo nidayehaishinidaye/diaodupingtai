@@ -1,15 +1,15 @@
 <script setup lang="tsx">
+import { ref, render } from 'vue';
 import type { DataTableRowKey } from 'naive-ui';
 import { NButton, NCode, NTag } from 'naive-ui';
+import dayjs from 'dayjs';
 import hljs from 'highlight.js/lib/core';
 import json from 'highlight.js/lib/languages/json';
-import { ref, render } from 'vue';
-import dayjs from 'dayjs';
 import { taskStatusRecord, taskStatusRecordOptions } from '@/constants/business';
-import { $t } from '@/locales';
-import { isNotNull, parseArgsJson, translateOptions } from '@/utils/common';
-import { useTable } from '@/hooks/common/table';
 import { fetchGetJobTaskList, fetchGetJobTaskTree } from '@/service/api';
+import { useTable } from '@/hooks/common/table';
+import { isNotNull, parseArgsJson, translateOptions } from '@/utils/common';
+import { $t } from '@/locales';
 
 defineOptions({
   name: 'JobTaskListTable'
@@ -346,7 +346,7 @@ init();
   <NCard
     :bordered="false"
     size="small"
-    class="sm:flex-1-hidden card-wrapper pt-16px"
+    class="card-wrapper pt-16px sm:flex-1-hidden"
     :content-style="{ padding: 0 }"
     :header-style="{ padding: 0 }"
   >
