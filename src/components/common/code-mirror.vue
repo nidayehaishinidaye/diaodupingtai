@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, watch } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { json } from '@codemirror/lang-json';
@@ -12,7 +12,6 @@ defineOptions({
 });
 
 interface Props {
-  modelValue?: string;
   lang?: NaiveUI.CodeMirrorLang;
   height?: string;
   fontSize?: string;
@@ -26,19 +25,12 @@ const props = withDefaults(defineProps<Props>(), {
   readonly: false,
   disabled: false,
   height: 'auto',
-  fontSize: '13px',
-  modelValue: ''
+  fontSize: '13px'
 });
-
-interface Emits {
-  (e: 'update:modelValue', modelValue: string): void;
-}
-
-const emit = defineEmits<Emits>();
 
 const themeStore = useThemeStore();
 
-const nodeExpression = ref<string>(props.modelValue);
+const nodeExpression = defineModel<string>('modelValue', { required: false, default: '' });
 
 const { bool: visible, setTrue: openModal } = useBoolean();
 
@@ -115,7 +107,6 @@ watch(
         }
       } catch {}
     }
-    emit('update:modelValue', nodeExpression.value);
   }
 );
 </script>

@@ -2,6 +2,7 @@
 import { NButton, NDropdown, NPopconfirm, NPopover, NTag } from 'naive-ui';
 import { useBoolean } from '@sa/hooks';
 import { ref } from 'vue';
+import { jsonClone } from '@sa/utils';
 import { fetchBatchDeleteJob, fetchGetJobPage, fetchUpdateJobStatus } from '@/service/api';
 import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
@@ -373,7 +374,8 @@ function copy(id: string) {
 }
 
 async function handleTriggerJob(job: Api.Job.Job) {
-  triggerData.value = job;
+  triggerData.value = jsonClone(job);
+  console.log('triggerData:', triggerData.value);
   openTriggerModal();
 }
 
