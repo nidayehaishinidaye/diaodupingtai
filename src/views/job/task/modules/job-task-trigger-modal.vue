@@ -109,22 +109,17 @@ function createDefaultScriptParams() {
 }
 
 function handleUpdateModelWhenEdit() {
-  console.log('112: props.rowData:', props.rowData);
-  console.log('113: model:', model);
-
   httpHeaders.value = [];
   Object.assign(httpParams, createDefaultHttpParams());
   Object.assign(scriptParams, createDefaultScriptParams());
   Object.assign(model, createDefaultModel());
 
-  console.log('120: model:', model);
   if (!props.rowData) {
     return;
   }
 
   model.jobId = props.rowData?.id;
   model.tmpArgsStr = props.rowData?.argsStr;
-  console.log('127: model:', model);
 
   const taskType = props.rowData.taskType;
   const argsStr = props.rowData.argsStr;
@@ -160,7 +155,6 @@ function handleUpdateModelWhenEdit() {
       Object.assign(scriptParams, JSON.parse(argsStr));
     }
   }
-  console.log('163: model:', model);
 }
 
 function closeDrawer() {

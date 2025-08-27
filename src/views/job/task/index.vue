@@ -375,7 +375,6 @@ function copy(id: string) {
 
 async function handleTriggerJob(job: Api.Job.Job) {
   triggerData.value = jsonClone(job);
-  console.log('triggerData:', triggerData.value);
   openTriggerModal();
 }
 
