@@ -8,7 +8,7 @@ import { $t } from '@/locales';
 import JobExecutorSearch from '@/views/job/executor/modules/job-executor-search.vue';
 const appStore = useAppStore();
 
-const { columns, data, getData, loading, mobilePagination, searchParams, resetSearchParams } = useTable({
+const { columns, columnChecks, data, getData, loading, mobilePagination, searchParams, resetSearchParams } = useTable({
   apiFn: fetchGetExecutorList,
   apiParams: {
     page: 1,
@@ -125,6 +125,7 @@ async function handleBatchDelete() {
     >
       <template #header-extra>
         <TableHeaderOperation
+          v-model:columns="columnChecks"
           :disabled-delete="checkedRowKeys.length === 0"
           :loading="loading"
           :show-add="false"
