@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue';
+import { computed } from 'vue';
 import CodeMirror from 'vue-codemirror6';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { json } from '@codemirror/lang-json';
@@ -96,19 +96,22 @@ const theme = computed(() => {
   };
 });
 
-watch(
-  () => nodeExpression.value,
-  () => {
-    if (props.lang === 'json') {
+let formatTimer: NodeJS.Timeout | null = null;
+const formatJson = () => {
+  if (formatTimer) {
+    clearTimeout(formatTimer);
+  }
+  formatTimer = setTimeout(() => {
+    if (props.lang === 'json' && nodeExpression.value.trim()) {
       try {
         const obj = JSON.parse(nodeExpression.value);
         if (typeof obj === 'object') {
-          nodeExpression.value = JSON.stringify(obj);
+          nodeExpression.value = JSON.stringify(obj, null, 2);
         }
       } catch {}
     }
-  }
-);
+  }, 1000);
+};
 </script>
 
 <template>
@@ -124,6 +127,7 @@ watch(
       :line-number="false"
       :lang="codeLang"
       :extensions="[oneDark]"
+      @update="formatJson"
     />
     <NButton @click="openModal">
       <icon-flowbite:expand-outline class="text-18px" />
@@ -147,6 +151,7 @@ watch(
         :line-number="false"
         :lang="codeLang"
         :extensions="[oneDark]"
+        @update="formatJson"
       />
     </NModal>
   </div>
