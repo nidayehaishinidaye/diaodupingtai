@@ -1,7 +1,7 @@
 {
   "name": "snail-job",
   "type": "module",
-  "version": "1.8.0-beta1",
+  "version": "1.8.1",
   "description": "A flexible, reliable, and fast platform for distributed task retry and distributed task scheduling.",
   "license": "Apache-2.0",
   "homepage": "https://gitee.com/aizuda/snail-job",
