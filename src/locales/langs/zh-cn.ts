@@ -14,6 +14,7 @@ const local: App.I18n.Schema = {
     addSuccess: '添加成功',
     backToHome: '返回首页',
     batchDelete: '批量删除',
+    batchUpdate: '批量更新',
     cancel: '取消',
     close: '关闭',
     check: '勾选',
@@ -52,6 +53,8 @@ const local: App.I18n.Schema = {
     noData: '无数据',
     operate: '操作',
     pleaseCheckValue: '请检查输入的值是否合法',
+    pleaseSelectData: '请选择要操作的数据',
+    pleaseSelectStatus: '请选择状态',
     refresh: '刷新',
     reset: '重置',
     search: '搜索',
@@ -744,6 +747,7 @@ const local: App.I18n.Schema = {
       addRetry: '新增重试',
       editRetry: '编辑重试',
       batchAddRetry: '批量新增',
+      cannotDeleteRetrying: '不能删除处理中状态的记录',
       argsType: {
         arrays: '数组(JSON序列化)',
         str: '字符串(FORY等二进制类型的序列化)'

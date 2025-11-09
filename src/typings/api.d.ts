@@ -834,6 +834,13 @@ declare namespace Api {
       ids: string[];
     };
 
+    type BatchUpdateRetryStatusRequest = {
+      updateRequestList: Array<{
+        id: number;
+        status: RetryStatusType;
+      }>;
+    };
+
     type GenerateRetryIdempotentIdVO = {
       /** 组名称 */
       groupName: string;

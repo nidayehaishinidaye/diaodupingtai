@@ -14,6 +14,7 @@ const local: App.I18n.Schema = {
     backToHome: 'Back to home',
     batchDelete: 'Batch Delete',
     batchAdd: 'Batch Add',
+    batchUpdate: 'Batch Update',
     cancel: 'Cancel',
     close: 'Close',
     check: 'Check',
@@ -52,6 +53,8 @@ const local: App.I18n.Schema = {
     noData: 'No Data',
     operate: 'Operate',
     pleaseCheckValue: 'Please check whether the value is valid',
+    pleaseSelectData: 'Please select data to operate',
+    pleaseSelectStatus: 'Please select status',
     refresh: 'Refresh',
     reset: 'Reset',
     search: 'Search',
@@ -736,6 +739,7 @@ const local: App.I18n.Schema = {
       addRetry: 'Add Retry task',
       editRetry: 'Add Retry task',
       batchAddRetry: 'Batch add retry task',
+      cannotDeleteRetrying: 'Cannot delete records with retrying status',
       argsType: {
         arrays: 'Arrays(JSON Serializer)',
         str: 'String(Serialization of binary types such as FORY)'

@@ -71,6 +71,15 @@ export function fetchBatchDeleteRetry(data: Api.Retry.BatchDeleteRetryVO) {
   });
 }
 
+/** batch update retryTask status */
+export function fetchBatchUpdateRetryStatus(data: Api.Retry.BatchUpdateRetryStatusRequest) {
+  return request<boolean>({
+    url: '/retry/batchUpdateRetryStatus',
+    method: 'put',
+    data
+  });
+}
+
 /** generate retryTask idempotent id */
 export function fetchIdempotentIdGenerate(data: CommonType.RecordNullable<Api.Retry.GenerateRetryIdempotentIdVO>) {
   return request<string>({

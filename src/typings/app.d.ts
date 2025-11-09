@@ -315,6 +315,7 @@ declare namespace App {
         addSuccess: string;
         backToHome: string;
         batchDelete: string;
+        batchUpdate: string;
         cancel: string;
         close: string;
         check: string;
@@ -353,6 +354,8 @@ declare namespace App {
         noData: string;
         operate: string;
         pleaseCheckValue: string;
+        pleaseSelectData: string;
+        pleaseSelectStatus: string;
         refresh: string;
         reset: string;
         search: string;
@@ -959,6 +962,7 @@ declare namespace App {
           addRetry: string;
           editRetry: string;
           batchAddRetry: string;
+          cannotDeleteRetrying: string;
           argsType: {
             arrays: string;
             str: string;
