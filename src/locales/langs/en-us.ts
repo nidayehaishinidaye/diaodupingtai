@@ -739,6 +739,16 @@ const local: App.I18n.Schema = {
       addRetry: 'Add Retry task',
       editRetry: 'Add Retry task',
       batchAddRetry: 'Batch add retry task',
+      batchUpdateTip: 'This operation will update data to the specified status through search conditions!',
+      searchConditions: 'Search Conditions',
+      estimatedUpdateData: 'Estimated update data count',
+      noSearchConditionsTip: 'Please set search conditions before batch updating!',
+      retryStatusRequiredTip:
+        'Status search condition is required for batch update, please set status search condition first!',
+      statusSameTip: 'The status in search conditions is the same as the selected new status, no update needed!',
+      totalZeroTip: 'The data count to be updated is 0, no update needed!',
+      batchUpdateSuccess: 'Batch update successful, updated ',
+      records: ' records!',
       cannotDeleteRetrying: 'Cannot delete records with retrying status',
       argsType: {
         arrays: 'Arrays(JSON Serializer)',

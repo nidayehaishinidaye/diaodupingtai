@@ -835,10 +835,14 @@ declare namespace Api {
     };
 
     type BatchUpdateRetryStatusRequest = {
-      updateRequestList: Array<{
-        id: number;
-        status: RetryStatusType;
-      }>;
+      /** 要更新的状态 */
+      status: RetryStatusType;
+      /** 搜索条件 */
+      groupName?: string;
+      sceneName?: string;
+      idempotentId?: string;
+      bizNo?: string;
+      retryStatus?: RetryStatusType;
     };
 
     type GenerateRetryIdempotentIdVO = {

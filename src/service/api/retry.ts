@@ -73,7 +73,7 @@ export function fetchBatchDeleteRetry(data: Api.Retry.BatchDeleteRetryVO) {
 
 /** batch update retryTask status */
 export function fetchBatchUpdateRetryStatus(data: Api.Retry.BatchUpdateRetryStatusRequest) {
-  return request<boolean>({
+  return request<number>({
     url: '/retry/batchUpdateRetryStatus',
     method: 'put',
     data

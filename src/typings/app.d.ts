@@ -962,6 +962,15 @@ declare namespace App {
           addRetry: string;
           editRetry: string;
           batchAddRetry: string;
+          batchUpdateTip: string;
+          searchConditions: string;
+          estimatedUpdateData: string;
+          noSearchConditionsTip: string;
+          retryStatusRequiredTip: string;
+          statusSameTip: string;
+          totalZeroTip: string;
+          batchUpdateSuccess: string;
+          records: string;
           cannotDeleteRetrying: string;
           argsType: {
             arrays: string;
