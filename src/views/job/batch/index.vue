@@ -1,5 +1,6 @@
 <script setup lang="tsx">
 import { ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { NButton, NPopconfirm, NTag, NTooltip } from 'naive-ui';
 import dayjs from 'dayjs';
 import { useBoolean } from '@sa/hooks';
@@ -19,15 +20,18 @@ import SvgIcon from '@/components/custom/svg-icon.vue';
 import JobBatchSearch from './modules/job-batch-search.vue';
 import JobBatchDetailDrawer from './modules/job-batch-detail-drawer.vue';
 
+const route = useRoute();
 const appStore = useAppStore();
 /** 详情页属性数据 */
 const detailData = ref<Api.JobBatch.JobBatch | null>();
 /** 详情页可见状态 */
 const { bool: detailVisible, setTrue: openDetail } = useBoolean(false);
 const { bool: detailLog, setBool: setDetailLog } = useBoolean(false);
-const jobName = history.state.jobName;
-const jobId = history.state.jobId;
-const taskBatchStatus = history.state.taskBatchStatus ? [history.state.taskBatchStatus] : [];
+const jobName = (route.query.jobName as string) || '';
+const jobId = (route.query.jobId as string) || '';
+const taskBatchStatus = route.query.taskBatchStatus
+  ? ([Number(route.query.taskBatchStatus)] as Api.Common.TaskBatchStatus[])
+  : [];
 
 const { columnChecks, columns, data, getData, loading, mobilePagination, searchParams, resetSearchParams } = useTable({
   apiFn: fetchGetJobBatchList,

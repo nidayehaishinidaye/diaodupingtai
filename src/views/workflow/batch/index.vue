@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { NButton, NPopconfirm, NTag } from 'naive-ui';
 import { operationReasonRecord, taskBatchStatusRecord } from '@/constants/business';
 import {
@@ -14,12 +14,15 @@ import { monthRangeISO8601, tagColor } from '@/utils/common';
 import { $t } from '@/locales';
 import WorkflowBatchSearch from './modules/workflow-batch-search.vue';
 
+const route = useRoute();
 const router = useRouter();
 
 const appStore = useAppStore();
-const workflowId = history.state.workflowId;
-const workflowName = history.state.workflowName;
-const taskBatchStatus = history.state.taskBatchStatus;
+const workflowId = route.query.workflowId ? Number(route.query.workflowId) : null;
+const workflowName = (route.query.workflowName as string) || '';
+const taskBatchStatus = route.query.taskBatchStatus
+  ? (Number(route.query.taskBatchStatus) as Api.Common.TaskBatchStatus)
+  : null;
 
 const { columns, columnChecks, data, getData, loading, mobilePagination, searchParams, resetSearchParams } = useTable({
   apiFn: fetchGetWorkflowBatchList,

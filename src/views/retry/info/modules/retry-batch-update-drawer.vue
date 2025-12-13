@@ -53,30 +53,27 @@ function closeDrawer() {
   visible.value = false;
 }
 
-async function handleSubmit() {
-  // 检查是否有状态搜索条件（必选项）
-  if (!hasRetryStatus.value) {
-    window.$message?.warning($t('page.retry.retryStatusRequiredTip'));
-    return;
+// 检查是否有状态搜索条件（必选项）
+const hasRetryStatus = computed(() => {
+  return props.searchParams?.retryStatus !== null && props.searchParams?.retryStatus !== undefined;
+});
+
+// 检查待更新数据量是否为0
+const isTotalZero = computed(() => {
+  return typeof props.total === 'number' && props.total === 0;
+});
+
+// 检查搜索条件中的状态和用户选择的状态是否一致
+const isStatusSame = computed(() => {
+  const searchStatus = props.searchParams?.retryStatus;
+  if (searchStatus === null || searchStatus === undefined) {
+    return false;
   }
+  return searchStatus === model.status;
+});
 
-  // 检查待更新数据量是否为0
-  if (isTotalZero.value) {
-    window.$message?.warning($t('page.retry.totalZeroTip'));
-    return;
-  }
-
-  // 检查搜索条件中的状态和用户选择的状态是否一致
-  if (isStatusSame.value) {
-    window.$message?.warning($t('page.retry.statusSameTip'));
-    return;
-  }
-
-  await validate();
-
-  const { status } = model;
-
-  // 构建请求参数，包含搜索条件和状态
+// 构建请求参数
+function buildRequestData(status: Api.Retry.RetryStatusType): Api.Retry.BatchUpdateRetryStatusRequest {
   const requestData: Api.Retry.BatchUpdateRetryStatusRequest = {
     status
   };
@@ -98,6 +95,42 @@ async function handleSubmit() {
     requestData.retryStatus = props.searchParams.retryStatus;
   }
 
+  return requestData;
+}
+
+// 验证提交前的条件
+function validateSubmitConditions(): boolean {
+  // 检查是否有状态搜索条件（必选项）
+  if (!hasRetryStatus.value) {
+    window.$message?.warning($t('page.retry.retryStatusRequiredTip'));
+    return false;
+  }
+
+  // 检查待更新数据量是否为0
+  if (isTotalZero.value) {
+    window.$message?.warning($t('page.retry.totalZeroTip'));
+    return false;
+  }
+
+  // 检查搜索条件中的状态和用户选择的状态是否一致
+  if (isStatusSame.value) {
+    window.$message?.warning($t('page.retry.statusSameTip'));
+    return false;
+  }
+
+  return true;
+}
+
+async function handleSubmit() {
+  if (!validateSubmitConditions()) {
+    return;
+  }
+
+  await validate();
+
+  const { status } = model;
+  const requestData = buildRequestData(status);
+
   const { error, data: updateCount } = await fetchBatchUpdateRetryStatus(requestData);
   if (error) return;
 
@@ -109,25 +142,6 @@ async function handleSubmit() {
   closeDrawer();
   emit('submitted');
 }
-
-// 检查是否有状态搜索条件（必选项）
-const hasRetryStatus = computed(() => {
-  return props.searchParams?.retryStatus !== null && props.searchParams?.retryStatus !== undefined;
-});
-
-// 检查待更新数据量是否为0
-const isTotalZero = computed(() => {
-  return typeof props.total === 'number' && props.total === 0;
-});
-
-// 检查搜索条件中的状态和用户选择的状态是否一致
-const isStatusSame = computed(() => {
-  const searchStatus = props.searchParams?.retryStatus;
-  if (searchStatus === null || searchStatus === undefined) {
-    return false;
-  }
-  return searchStatus === model.status;
-});
 
 watch(visible, () => {
   if (visible.value) {

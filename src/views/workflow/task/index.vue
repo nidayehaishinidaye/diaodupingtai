@@ -327,7 +327,7 @@ function handleExport() {
 }
 function goToBatch(workflowId: string) {
   const findItem = data.value.find(item => item.id === workflowId)!;
-  routerPushByKey('workflow_batch', { state: { workflowId, workflowName: findItem.workflowName } });
+  routerPushByKey('workflow_batch', { query: { workflowId, workflowName: findItem.workflowName } });
 }
 </script>
 

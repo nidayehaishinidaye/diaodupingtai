@@ -4,7 +4,6 @@ import { NButton, NDropdown, NPopconfirm, NTag, NTooltip } from 'naive-ui';
 import { retryStatusTypeRecord, retryTaskTypeRecord } from '@/constants/business';
 import {
   fetchBatchDeleteRetry,
-  fetchBatchUpdateRetryStatus,
   fetchExecuteRetry,
   fetchGetAllGroupNameList,
   fetchGetRetryById,
