@@ -58,10 +58,21 @@ const dropOptions = computed(() =>
   })
 );
 
-const onChange = (value: string) => {
+const onChange = async (value: string) => {
+  // 保存之前的命名空间ID，以便失败时恢复
+  const previousNamespaceId = namespaceId.value;
   namespaceId.value = value;
   authStore.setNamespaceId(value);
-  router.go(0);
+  // 先重新获取用户信息，确保命名空间切换成功后再刷新页面
+  const pass = await authStore.getUserInfo();
+  if (pass) {
+    router.go(0);
+  } else {
+    // 如果获取用户信息失败，恢复之前的命名空间
+    namespaceId.value = previousNamespaceId;
+    authStore.setNamespaceId(previousNamespaceId);
+    window.$message?.error('切换命名空间失败，请重试');
+  }
 };
 
 const namespaceName = computed(() => {

@@ -261,7 +261,12 @@ const disablePreviousTime = (ts: number) => {
           <NGi :span="12">
             <div class="flex items-center gap-6px">
               <span class="w-50px">步长:</span>
-              <NInputNumber v-model:value="specifiedStep" :min="10" class="w-full" placeholder="步长" />
+              <NInputNumber
+                v-model:value="specifiedStep"
+                :min="specifiedUnit === 'second' ? 10 : 1"
+                class="w-full"
+                placeholder="步长"
+              />
             </div>
           </NGi>
           <NGi :span="12">
