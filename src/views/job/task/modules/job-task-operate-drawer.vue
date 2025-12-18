@@ -211,7 +211,7 @@ type RuleKey = Extract<
   | 'parallelNum'
 >;
 
-const rules: Record<RuleKey, App.Global.FormRule> = {
+const rules = computed<Record<RuleKey, App.Global.FormRule>>(() => ({
   groupName: defaultRequiredRule,
   jobName: defaultRequiredRule,
   argsType: defaultRequiredRule,
@@ -220,14 +220,28 @@ const rules: Record<RuleKey, App.Global.FormRule> = {
   executorType: defaultRequiredRule,
   executorInfo: defaultRequiredRule,
   triggerType: defaultRequiredRule,
-  triggerInterval: defaultRequiredRule,
+  triggerInterval: {
+    required: model.triggerType !== 99,
+    validator: () => {
+      // 工作流触发类型（99）时，间隔时长不必填
+      if (model.triggerType === 99) {
+        return true;
+      }
+      // 非工作流类型时，必须填写间隔时长
+      if (!isNotNull(model.triggerInterval) || model.triggerInterval === 'null') {
+        return new Error($t('page.jobTask.form.triggerInterval') || '间隔时长不能为空');
+      }
+      return true;
+    },
+    trigger: 'change'
+  },
   blockStrategy: defaultRequiredRule,
   executorTimeout: defaultRequiredRule,
   maxRetryTimes: defaultRequiredRule,
   retryInterval: defaultRequiredRule,
   taskType: defaultRequiredRule,
   parallelNum: defaultRequiredRule
-};
+}));
 
 type HttpParams = {
   method: string;
