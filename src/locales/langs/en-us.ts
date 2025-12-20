@@ -745,10 +745,16 @@ const local: App.I18n.Schema = {
       noSearchConditionsTip: 'Please set search conditions before batch updating!',
       retryStatusRequiredTip:
         'Status search condition is required for batch update, please set status search condition first!',
+      groupNameRequiredTip: 'Group name is required for batch update, please set group name first!',
+      sceneNameRequiredTip: 'Scene name is required for batch update, please set scene name first!',
+      batchUpdateRequiredFieldsTip: 'Batch update requires the following required fields, please set them first:',
       statusSameTip: 'The status in search conditions is the same as the selected new status, no update needed!',
       totalZeroTip: 'The data count to be updated is 0, no update needed!',
       batchUpdateSuccess: 'Batch update successful, updated ',
       records: ' records!',
+      batchUpdateToRetryingTipPrefix:
+        'Update task has been submitted, please wait patiently for the update result! Do not resubmit the same task within ',
+      batchUpdateToRetryingTipSuffix: ' minutes!',
       cannotDeleteRetrying: 'Cannot delete records with retrying status',
       argsType: {
         arrays: 'Arrays(JSON Serializer)',

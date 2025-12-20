@@ -967,10 +967,15 @@ declare namespace App {
           estimatedUpdateData: string;
           noSearchConditionsTip: string;
           retryStatusRequiredTip: string;
+          groupNameRequiredTip: string;
+          sceneNameRequiredTip: string;
+          batchUpdateRequiredFieldsTip: string;
           statusSameTip: string;
           totalZeroTip: string;
           batchUpdateSuccess: string;
           records: string;
+          batchUpdateToRetryingTipPrefix: string;
+          batchUpdateToRetryingTipSuffix: string;
           cannotDeleteRetrying: string;
           argsType: {
             arrays: string;
