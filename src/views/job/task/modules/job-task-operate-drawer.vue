@@ -1,25 +1,21 @@
 <script setup lang="ts">
-import { computed, reactive, ref, watch } from 'vue';
-import { type FormInst, NInputNumber } from 'naive-ui';
-import dayjs from 'dayjs';
-import { enableStatusNumberOptions } from '@/constants/business';
-import {
-  fetchAddJob,
-  fetchEditJob,
-  fetchGetExecutorAllList,
-  fetchGetNotifyConfigSystemTaskTypeList
-} from '@/service/api';
+import { computed, h, onMounted, reactive, ref, watch } from 'vue';
+import { type FormInst, NInputNumber, NTooltip, NUpload, UploadFileInfo } from 'naive-ui';
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
-import { isNotNull, translateOptions2 } from '@/utils/common';
 import OperateDrawer from '@/components/common/operate-drawer.vue';
 import { $t } from '@/locales';
+import { enableStatusNumberOptions } from '@/constants/business';
+import { fetchAddJob, fetchEditJob, fetchGetNotifyConfigSystemTaskTypeList } from '@/service/api';
 import RouteKey from '@/components/common/route-key.vue';
 import BlockStrategy from '@/components/common/block-strategy.vue';
 import ExecutorType from '@/components/common/executor-type.vue';
 import TaskType from '@/components/common/task-type.vue';
 import CodeMirror from '@/components/common/code-mirror.vue';
 import JobTriggerInterval from '@/components/common/job-trigger-interval.vue';
+import { isNotNull } from '@/utils/common';
 import SelectGroup from '@/components/common/select-group.vue';
+import { fetchGetDataSourceList } from "@/service/api/system-data-source";
+import { fetchGetOssList } from '@/service/api/system/oss';
 
 defineOptions({
   name: 'JobTaskOperateDrawer'
@@ -38,7 +34,7 @@ const props = defineProps<Props>();
 interface Emits {
   (e: 'submitted'): void;
 }
-
+const scriptFile = ref<File | null>(null);
 const emit = defineEmits<Emits>();
 
 const executorCustomType = ref<0 | 1>(0);
@@ -54,71 +50,6 @@ const shardNum = ref(0);
 const customformRef = ref<FormInst | null>(null);
 const { formRef, validate, restoreValidation } = useNaiveForm();
 const { defaultRequiredRule } = useFormRules();
-
-/** 校验指定时间点列表的有效性 */
-const validateSpecifiedTimeList = (value: string): { isValid: boolean; message?: string } => {
-  // 基础非空校验
-  if (!isNotNull(value)) {
-    return { isValid: false, message: '触发间隔不能为空' };
-  }
-
-  try {
-    // JSON 解析校验
-    const parsed = JSON.parse(value);
-
-    // 数组结构校验
-    if (!Array.isArray(parsed)) {
-      return { isValid: false, message: '指定时间点必须是有效的时间数组格式' };
-    }
-
-    if (parsed.length === 0) {
-      return { isValid: false, message: '请至少添加一个指定时间点' };
-    }
-
-    const invalidTimes = parsed.filter(item => !isNotNull(item));
-
-    if (invalidTimes.length > 0) {
-      return { isValid: false, message: '存在无效的时间点' };
-    }
-
-    // 过滤掉 null 值，检查有效时间
-    const validTimes = parsed.filter(item => isNotNull(item));
-
-    if (validTimes.length === 0) {
-      return { isValid: false, message: '请至少设置一个有效的时间点' };
-    }
-
-    // 时间格式校验
-    const now = dayjs();
-    let hasValidFutureTime = false;
-
-    for (const timeStr of validTimes) {
-      if (typeof timeStr !== 'string') {
-        return { isValid: false, message: '时间点格式不正确，必须是字符串格式' };
-      }
-
-      // 验证时间格式是否正确
-      const timeObj = dayjs(timeStr, 'YYYY-MM-DD HH:mm:ss', true);
-      if (!timeObj.isValid()) {
-        return { isValid: false, message: `时间格式不正确: ${timeStr}，请使用 YYYY-MM-DD HH:mm:ss 格式` };
-      }
-
-      // 检查是否有未来时间点
-      if (timeObj.isAfter(now)) {
-        hasValidFutureTime = true;
-      }
-    }
-
-    // 业务逻辑校验：至少有一个未来时间点
-    if (!hasValidFutureTime) {
-      return { isValid: false, message: '请至少设置一个未来的时间点' };
-    }
-
-    return { isValid: true };
-  } catch {
-    return { isValid: false, message: '指定时间点数据格式错误，请检查JSON格式' };
-  }
-};
 
 const title = computed(() => {
   const titles: Record<NaiveUI.TableOperateType, string> = {
@@ -152,8 +83,7 @@ type Model = Pick<
   | 'parallelNum'
   | 'description'
   | 'notifyScene'
-  | 'labels'
-  | 'labelMap'
+  | 'extAttrs'
 >;
 
 async function getNotifyConfigSystemTaskTypeList() {
@@ -187,8 +117,7 @@ function createDefaultModel(): Model {
     taskType: 1,
     parallelNum: 1,
     description: '',
-    labels: '{}',
-    labelMap: []
+    extAttrs:{},
   };
 }
 
@@ -211,7 +140,7 @@ type RuleKey = Extract<
   | 'parallelNum'
 >;
 
-const rules = computed<Record<RuleKey, App.Global.FormRule>>(() => ({
+const rules: Record<RuleKey, App.Global.FormRule> = {
   groupName: defaultRequiredRule,
   jobName: defaultRequiredRule,
   argsType: defaultRequiredRule,
@@ -220,28 +149,14 @@ const rules = computed<Record<RuleKey, App.Global.FormRule>>(() => ({
   executorType: defaultRequiredRule,
   executorInfo: defaultRequiredRule,
   triggerType: defaultRequiredRule,
-  triggerInterval: {
-    required: model.triggerType !== 99,
-    validator: () => {
-      // 工作流触发类型（99）时，间隔时长不必填
-      if (model.triggerType === 99) {
-        return true;
-      }
-      // 非工作流类型时，必须填写间隔时长
-      if (!isNotNull(model.triggerInterval) || model.triggerInterval === 'null') {
-        return new Error($t('page.jobTask.form.triggerInterval') || '间隔时长不能为空');
-      }
-      return true;
-    },
-    trigger: 'change'
-  },
+  triggerInterval: defaultRequiredRule,
   blockStrategy: defaultRequiredRule,
   executorTimeout: defaultRequiredRule,
   maxRetryTimes: defaultRequiredRule,
   retryInterval: defaultRequiredRule,
   taskType: defaultRequiredRule,
   parallelNum: defaultRequiredRule
-}));
+};
 
 type HttpParams = {
   method: string;
@@ -288,8 +203,21 @@ const executorCustomOptions = [
   }
 ];
 
+const dataSourceOptions = ref<{ label: string; value: string }[]>([]);
+
+async function getDataSourceOptions() {
+  let {data} = await fetchGetDataSourceList();
+  dataSourceOptions.value = data?.map(item => (
+    {
+      label: item.id + ':' + item.remark,
+      value: item.id
+    }
+  )) ?? [];
+}
+
 type ScriptParams = {
   method: string;
+  ossId: string;
   scriptParams: string;
   charset: string;
 };
@@ -299,6 +227,7 @@ const scriptParams = reactive<ScriptParams>(createDefaultScriptParams());
 function createDefaultScriptParams() {
   return {
     method: 'LOCAL_SCRIPT',
+    ossId: '',
     scriptParams: '',
     charset: ''
   };
@@ -308,7 +237,6 @@ function handleUpdateModelWhenEdit() {
   Object.assign(model, createDefaultModel());
   executorCustomType.value = 0;
   httpHeaders.value = [];
-  model.labelMap = [];
   Object.assign(httpParams, createDefaultHttpParams());
   Object.assign(scriptParams, createDefaultScriptParams());
   if (props.operateType === 'add' && !props.rowData) {
@@ -317,11 +245,6 @@ function handleUpdateModelWhenEdit() {
 
   if (props.rowData) {
     Object.assign(model, props.rowData);
-    if (model.labels) {
-      model.labelMap = Object.entries(JSON.parse(model.labels)).map(([key, value]) => {
-        return { key, value: value as string };
-      });
-    }
     if (model.taskType === 3 && model.argsStr) {
       Object.assign(dynamicForm, {
         args: JSON.parse(model.argsStr).map((item: string) => {
@@ -349,6 +272,12 @@ function handleUpdateModelWhenEdit() {
         Object.assign(scriptParams, JSON.parse(model.argsStr));
       }
     }
+    //如果extAttrs是字符串就解析成对象
+    if (model.extAttrs && typeof model.extAttrs === 'string'){
+      model.extAttrs = JSON.parse(model.extAttrs);
+    }else if (!model.extAttrs){
+      model.extAttrs = {};
+    }
   }
 }
 
@@ -358,13 +287,6 @@ function closeDrawer() {
 
 async function handleSubmit() {
   await validate();
-  if (model.triggerType === 5) {
-    const validationResult = validateSpecifiedTimeList(model.triggerInterval);
-    if (!validationResult.isValid) {
-      window.$message?.error(validationResult.message || '指定时间点校验失败');
-      return;
-    }
-  }
   const {
     id,
     groupName,
@@ -385,10 +307,11 @@ async function handleSubmit() {
     retryInterval,
     taskType,
     parallelNum,
-    description
+    description,
   } = model;
 
   let argsStr = taskType === 5 ? JSON.stringify({ shardNum: shardNum.value, argsStr: model.argsStr }) : model.argsStr;
+  let extAttrs = JSON.stringify(model.extAttrs ?? {});
 
   if (executorCustomType.value === 1) {
     await customformRef.value?.validate();
@@ -401,11 +324,6 @@ async function handleSubmit() {
       argsStr = JSON.stringify(scriptParams);
     }
   }
-
-  const labels: Record<string, string> = {};
-  model.labelMap?.forEach(item => {
-    labels[item.key] = item.value;
-  });
 
   if (props.operateType === 'add') {
     const { error } = await fetchAddJob({
@@ -429,7 +347,7 @@ async function handleSubmit() {
       taskType,
       parallelNum,
       description,
-      labels: JSON.stringify(labels)
+      extAttrs,
     });
     if (error) return;
     window.$message?.success($t('common.addSuccess'));
@@ -458,7 +376,7 @@ async function handleSubmit() {
       taskType,
       parallelNum,
       description,
-      labels: JSON.stringify(labels)
+      extAttrs,
     });
     if (error) return;
     window.$message?.success($t('common.updateSuccess'));
@@ -480,26 +398,9 @@ const removeItem = (index: number) => {
   dynamicForm.args.splice(index, 1);
 };
 
-const executorInfoOptions = ref<string[]>([]);
-
-const getExecutorInfoOptions = async (groupName: string) => {
-  const { error, data } = await fetchGetExecutorAllList({ groupName });
-  if (error) return;
-  executorInfoOptions.value = data || [];
-};
-
 const addItem = () => {
   dynamicForm.args.push({ arg: '' });
 };
-
-watch(visible, () => {
-  if (visible.value) {
-    handleUpdateModelWhenEdit();
-    restoreValidation();
-    getNotifyConfigSystemTaskTypeList();
-    customformRef.value?.restoreValidation();
-  }
-});
 
 /** 分片参数变化, 解析并序列化到model.argsStr */
 watch(dynamicForm, () => {
@@ -526,12 +427,9 @@ watch(
   }
 );
 
-watch(
-  () => model.groupName,
-  groupName => {
-    getExecutorInfoOptions(groupName);
-  }
-);
+onMounted(() =>{
+  getDataSourceOptions()
+})
 
 function handleChangeExecutorCustomType() {
   if (executorCustomType.value === 0) {
@@ -540,6 +438,24 @@ function handleChangeExecutorCustomType() {
   }
   model.executorInfo = 'snailJobHttpExecutor';
 }
+
+// 添加文件上传处理函数
+const handleFileUpload = (data: { file: UploadFileInfo; fileList: UploadFileInfo[] }) => {
+  if (data.fileList.length > 0) {
+    // 获取上传的文件
+    const file = data.fileList[0].file;
+    if (file) {
+      scriptFile.value = file;
+      // 读取文件内容并填充到 scriptParams.scriptParams
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        scriptParams.scriptParams = e.target?.result as string;
+      };
+      reader.readAsText(file);
+    }
+  }
+  return true;
+};
 
 const httpMethodOptions = [
   {
@@ -574,6 +490,60 @@ const scriptMethodOptions = [
     value: 'LOCAL_SCRIPT'
   }
 ];
+// 定义 sourceOptions 数据类型
+const sourceOptions = ref<CommonType.Option<string>[]>([]);
+// 获取 OSS 资源列表
+async function getSourceOptions() {
+  try {
+    const response = await fetchGetOssList();
+
+    if (response.error) {
+      window.$message?.error('获取资源列表失败');
+      return;
+    }
+
+    // 将 OSS 列表转换为下拉选项格式
+    sourceOptions.value = response.data.data.map(item => ({
+      label: item.originalName,
+      value: String(item.ossId), // 确保值为字符串类型
+      url: item.url
+    }));
+  } catch (error) {
+    console.error('获取资源列表失败:', error);
+    window.$message?.error('获取资源列表失败');
+  }
+}
+
+watch(visible, () => {
+  if (visible.value) {
+    handleUpdateModelWhenEdit();
+    restoreValidation();
+    getNotifyConfigSystemTaskTypeList();
+    customformRef.value?.restoreValidation();
+
+    // 在编辑器类型为脚本下载时加载资源选项
+    if (scriptParams.method === 'DOWNLOAD') {
+      getSourceOptions();
+    }
+  }
+});
+
+// 添加对 scriptParams.method 的监听
+watch(() => scriptParams.method, (method) => {
+  if (method === 'DOWNLOAD' && visible.value) {
+    getSourceOptions();
+  }else{
+    scriptParams.ossId='';
+  }
+});
+
+const renderOption = ({ node, option }) => {
+  return h(NTooltip, null, {
+    trigger: () => node,
+    default: () => option.url
+  });
+};
+
 </script>
 
 <template>
@@ -592,9 +562,6 @@ const scriptMethodOptions = [
       </NFormItem>
       <NFormItem :label="$t('page.jobTask.ownerName')" path="ownerId">
         <SystemUser v-model:value="model.ownerId" :clearable="true" />
-      </NFormItem>
-      <NFormItem :label="$t('page.jobTask.labels')" path="labelMap" :show-feedback="!model.labelMap?.length">
-        <LabelsInput v-model:value="model.labelMap" path="labelMap" />
       </NFormItem>
       <NFormItem :label="$t('page.jobTask.jobStatus')" path="jobStatus">
         <NRadioGroup v-model:value="model.jobStatus" name="jobStatus">
@@ -620,12 +587,9 @@ const scriptMethodOptions = [
             <NRadio :value="0">自定义执行器</NRadio>
             <NRadio :value="1">内置执行器</NRadio>
           </NRadioGroup>
-          <NSelect
+          <NInput
             v-if="executorCustomType === 0"
             v-model:value="model.executorInfo"
-            filterable
-            tag
-            :options="translateOptions2(executorInfoOptions)"
             :placeholder="$t('page.jobTask.form.executorInfo')"
           />
           <NSelect
@@ -744,17 +708,81 @@ const scriptMethodOptions = [
         </template>
         <template v-else>
           <NForm ref="customformRef" class="w-full" :model="scriptParams">
-            <NFormItem label="脚本类型">
+            <NFormItem label="脚本类型" onchange="g">
               <NSelect v-model:value="scriptParams.method" :options="scriptMethodOptions" />
             </NFormItem>
-            <NFormItem label="脚本参数">
-              <CodeMirror v-model="scriptParams.scriptParams" lang="json" placeholder="请输入脚本参数" />
+
+            <NFormItem label="资源选择" v-if="scriptParams.method=='DOWNLOAD'">
+              <NSelect
+                v-model:value="scriptParams.ossId"
+                :options="sourceOptions"
+                placeholder="请选择资源文件"
+                :loading="!sourceOptions.length"
+                :render-option="renderOption"
+              >
+              </NSelect>
+            </NFormItem>
+
+            <!--            <NFormItem label="下载方式" v-if="scriptParams.method=='DOWNLOAD'">-->
+<!--              <NSelect v-model:value="scriptParams.downloadType" :options="downloadTypeOptions" />-->
+<!--            </NFormItem>-->
+<!--            <NFormItem label="下载地址" v-if="scriptParams.method=='DOWNLOAD'">-->
+<!--              <NInput v-model:value="scriptParams.downloadUrl" placeholder="请输入下载地址" />-->
+<!--            </NFormItem>-->
+<!--            <NFormItem label="用户名" v-if="scriptParams.method=='DOWNLOAD'">-->
+<!--              <NInput v-model:value="scriptParams.userName" placeholder="请输入用户名" />-->
+<!--            </NFormItem>-->
+<!--            <NFormItem label="密码" v-if="scriptParams.method=='DOWNLOAD'">-->
+<!--              <NInput v-model:value="scriptParams.password" placeholder="请输入密码" />-->
+<!--            </NFormItem>-->
+<!--            <NFormItem label="下载路径" v-if="scriptParams.method=='DOWNLOAD'">-->
+<!--              <NInput v-model:value="scriptParams.downloadPath" placeholder="请输入下载路径" />-->
+<!--            </NFormItem>-->
+
+            <NFormItem label="脚本参数" label-placement="top">
+              <template #label>
+                <div>
+                  <span>脚本参数</span>
+                  <NTooltip trigger="hover">
+                    <template #trigger>
+                      <icon-ic-round-info class="text-icon ml-4px" />
+                    </template>
+                    需下载脚本-填写需下载脚本的路径<br />
+                    本地脚本-填写客户端本地脚本路径<br />
+                    脚本代码-填写脚本内容
+                  </NTooltip>
+                </div>
+              </template>
+              <CodeMirror v-model="scriptParams.scriptParams" lang="json" placeholder="需下载脚本-填写需下载脚本的httpurl<br />本地脚本-填写客户端本地脚本路径<br />脚本代码-填写脚本内容" />
+            </NFormItem>
+            <NFormItem  :show-label=false v-if="scriptParams.method=='SCRIPT_CODE'">
+              <NUpload
+                :default-upload="false"
+                :show-file-list="false"
+                @change="handleFileUpload"
+                accept=".sh,.py,.bat,.cmd,.ps1,.js,.txt"
+                class="mt--10 flex flex-justify-end"
+              >
+                <NButton size="small" tertiary>
+                  上传文件
+                </NButton>
+              </NUpload>
             </NFormItem>
             <NFormItem label="编码格式">
               <NInput v-model:value="scriptParams.charset" placeholder="请输入编码格式" />
             </NFormItem>
           </NForm>
         </template>
+      </NFormItem>
+      <NFormItem
+        label="默认数据源"
+        path="extAttrs.dataSource"
+        v-if="executorCustomType === 0"
+        >
+        <NSelect
+          v-model:value="model.extAttrs.dataSource"
+          :options="dataSourceOptions"
+        />
       </NFormItem>
       <NGrid cols="2 s:1 m:2" responsive="screen" x-gap="20">
         <NGi>
@@ -768,7 +796,7 @@ const scriptMethodOptions = [
           </NFormItem>
         </NGi>
       </NGrid>
-      <NGrid :cols="model.triggerType === 5 ? '1' : '2 s:1 m:2'" responsive="screen" x-gap="20">
+      <NGrid cols="2 s:1 m:2" responsive="screen" x-gap="20">
         <NGi>
           <NFormItem :label="$t('page.jobTask.triggerType')" path="triggerType">
             <TriggerType v-model:value="model.triggerType" :placeholder="$t('page.jobTask.form.triggerType')" />
@@ -783,10 +811,22 @@ const scriptMethodOptions = [
       <NGrid cols="2 s:1 m:2" responsive="screen" x-gap="20">
         <NGi>
           <NFormItem :label="$t('page.jobTask.executorTimeout')" path="executorTimeout">
+            <template #label>
+              {{ $t('page.jobTask.executorTimeout') }}
+              <NTooltip placement="top">
+                <template #trigger>
+                  <NButton text type="primary" circle size="tiny" class="ml-4px">
+                    <icon-ic-round-info class="text-icon" />
+                  </NButton>
+                </template>
+                {{ $t('page.jobTask.form.timeoutTip') }}
+              </NTooltip>
+            </template>
+
             <NInputGroup>
               <NInputNumber
                 v-model:value="model.executorTimeout"
-                :min="1"
+                :min="-1"
                 :max="99999999"
                 :placeholder="$t('page.jobTask.form.executorTimeout')"
                 clearable
