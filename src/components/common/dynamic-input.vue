@@ -1,4 +1,11 @@
 <script setup lang="ts">
+import {fetchGetSystemVarList} from "@/service/api/system-variable";
+import { onMounted, ref, computed} from 'vue'
+
+onMounted(() => {
+  getSystemVariables();
+});
+
 const content = defineModel<{ key: string; value: string | number | boolean; type: string }[]>('value', {
   required: true,
   default: () => []
@@ -19,12 +26,31 @@ const onCreate = () => {
 const dynamicInputRule = [
   {
     trigger: ['input', 'blur'],
-    validator(_: unknown, value: string | number) {
-      if (!value && value !== 0) return new Error('不能为空');
+    validator(_: unknown, value: string | number | boolean) {
+      if (!value && value !== 0 && typeof value !== 'boolean') return new Error('不能为空');
       return true;
     }
   }
 ];
+const inputValue = ref('');
+const syncOptions = ref([
+  {
+    label: String,
+    value: String
+  }
+]);
+
+const  getSystemVariables = async () =>{
+  const { error,data } = await fetchGetSystemVarList();
+  if (!error) {
+    syncOptions.value = data.map(item => ({
+      label: item.variableName,
+      value: item.variableKey.replace("$",'')
+    }));
+  }
+};
+
+
 
 const typeOptions = [
   {
@@ -65,6 +91,12 @@ const handleUpdateType = (index: number) => {
     content.value[index].value = 0;
   }
 };
+
+const handleInputBlur = (index: number) => {
+  // 仅清首尾空格
+  content.value[index].value =content.value[index].value .trim();
+  // 若需合并中间空格：inputValue.value = inputValue.value.trim().replace(/\s+/g, ' ');
+};
 </script>
 
 <template>
@@ -87,12 +119,34 @@ const handleUpdateType = (index: number) => {
         :rule="dynamicInputRule"
         :path="`${path}[${index}].value`"
       >
-        <NInput
+<!--        <NInput-->
+<!--          v-if="content[index].type === 'string'"-->
+<!--          v-model:value="content[index].value as string"-->
+<!--          placeholder="value"-->
+<!--          @keydown.enter.prevent-->
+<!--        />-->
+
+        <n-mention
           v-if="content[index].type === 'string'"
           v-model:value="content[index].value as string"
           placeholder="value"
+          :options="syncOptions"
+          default-value="@"
+          :prefix="['$']"
           @keydown.enter.prevent
+          @blur="handleInputBlur(index)"
         />
+        <NPopover trigger="hover"
+                  v-if="content[index].type === 'string'"
+        >
+          <template #trigger>
+            <NButton text>
+              <SvgIcon icon="ant-design:info-circle-outlined" class="text-18px color-blue" />
+            </NButton>
+          </template>
+          输入$提示变量信息
+        </NPopover>
+
         <NInputNumber
           v-if="content[index].type === 'number'"
           v-model:value="content[index].value as number"
